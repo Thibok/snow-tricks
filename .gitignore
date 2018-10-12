@@ -1,0 +1,6 @@
+/app/config/parameters.yml
+/app/config/parameters.yml.dist
+/app/config/security.yml
+/vendor/
+/var/
+composer.phar
