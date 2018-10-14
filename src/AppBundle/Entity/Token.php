@@ -48,6 +48,8 @@ class Token
     private $expirationDate;
 
     /**
+     * @var User
+     * @access private
      * @ORM\OneToOne(targetEntity="AppBundle\Entity\User", mappedBy="user")
      */
     private $user;

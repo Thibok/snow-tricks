@@ -9,6 +9,9 @@ namespace AppBundle\Entity;
 use AppBundle\Entity\Token;
 use AppBundle\Entity\UserImage;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
+use AppBundle\Validator\NoSql;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 use Symfony\Component\Security\Core\User\AdvancedUserInterface;
 
 /**
@@ -16,6 +19,8 @@ use Symfony\Component\Security\Core\User\AdvancedUserInterface;
  *
  * @ORM\Table(name="st_user")
  * @ORM\Entity(repositoryClass="AppBundle\Repository\UserRepository")
+ * @UniqueEntity(fields="email", message="Cette adresse email est déjà utilisée !")
+ * @UniqueEntity(fields="username", message="Ce nom d'utilisateur est déjà utilisé !")
  */
 class User implements AdvancedUserInterface, \Serializable
 {
@@ -32,6 +37,18 @@ class User implements AdvancedUserInterface, \Serializable
      * @var string
      * @access private
      * @ORM\Column(name="username", type="string", length=30, unique=true)
+     * @Assert\NotBlank(message = "Vous devez entrer un nom d'utilisateur")
+     * @Assert\Length(
+     *      min = 4,
+     *      max = 20,
+     *      minMessage = "Le nom d'utilisateur doit faire au minimum 4 caractères",
+     *      maxMessage = "Le nom d'utilisateur doit faire au maximum 30 caractères"
+     * )
+     * @NoSql()
+     * @Assert\Regex(
+     *      pattern = "/^[a-zA-Z0-9-]{4,}$/",
+     *      message = "(a-z, A-Z, -, 0-9)"
+     * )
      */
     private $username;
 
@@ -39,6 +56,18 @@ class User implements AdvancedUserInterface, \Serializable
      * @var string
      * @access private
      * @ORM\Column(name="password", type="string", length=64)
+     * @Assert\NotBlank(message = "Vous devez entrer un mot de passe")
+     * @Assert\Length(
+     *      min = 8,
+     *      max = 48,
+     *      minMessage = "Le mot de passe doit faire au minimum 8 caractères",
+     *      maxMessage = "Le mot de passe doit faire au maximum 48 caractères"
+     * )
+     * @NoSql()
+     * @Assert\Regex(
+     *      pattern = "/[a-zA-Z]+[0-9]+[a-zA-z0-9_-]{6,}/",
+     *      message = "Votre mot de passe doit contenir au moins une lettre et un chiffre, tirets (-, _) autorisé"
+     * )
      */
     private $password;
 
@@ -46,6 +75,15 @@ class User implements AdvancedUserInterface, \Serializable
      * @var string
      * @access private
      * @ORM\Column(name="email", type="string", length=70, unique=true)
+     * @Assert\NotBlank(message = "Vous devez entrer une adresse email")
+     * @Assert\Length(
+     *      min = 6,
+     *      max = 70,
+     *      minMessage = "L'adresse email doit faire au minimum 6 caractères",
+     *      maxMessage = "L'adresse email doit faire au maximum 70 caractères"
+     * )
+     * @NoSql()
+     * @Assert\Email(message = "Merci de saisir une adresse email valide !")
      */
     private $email;
 
@@ -53,6 +91,18 @@ class User implements AdvancedUserInterface, \Serializable
      * @var string
      * @access private
      * @ORM\Column(name="name", type="string", length=40)
+     * @Assert\NotBlank(message = "Vous devez entrer votre nom")
+     * @Assert\Length(
+     *      min = 2,
+     *      max = 40,
+     *      minMessage = "Le nom doit faire au minimum 2 caractères",
+     *      maxMessage = "Le nom doit faire au maximum 40 caractères"
+     * )
+     * @NoSql()
+     * @Assert\Regex(
+     *      pattern = "/^[a-zA-Z]+-?[a-zA-Z]{1,}/",
+     *      message = "(a-z, A-Z, -)"
+     * )
      */
     private $name;
 
@@ -60,6 +110,18 @@ class User implements AdvancedUserInterface, \Serializable
      * @var string
      * @access private
      * @ORM\Column(name="firstName", type="string", length=40)
+     * @Assert\NotBlank(message = "Vous devez entrer votre prénom")
+     * @Assert\Length(
+     *      min = 2,
+     *      max = 40,
+     *      minMessage = "Le prénom doit faire au minimum 2 caractères",
+     *      maxMessage = "Le prénom doit faire au maximum 40 caractères"
+     * )
+     * @NoSql()
+     * @Assert\Regex(
+     *      pattern = "/^[a-zA-Z]+-?[a-zA-Z]{1,}/",
+     *      message = "(a-z, A-Z, -)"
+     * )
      */
     private $firstName;
 
@@ -78,12 +140,17 @@ class User implements AdvancedUserInterface, \Serializable
     private $roles;
 
     /**
+     * @var UserImage
+     * @access private
      * @ORM\OneToOne(targetEntity="AppBundle\Entity\UserImage", cascade={"persist"})
      * @ORM\JoinColumn(nullable=false)
+     * @Assert\Valid()
      */
     private $image;
 
     /**
+     * @var Token
+     * @access private
      * @ORM\OneToOne(targetEntity="AppBundle\Entity\Token", inversedBy="token", cascade={"persist"})
      */
     private $token;

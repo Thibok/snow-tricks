@@ -8,6 +8,7 @@ namespace AppBundle\Entity;
 
 use AppBundle\Model\Image;
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 
 /**
@@ -37,6 +38,17 @@ class UserImage implements Image
     /**
      * @var UploadedFile
      * @access private
+     * @Assert\Image(
+     *      maxSize = "16m",
+     *      maxSizeMessage = "L'image peut faire 2 Mb maximum",
+     *      disallowEmptyMessage = "Le fichier ne peut être vide",
+     *      mimeTypes = { "image/jpeg", "image/png", "image/pjpeg", "image/x-png" },
+     *      mimeTypesMessage = "Extension autorisé : jpg, jpeg, png",
+     *      uploadErrorMessage = "Une erreur est survenue, réessayez",
+     *      detectCorrupted = true,
+     *      corruptedMessage = "Le fichier est corrompu",
+     *      sizeNotDetectedMessage = "La taille du fichier n'est pas détecter"
+     * )
      */
     private $file;
 
