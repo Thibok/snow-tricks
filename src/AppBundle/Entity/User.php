@@ -247,10 +247,7 @@ class User implements AdvancedUserInterface, \Serializable
     }
 
     /**
-     * Is Enabled
-     * @access public
-     * 
-     * @return bool
+     * {@inheritDoc}
      */
     public function IsEnabled()
     {
@@ -317,6 +314,7 @@ class User implements AdvancedUserInterface, \Serializable
     public function setToken(Token $token = null)
     {
         $this->token = $token;
+        $token->setUser($this);
 
         return $this;
     }

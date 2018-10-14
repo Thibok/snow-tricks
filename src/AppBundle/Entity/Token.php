@@ -148,6 +148,7 @@ class Token
     public function setUser(User $user = null)
     {
         $this->user = $user;
+        $user->setToken($this);
 
         return $this;
     }
