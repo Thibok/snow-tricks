@@ -50,9 +50,9 @@ class CaptchaValidator extends ConstraintValidator
      */
     public function validate($value, Constraint $constraint)
     {
-        $request = $this->request->getCurrentRequest();
+        $currentRequest = $this->request->getCurrentRequest();
         
-        $resp = $this->captcha->verify($value, $request->getClientIp());
+        $resp = $this->captcha->verify($value, $currentRequest->getClientIp());
 
         if (!$resp->isSuccess()) {
             $this->context->addViolation($constraint->message);
