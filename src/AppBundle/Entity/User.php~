@@ -163,7 +163,6 @@ class User implements AdvancedUserInterface, \Serializable
     public function __construct()
     {
         $this->isActive = false;
-        $this->registrationDate = new \DateTime;      
     }
 
     /**
@@ -467,40 +466,5 @@ class User implements AdvancedUserInterface, \Serializable
     public function eraseCredentials()
     {
 
-    }
-
-    /**
-     * Get isActive
-     *
-     * @return boolean
-     */
-    public function getIsActive()
-    {
-        return $this->isActive;
-    }
-
-    /**
-     * Set registrationDate
-     * @access public
-     * @param \DateTime $registrationDate
-     *
-     * @return User
-     */
-    public function setRegistrationDate($registrationDate)
-    {
-        $this->registrationDate = $registrationDate;
-
-        return $this;
-    }
-
-    /**
-     * Get registrationDate
-     * @access public
-     *
-     * @return \DateTime
-     */
-    public function getRegistrationDate()
-    {
-        return $this->registrationDate;
     }
 }

@@ -43,7 +43,7 @@ class Token
     /**
      * @var \DateTime
      * @access private
-     * @ORM\Column(name="expirationDate", type="datetime")
+     * @ORM\Column(name="expiration_date", type="datetime")
      */
     private $expirationDate;
 
@@ -150,7 +150,6 @@ class Token
     public function setUser(User $user = null)
     {
         $this->user = $user;
-        $user->setToken($this);
 
         return $this;
     }

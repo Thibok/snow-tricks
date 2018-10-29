@@ -39,8 +39,8 @@ class UserImage implements Image
      * @var UploadedFile
      * @access private
      * @Assert\Image(
-     *      maxSize = "16m",
-     *      maxSizeMessage = "L'image peut faire 2 Mb maximum",
+     *      maxSize = "8M",
+     *      maxSizeMessage = "L'image peut faire 8 Mo maximum",
      *      disallowEmptyMessage = "Le fichier ne peut être vide",
      *      mimeTypes = { "image/jpeg", "image/png", "image/pjpeg", "image/x-png" },
      *      mimeTypesMessage = "Extension autorisé : jpg, jpeg, png",
