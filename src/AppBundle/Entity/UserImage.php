@@ -6,8 +6,8 @@
 
 namespace AppBundle\Entity;
 
-use AppBundle\Model\Image;
 use Doctrine\ORM\Mapping as ORM;
+use AppBundle\Entity\ImageInterface;
 use Symfony\Component\Validator\Constraints as Assert;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 
@@ -17,7 +17,7 @@ use Symfony\Component\HttpFoundation\File\UploadedFile;
  * @ORM\Table(name="st_user_image")
  * @ORM\Entity(repositoryClass="AppBundle\Repository\UserImageRepository")
  */
-class UserImage implements Image
+class UserImage implements ImageInterface
 {
     /**
      * @var int
