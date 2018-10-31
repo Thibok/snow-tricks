@@ -6,7 +6,7 @@
       <div class="container" id="wrap">
         <div class="row" id="main">
         <div class="col-lg-5 mt-4" id="registration_block">
-        <h1 class="mb-4 text-center">S'inscrire</h1>
+        <h1 class="mb-4 text-center text-dark">S'inscrire</h1>
           {{ form_start(form, {'attr': {'class': 'form-horizontal px-5 py-5', 'id': 'registration_form'}}) }}
           <div class="form-group">
             {{ form_label(form.username, "Nom d'utilisateur", {'label_attr' : {'class': 'control-label'}}) }}
@@ -38,6 +38,7 @@
             {{ form_errors(form.image.file) }}
             {{ form_widget(form.image.file, {'attr': {'class': 'form-control'}}) }}
           </div>
+          <a id="add_preview" href="#"><img id="preview" src="{{ asset('/img/plus.png') }}"/></a>
           <div class="d-flex">
             <button type="submit" class="btn btn-primary mt-3 w-50 mx-auto">S'inscrire</button>
           </div>
@@ -47,12 +48,6 @@
       </div>
 {% endblock %}
 {% block javascripts %}
- {{ parent() }} 
- <script>
-  $(function() {
-    $('input').each(function() {
-      $(this).css('border', '1px solid grey');
-    });
-  })
- </script>
+ {{ parent() }}
+ <script src="{{ asset('/js/registration.js') }}"></script>
  {% endblock %}
