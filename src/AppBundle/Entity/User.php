@@ -97,7 +97,7 @@ class User implements AdvancedUserInterface, \Serializable
      * )
      * @Assert\Regex(
      *      pattern = "/^[a-zA-Z]+-?[a-zA-Z]{1,}/",
-     *      message = "(a-z, A-Z, -)"
+     *      message = "Le nom ne peut contenir que des lettres et un tiret"
      * )
      */
     private $name;
@@ -115,7 +115,7 @@ class User implements AdvancedUserInterface, \Serializable
      * )
      * @Assert\Regex(
      *      pattern = "/^[a-zA-Z]+-?[a-zA-Z]{1,}/",
-     *      message = "(a-z, A-Z, -)"
+     *      message = "Le prénom ne peut contenir que des lettres et un tiret"
      * )
      */
     private $firstName;

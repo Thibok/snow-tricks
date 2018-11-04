@@ -35,6 +35,7 @@
           </div>
           <div class="form-group">
             {{ form_label(form.image.file, "Avatar", {'label_attr' : {'class': 'control-label'}}) }}
+            <span class="invalid-feedback d-block" id="image_error"></span>
             {{ form_widget(form.image.file, {'attr': {'class': 'form-control'}}) }}
           </div>
           <a id="add_preview" href="#"><img id="preview" src="{{ asset('/img/plus.png') }}"/></a>
@@ -49,4 +50,4 @@
 {% block javascripts %}
  {{ parent() }}
  <script src="{{ asset('/js/registration.js') }}"></script>
- {% endblock %}
+{% endblock %}
