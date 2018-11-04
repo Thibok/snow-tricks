@@ -12,7 +12,7 @@ use Doctrine\ORM\Mapping as ORM;
 /**
  * Token
  *
- * @ORM\Table(name="st_token")
+ * @ORM\Table(name="st_token", indexes={@ORM\Index(name="search_expired", columns={"expiration_date"})})
  * @ORM\Entity(repositoryClass="AppBundle\Repository\TokenRepository")
  */
 class Token
@@ -29,7 +29,7 @@ class Token
     /**
      * @var string
      * @access private
-     * @ORM\Column(name="code", type="string", length=90, unique=true)
+     * @ORM\Column(name="code", type="string", length=80, unique=true)
      */
     private $code;
 

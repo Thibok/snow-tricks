@@ -38,9 +38,10 @@ class UserImage implements ImageInterface
     /**
      * @var UploadedFile
      * @access private
+     * @Assert\NotBlank(message="Vous devez sélectionner une image !")
      * @Assert\Image(
-     *      maxSize = "8M",
-     *      maxSizeMessage = "L'image peut faire 8 Mo maximum",
+     *      maxSize = "6M",
+     *      maxSizeMessage = "L'image peut faire 6 Mo maximum",
      *      disallowEmptyMessage = "Le fichier ne peut être vide",
      *      mimeTypes = { "image/jpeg", "image/png", "image/pjpeg", "image/x-png" },
      *      mimeTypesMessage = "Extension autorisé : jpg, jpeg, png",

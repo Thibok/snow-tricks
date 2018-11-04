@@ -17,7 +17,7 @@ use Symfony\Component\Security\Core\User\AdvancedUserInterface;
 /**
  * User
  *
- * @ORM\Table(name="st_user")
+ * @ORM\Table(name="st_user", indexes={@ORM\Index(name="search_inactive", columns={"is_active", "registration_date"})})
  * @ORM\Entity(repositoryClass="AppBundle\Repository\UserRepository")
  * @UniqueEntity(fields="email", message="Cette adresse email est déjà utilisée !")
  * @UniqueEntity(fields="username", message="Ce nom d'utilisateur est déjà utilisé !")
@@ -45,8 +45,8 @@ class User implements AdvancedUserInterface, \Serializable
      *      maxMessage = "Le nom d'utilisateur doit faire au maximum 30 caractères"
      * )
      * @Assert\Regex(
-     *      pattern = "/^[a-zA-Z0-9-]{4,}$/",
-     *      message = "(a-z, A-Z, -, 0-9)"
+     *      pattern = "/^[a-zA-Z0-9_-]{4,}$/",
+     *      message = "Le nom d'utilisateur peut être composé de lettres, chiffres et tirets (- _)"
      * )
      */
     private $username;
@@ -63,7 +63,7 @@ class User implements AdvancedUserInterface, \Serializable
      *      maxMessage = "Le mot de passe doit faire au maximum 48 caractères"
      * )
      * @Assert\Regex(
-     *      pattern = "/[a-zA-Z]+[0-9]+[a-zA-z0-9_-]{6,}/",
+     *      pattern = "/^(?=.*[0-9])(?=.*[a-zA-Z]).{8,}$/",
      *      message = "Votre mot de passe doit contenir au moins une lettre et un chiffre, tirets (-, _) autorisé"
      * )
      */
@@ -75,9 +75,9 @@ class User implements AdvancedUserInterface, \Serializable
      * @ORM\Column(name="email", type="string", length=70, unique=true)
      * @Assert\NotBlank(message = "Vous devez entrer une adresse email")
      * @Assert\Length(
-     *      min = 6,
+     *      min = 7,
      *      max = 70,
-     *      minMessage = "L'adresse email doit faire au minimum 6 caractères",
+     *      minMessage = "L'adresse email doit faire au minimum 7 caractères",
      *      maxMessage = "L'adresse email doit faire au maximum 70 caractères"
      * )
      * @Assert\Email(message = "Merci de saisir une adresse email valide !")
@@ -146,7 +146,7 @@ class User implements AdvancedUserInterface, \Serializable
     /**
      * @var Token
      * @access private
-     * @ORM\OneToOne(targetEntity="AppBundle\Entity\Token", inversedBy="token", cascade={"persist"})
+     * @ORM\OneToOne(targetEntity="AppBundle\Entity\Token", inversedBy="user", cascade={"persist"})
      */
     private $token;
 

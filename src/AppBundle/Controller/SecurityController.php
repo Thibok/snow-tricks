@@ -28,6 +28,10 @@ class SecurityController extends Controller
         $form = $this->createForm(UserType::class, $user);
         $form->handleRequest($request);
 
+        if ($form->isSubmitted() && $form->isValid()) {
+            return new Response('Ok');
+        }
+
         return $this->render('community/registration.html.twig', array('form' => $form->createView()));
     }
 }
