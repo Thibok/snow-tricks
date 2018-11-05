@@ -26,11 +26,13 @@ nav {
   font-size: 1.5em;
 }
 
-footer {
-  position: relative;
-  height: 90px;
-  margin-top: -90px;
-  clear: both;
+#mainNav {
+  justify-content: space-between;
+}
+
+#phoneNav {
+  background-color: #af3a3a;
+  justify-content: space-evenly;
 }
 
 #main {
@@ -50,12 +52,21 @@ footer {
   border-radius: 10px;
 }
 
-#mainNav{
-  justify-content: space-between;
+footer {
+  position: relative;
+  height: 90px;
+  margin-top: -90px;
+  clear: both;
 }
 
 #copyright {
   padding-top: 35px;
+}
+
+@media screen and (max-width: 590px) {
+  #main {
+    padding-top: 20px;
+  }
 }
 
 
