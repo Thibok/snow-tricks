@@ -1,11 +1,11 @@
 $(function () {
     
-    const navLinksText = ['Accueil', 'Inscription', 'Connexion'];
-    const navLinksIcon = ['../img/home.png', '../img/registration.png', '../img/login.png'];
+    const navLinksText = ['Home', 'Sign in', 'Sign up'];
+    const navLinksIcon = ['../img/home.png', '../img/login.png', '../img/registration.png'];
 
     function navBarScroll () {
         if ($('#mainNav').offset().top > 100) {
-            $('#mainNav').css('background-color', '#af3a3a').css('transition-duration', '0.5s');
+            $('#mainNav').css('background-color', '#4A6C6F').css('transition-duration', '0.5s');
         } else {
             $('#mainNav').css('background-color', '');
         }
@@ -24,9 +24,9 @@ $(function () {
     function setMobileNavBar() {
         $('#logo').hide();
         $('#mainNav').removeClass('fixed-top').attr('id', 'phoneNav').addClass('fixed-bottom');
-        $('#home').html('<img src="' + navLinksIcon[0] + '" alt="Accueil"/>');
-        $('#registration').html('<img src="' + navLinksIcon[1] + '" alt="Inscription"/>');
-        $('#login').html('<img src="' + navLinksIcon[2] + '" alt="Connexion"/>');
+        $('#home').html('<img src="' + navLinksIcon[0] + '" alt="Home"/>');
+        $('#registration').html('<img src="' + navLinksIcon[1] + '" alt="Sign in"/>');
+        $('#login').html('<img src="' + navLinksIcon[2] + '" alt="Sign up"/>');
     }
 
     function setNavBar () {

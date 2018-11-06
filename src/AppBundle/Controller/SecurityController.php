@@ -19,7 +19,7 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 class SecurityController extends Controller
 {
     /**
-     * @Route("/inscription", name="registration")
+     * @Route("/registration", name="registration")
      */
     public function registrationAction(Request $request)
     {
