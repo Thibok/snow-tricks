@@ -64,10 +64,6 @@ footer {
   padding-left: 70px;
 }
 
-#recaptcha {
-  margin-top: 20px;
-  margin-left: 0px;
-}
 
 @media screen and (max-width: 590px) {
   #main {

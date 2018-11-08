@@ -169,10 +169,6 @@ $(function() {
     var firstName = $('#appbundle_user_firstName');
     var image = $('#appbundle_user_image_file');
 
-    var onSubmit = function (response) {
-        $('#registration_form').submit();
-    }
-
     $('input').each(function() {
         $(this).css('border', '1px solid grey');
     });
@@ -210,11 +206,16 @@ $(function() {
         readURL(this);
     })
 
-    $('#registration_form').submit(function () {
-        if (!validateForm()) {
-            return false;
-        }
+    function formSubmit() {
+        $('#registration_form').submit();
+      }
+  
+      window.formSubmit = formSubmit;
 
-        grecaptcha.execute();
+    $('#registrationBtn').click(function (event) {
+        event.preventDefault();
+        if (validateForm()) {
+            grecaptcha.execute();
+        }
     });
 });

@@ -1,9 +1,13 @@
 {% extends 'base.html.twig' %}
 
-{% block title %} {{ parent() }} Inscription{% endblock %}
-{% block stylesheets %} {{ parent() }} {% endblock %}
+{% block title %} {{ parent() }} Registration{% endblock %}
 {% block body %}
   <div class="container" id="wrap">
+  {% for message in app.flashes('error') %}
+    <div class="flash-notice">
+        {{ message }}
+    </div>
+{% endfor %}
     <div class="row" id="main">
       <div class="col-lg-5" id="registration_block">
         <h1 class="mb-4 text-center text-dark">Registration</h1>
@@ -40,9 +44,9 @@
           </div>
           <a id="add_preview" href="#"><img id="preview" src="{{ asset('/img/plus.png') }}"/></a>
           <div class="d-flex">
-            <button type="submit" class="btn btn-primary mt-3 w-50 mx-auto">S'inscrire</button>
+            <button id="registrationBtn" class="btn btn-primary mt-3 w-75 mx-auto">Create an account</button>
           </div>
-          <div class="g-recaptcha" data-badge="inline" id="recaptcha" data-sitekey="6LeNBXQUAAAAAD0QVvKM9L2fJGRTRvcZdDma6qZS" data-callback="onSubmit" data-size="invisible"></div>
+          <div class="g-recaptcha d-flex justify-content-center mt-4" id="recaptcha" data-badge="inline" data-callback="formSubmit" data-sitekey="6LeNBXQUAAAAAD0QVvKM9L2fJGRTRvcZdDma6qZS" data-size="invisible"></div>
         {{ form_end(form )}}
       </div>
     </div>
@@ -50,5 +54,7 @@
 {% endblock %}
 {% block javascripts %}
  {{ parent() }}
+ <script src="https://www.google.com/recaptcha/api.js" async defer></script>
  <script src="{{ asset('/js/registration.js') }}"></script>
 {% endblock %}
+

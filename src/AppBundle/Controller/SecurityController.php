@@ -10,6 +10,7 @@ use AppBundle\Entity\User;
 use AppBundle\Form\UserType;
 use AppBundle\ParamChecker\CaptchaChecker;
 use Symfony\Component\HttpFoundation\Request;
+use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 
@@ -21,15 +22,16 @@ class SecurityController extends Controller
     /**
      * @Route("/registration", name="registration")
      */
-    public function registrationAction(Request $request)
+    public function registrationAction(Request $request, CaptchaChecker $captchaChecker)
     {
         $user = new User;
 
         $form = $this->createForm(UserType::class, $user);
         $form->handleRequest($request);
 
-        if ($form->isSubmitted() && $form->isValid()) {
-            return new Response('Ok');
+        if ($form->isSubmitted()) {
+            $captchaChecker->check();
+            return new Response('ok');
         }
 
         return $this->render('community/registration.html.twig', array('form' => $form->createView()));

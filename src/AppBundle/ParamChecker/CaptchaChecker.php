@@ -7,8 +7,8 @@
 namespace AppBundle\ParamChecker;
 
 use AppBundle\Validator\Captcha;
-use AppBundle\Validator\CaptchaValidator;
 use Symfony\Component\HttpFoundation\RequestStack;
+use Symfony\Component\Validator\Validator\ValidatorInterface;
 
 /**
  * Captcha Checker
@@ -16,7 +16,7 @@ use Symfony\Component\HttpFoundation\RequestStack;
 class CaptchaChecker
 {
     /**
-     * @var CaptchaValidator
+     * @var ValidatorInterface
      * @access private
      */
     private $captchaValidator;
@@ -30,31 +30,30 @@ class CaptchaChecker
     /**
      * Constructor
      *
-     * @param CaptchaValidator $captchaValidator
+     * @param ValidatorInterface $validator
      * @param RequestStack $requestStack
      */
-    public function __construct(CaptchaValidator $captchaValidator, RequestStack $request)
+    public function __construct(ValidatorInterface $validator, RequestStack $request)
     {
-        $this->captchaValidator = $captchaValidator;
+        $this->validator = $validator;
         $this->request = $request;
     }
 
     /**
      * Check the value of captcha with CaptchaValidator
      *
-     * @param string $value
      * 
      * @return boolean
      */
-    public function check($value)
+    public function check()
     {
         $currentRequest = $this->request->getCurrentRequest();
-        $captcha = $request->request->get('g-recaptcha-response');
+        $captcha = $currentRequest->request->get('g-recaptcha-response');
         $constraint = new Captcha;
 
-        $errors = $this->captchaValidator($captcha, $constraint);
+        $errors = $this->validator->validate($captcha, $constraint);
 
-        if (count($errors) > 0) {
+        if (count($errors) != 0) {
             $currentRequest->getSession()->getFlashBag()->add('error', $constraint->message);
             return false;
         }
