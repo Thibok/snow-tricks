@@ -19,8 +19,8 @@ use Symfony\Component\Security\Core\User\AdvancedUserInterface;
  *
  * @ORM\Table(name="st_user", indexes={@ORM\Index(name="search_inactive", columns={"is_active", "registration_date"})})
  * @ORM\Entity(repositoryClass="AppBundle\Repository\UserRepository")
- * @UniqueEntity(fields="email", message="Cette adresse email est déjà utilisée !")
- * @UniqueEntity(fields="username", message="Ce nom d'utilisateur est déjà utilisé !")
+ * @UniqueEntity(fields="email", message="This email address is already in use !")
+ * @UniqueEntity(fields="username", message="This username is already in use !")
  */
 class User implements AdvancedUserInterface, \Serializable
 {
@@ -37,16 +37,16 @@ class User implements AdvancedUserInterface, \Serializable
      * @var string
      * @access private
      * @ORM\Column(name="username", type="string", length=30, unique=true)
-     * @Assert\NotBlank(message = "Vous devez entrer un nom d'utilisateur")
+     * @Assert\NotBlank(message = "You must enter an username !")
      * @Assert\Length(
      *      min = 4,
      *      max = 30,
-     *      minMessage = "Le nom d'utilisateur doit faire au minimum 4 caractères",
-     *      maxMessage = "Le nom d'utilisateur doit faire au maximum 30 caractères"
+     *      minMessage = "The username must be at least 4 characters",
+     *      maxMessage = "The username must be at most 30 characters"
      * )
      * @Assert\Regex(
      *      pattern = "/^[a-zA-Z0-9_-]{4,}$/",
-     *      message = "Le nom d'utilisateur peut être composé de lettres, chiffres et tirets (- _)"
+     *      message = "The username can contains letters, numbers, and dash (- _)"
      * )
      */
     private $username;
@@ -55,16 +55,16 @@ class User implements AdvancedUserInterface, \Serializable
      * @var string
      * @access private
      * @ORM\Column(name="password", type="string", length=64)
-     * @Assert\NotBlank(message = "Vous devez entrer un mot de passe")
+     * @Assert\NotBlank(message = "You must enter an password !")
      * @Assert\Length(
      *      min = 8,
      *      max = 48,
-     *      minMessage = "Le mot de passe doit faire au minimum 8 caractères",
-     *      maxMessage = "Le mot de passe doit faire au maximum 48 caractères"
+     *      minMessage = "The password must be at least 8 characters",
+     *      maxMessage = "The password must be at most 48 characters"
      * )
      * @Assert\Regex(
      *      pattern = "/^(?=.*[0-9])(?=.*[a-zA-Z]).{8,}$/",
-     *      message = "Votre mot de passe doit contenir au moins une lettre et un chiffre, tirets (-, _) autorisé"
+     *      message = "The password must contain at least one letter and one number"
      * )
      */
     private $password;
@@ -73,14 +73,14 @@ class User implements AdvancedUserInterface, \Serializable
      * @var string
      * @access private
      * @ORM\Column(name="email", type="string", length=70, unique=true)
-     * @Assert\NotBlank(message = "Vous devez entrer une adresse email")
+     * @Assert\NotBlank(message = "You must enter an email !")
      * @Assert\Length(
      *      min = 7,
      *      max = 70,
-     *      minMessage = "L'adresse email doit faire au minimum 7 caractères",
-     *      maxMessage = "L'adresse email doit faire au maximum 70 caractères"
+     *      minMessage = "The email must be at least 7 characters",
+     *      maxMessage = "The email must be at most 70 characters"
      * )
-     * @Assert\Email(message = "Merci de saisir une adresse email valide !")
+     * @Assert\Email(message = "Please enter a valid email address !")
      */
     private $email;
 
@@ -88,16 +88,16 @@ class User implements AdvancedUserInterface, \Serializable
      * @var string
      * @access private
      * @ORM\Column(name="name", type="string", length=40)
-     * @Assert\NotBlank(message = "Vous devez entrer votre nom")
+     * @Assert\NotBlank(message = "You must enter an name !")
      * @Assert\Length(
      *      min = 2,
      *      max = 40,
-     *      minMessage = "Le nom doit faire au minimum 2 caractères",
-     *      maxMessage = "Le nom doit faire au maximum 40 caractères"
+     *      minMessage = "The name must be at least 2 characters",
+     *      maxMessage = "The name must be at least 40 characters"
      * )
      * @Assert\Regex(
      *      pattern = "/^[a-zA-Z]+-?[a-zA-Z]{1,}/",
-     *      message = "Le nom ne peut contenir que des lettres et un tiret"
+     *      message = "The name can only contain letters and a dash"
      * )
      */
     private $name;
@@ -106,16 +106,16 @@ class User implements AdvancedUserInterface, \Serializable
      * @var string
      * @access private
      * @ORM\Column(name="first_name", type="string", length=40)
-     * @Assert\NotBlank(message = "Vous devez entrer votre prénom")
+     * @Assert\NotBlank(message = "You must enter an first name !")
      * @Assert\Length(
      *      min = 2,
      *      max = 40,
-     *      minMessage = "Le prénom doit faire au minimum 2 caractères",
-     *      maxMessage = "Le prénom doit faire au maximum 40 caractères"
+     *      minMessage = "The first name must be at least 2 characters",
+     *      maxMessage = "The first name must be at most 40 characters"
      * )
      * @Assert\Regex(
      *      pattern = "/^[a-zA-Z]+-?[a-zA-Z]{1,}/",
-     *      message = "Le prénom ne peut contenir que des lettres et un tiret"
+     *      message = "The first name can only contain letters and a dash"
      * )
      */
     private $firstName;

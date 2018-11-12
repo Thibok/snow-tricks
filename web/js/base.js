@@ -2,6 +2,10 @@ $(function () {
     
     const navLinksText = ['Home', 'Sign in', 'Sign up'];
     const navLinksIcon = ['../img/home.png', '../img/login.png', '../img/registration.png'];
+    const windowWidthLimit = 576;
+
+    var flashBaseOffsetY = -20;
+    var flashMobileOffsetY = -80;
 
     function navBarScroll () {
         if ($('#mainNav').offset().top > 100) {
@@ -37,10 +41,14 @@ $(function () {
         $('#login').text(navLinksText[2]);
     }
 
+    $(window).scroll(function () {
+        navBarScroll();
+    });
+
     $(window).resize(function () {
         var width = $(this).width();
 
-        if (width < 576) {
+        if (width < windowWidthLimit) {
             unsetCopyrightText();
             setMobileNavBar();
         } else {
@@ -48,18 +56,51 @@ $(function () {
             setNavBar();
         }
     })
-    
-    if ($(window).width() < 576) {
+
+    $("[class^=flash-]").each(function (index) {
+
+        var message = $(this).text();
+
+        delayOpenDuration = index * 2500;
+
+        if ($(this).hasClass('flash-notice')) {
+            var color = 'blue';
+        } else {
+            var color = 'red';
+        }
+
+        if ($(window).width() < windowWidthLimit) {
+            var flashMsgOffsetY = flashMobileOffsetY;
+        } else {
+            var flashMsgOffsetY = flashBaseOffsetY;
+        }
+
+        new jBox('notice', {
+            addClass: 'jBox-wrapper jBox-Notice jBox-NoticeFancy jBox-Notice-color jBox-Notice-' + color,
+            autoClose: 2500,
+            fixed: true,
+            position: { x: 'left', y: 'bottom' },
+            offset: { x: 0, y: flashMsgOffsetY },
+            responsiveWidth: true,
+            content: message,
+            overlay: false,
+            delayOpen: delayOpenDuration,
+            closeOnClick: 'box',
+            onCloseComplete: function () {
+              this.destroy();
+            }
+        }).open();
+        
+        $(this).remove();
+    });
+
+    if ($(window).width() < windowWidthLimit) {
         setMobileNavBar();
         unsetCopyrightText();
     } else {
         setNavBar();
         setCopyrightText();
     }
-
-    $(window).scroll(function () {
-        navBarScroll()
-    })
 
     navBarScroll();
 });

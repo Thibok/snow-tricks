@@ -50,7 +50,7 @@ class Token
     /**
      * @var User
      * @access private
-     * @ORM\OneToOne(targetEntity="AppBundle\Entity\User", mappedBy="user")
+     * @ORM\OneToOne(targetEntity="AppBundle\Entity\User", mappedBy="token")
      */
     private $user;
 

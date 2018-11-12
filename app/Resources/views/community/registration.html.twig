@@ -3,11 +3,6 @@
 {% block title %} {{ parent() }} Registration{% endblock %}
 {% block body %}
   <div class="container" id="wrap">
-  {% for message in app.flashes('error') %}
-    <div class="flash-notice">
-        {{ message }}
-    </div>
-{% endfor %}
     <div class="row" id="main">
       <div class="col-lg-5" id="registration_block">
         <h1 class="mb-4 text-center text-dark">Registration</h1>
@@ -53,8 +48,8 @@
   </div>
 {% endblock %}
 {% block javascripts %}
- {{ parent() }}
- <script src="https://www.google.com/recaptcha/api.js" async defer></script>
- <script src="{{ asset('/js/registration.js') }}"></script>
+  {{ parent() }}
+  <script src="https://www.google.com/recaptcha/api.js" async defer></script>
+  <script src="{{ asset('/js/registration.js') }}"></script>
 {% endblock %}
 

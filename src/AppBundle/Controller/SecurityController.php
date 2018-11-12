@@ -7,7 +7,9 @@
 namespace AppBundle\Controller;
 
 use AppBundle\Entity\User;
+use AppBundle\Entity\Token;
 use AppBundle\Form\UserType;
+use Doctrine\ORM\ORMException;
 use AppBundle\ParamChecker\CaptchaChecker;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -30,8 +32,24 @@ class SecurityController extends Controller
         $form->handleRequest($request);
 
         if ($form->isSubmitted()) {
-            $captchaChecker->check();
-            return new Response('ok');
+            if ($captchaChecker->check() && $form->isValid()) {
+                $token = new Token;
+                $token->setType('registration');
+                $user->setToken($token);
+
+                $em = $this->getDoctrine()->getManager();
+                $em->persist($user);
+                
+                try {
+                    $em->flush();
+                    $this->addFlash('notice', 'Registration Success !');
+                    $this->addFlash('notice', 'A confirmation link has been sent to you by email');
+                    $this->redirectToRoute('registration');
+                } catch(ORMException $e) {
+                    $this->addFlash('error', 'An error has occurred');
+                    $this->redirectToRoute('registration');
+                }
+            }
         }
 
         return $this->render('community/registration.html.twig', array('form' => $form->createView()));

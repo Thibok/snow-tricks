@@ -17,7 +17,7 @@ class Captcha extends Constraint
      * @var string
      * @access public
      */
-    public $message = "Le captcha n'est pas valide !";
+    public $message = "Captcha not valid !";
 
     /**
      * Return ths name of validator

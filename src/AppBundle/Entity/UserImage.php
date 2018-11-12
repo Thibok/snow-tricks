@@ -38,17 +38,17 @@ class UserImage implements ImageInterface
     /**
      * @var UploadedFile
      * @access private
-     * @Assert\NotBlank(message="Vous devez sélectionner une image !")
+     * @Assert\NotBlank(message="You must choose an image !")
      * @Assert\Image(
      *      maxSize = "6M",
-     *      maxSizeMessage = "L'image peut faire 6 Mo maximum",
-     *      disallowEmptyMessage = "Le fichier ne peut être vide",
+     *      maxSizeMessage = "The image can be up to 6 MB",
+     *      disallowEmptyMessage = "The file can't be empty !",
      *      mimeTypes = { "image/jpeg", "image/png", "image/pjpeg", "image/x-png" },
-     *      mimeTypesMessage = "Extension autorisé : jpg, jpeg, png",
-     *      uploadErrorMessage = "Une erreur est survenue, réessayez",
+     *      mimeTypesMessage = "Allowed extensions : jpg, jpeg, png",
+     *      uploadErrorMessage = "An error occured, try again",
      *      detectCorrupted = true,
-     *      corruptedMessage = "Le fichier est corrompu",
-     *      sizeNotDetectedMessage = "La taille du fichier n'est pas détecter"
+     *      corruptedMessage = "The file is corrupt",
+     *      sizeNotDetectedMessage = "The file size is not detected"
      * )
      */
     private $file;

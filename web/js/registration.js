@@ -17,23 +17,23 @@ $(function() {
     const firstNameRegex = new RegExp('^[a-z]+-?[a-z]{1,}$', 'i');
     const allowedFileExtension = ['jpg', 'jpeg', 'png'];
 
-    const minLengthMessage = "doit faire au minimum";
-    const maxLengthMessage = "doit faire au maximum";
+    const minLengthMessage = "must be at least";
+    const maxLengthMessage = "must be at most";
 
     function validateUsername(username) {
         
         if (username.length < usernameMinLength) {
-            $('#username_error').text('Le nom d\'utilisateur ' + minLengthMessage + ' ' + usernameMinLength + ' caractères !');
+            $('#username_error').text('The username ' + minLengthMessage + ' ' + usernameMinLength + ' characters !');
             return false;
         }
 
         if (username.length > usernameMaxLength) {
-            $('#username_error').text('Le nom d\'utilisateur ' + maxLengthMessage + ' ' + usernameMaxLength + ' caractères !');
+            $('#username_error').text('The username ' + maxLengthMessage + ' ' + usernameMaxLength + ' characters !');
             return false;
         }
 
         if (!usernameRegex.test(username)) {
-            $('#username_error').text('Le nom d\'utilisateur peut être composé de lettres, chiffres et tirets (- _)');
+            $('#username_error').text('The username can contains letters, numbers, and dash (- _)');
             return false;
         }
 
@@ -44,17 +44,17 @@ $(function() {
     function validatePassword(password) {
 
         if (password.length < passwordMinLength) {
-            $('#password_error').text('Le mot de passe ' + minLengthMessage + ' ' + passwordMinLength + ' caractères !');
+            $('#password_error').text('The password ' + minLengthMessage + ' ' + passwordMinLength + ' characters !');
             return false;
         }
 
         if (password.length > passwordMaxLength) {
-            $('#password_error').text('Le mot de passe ' + maxLengthMessage + ' ' + passwordMaxLength + ' caractères !');
+            $('#password_error').text('The password ' + maxLengthMessage + ' ' + passwordMaxLength + ' characters !');
             return false;
         }
 
         if (!passwordRegex.test(password)) {
-            $('#password_error').text('Le mot de passe doit contenir au moins une lettre et un chiffre');
+            $('#password_error').text('The password must contain at least one letter and one number');
             return false;
         }
 
@@ -64,17 +64,17 @@ $(function() {
 
     function validateEmail(email) {
         if (email.length < emailMinLength) {
-            $('#email_error').text('L\'email ' + minLengthMessage + ' ' + emailMinLength + ' caractères !');
+            $('#email_error').text('The email ' + minLengthMessage + ' ' + emailMinLength + ' characters !');
             return false;
         }
 
         if (email.length > emailMaxLength) {
-            $('#email_error').text('L\'email ' + maxLengthMessage + ' ' + emailMaxLength + ' caractères !');
+            $('#email_error').text('The email ' + maxLengthMessage + ' ' + emailMaxLength + ' characters !');
             return false;
         }
 
         if (!emailRegex.test(email)) {
-            $('#email_error').text('Veuillez saisir une adresse email valide !');
+            $('#email_error').text('Please enter a valid email address !');
             return false;
         }
 
@@ -84,17 +84,17 @@ $(function() {
 
     function validateName(name) {
         if (name.length < nameMinLength) {
-            $('#name_error').text('Le nom ' + minLengthMessage + ' ' + nameMinLength + ' caractères !');
+            $('#name_error').text('The name ' + minLengthMessage + ' ' + nameMinLength + ' characters !');
             return false;
         }
 
         if (name.length > nameMaxLength) {
-            $('#name_error').text('Le nom ' + maxLengthMessage + ' ' + nameMaxLength + ' caractères !');
+            $('#name_error').text('The name ' + maxLengthMessage + ' ' + nameMaxLength + ' characters !');
             return false;
         }
 
         if (!nameRegex.test(name)) {
-            $('#name_error').text('Le nom ne peut contenir que des lettres et un tiret');
+            $('#name_error').text('The name can only contain letters and a dash');
             return false;
         }
 
@@ -104,17 +104,17 @@ $(function() {
 
     function validateFirstName(firstName) {
         if (firstName.length < firstNameMinLength) {
-            $('#firstName_error').text('Le prénom ' + minLengthMessage + ' ' + firstNameMinLength + ' caractères !');
+            $('#firstName_error').text('The first name ' + minLengthMessage + ' ' + firstNameMinLength + ' characters !');
             return false;
         }
 
         if (firstName.length > firstNameMaxLength) {
-            $('#firstName_error').text('Le prénom ' + maxLengthMessage + ' ' + firstNameMaxLength + ' caractères !');
+            $('#firstName_error').text('The first name ' + maxLengthMessage + ' ' + firstNameMaxLength + ' characters !');
             return false;
         }
 
         if (!firstNameRegex.test(firstName)) {
-            $('#firstName_error').text('Le prénom ne peut contenir que des lettres et un tiret');
+            $('#firstName_error').text('The first name can only contain letters and a dash');
             return false;
         }
 
@@ -124,7 +124,7 @@ $(function() {
 
     function validateImage(filename) {
         if ($.inArray(filename.split('.').pop().toLowerCase(), allowedFileExtension) == -1) {
-            $('#image_error').text('Extensions autorisées : jpg, jpeg, png');
+            $('#image_error').text('Allowed extensions : jpg, jpeg, png');
             return false;
         }
 
@@ -215,6 +215,7 @@ $(function() {
     $('#registrationBtn').click(function (event) {
         event.preventDefault();
         if (validateForm()) {
+            grecaptcha.reset();
             grecaptcha.execute();
         }
     });
