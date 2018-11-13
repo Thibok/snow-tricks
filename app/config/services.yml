@@ -29,3 +29,7 @@ services:
         arguments:
             - "@request_stack"
             - '%app.captcha_key%'
+            
+    AppBundle\EventListener\UserListener:
+        tags:
+            - { name: doctrine.event_listener, event: prePersist }

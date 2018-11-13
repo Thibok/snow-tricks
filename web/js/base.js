@@ -4,9 +4,6 @@ $(function () {
     const navLinksIcon = ['../img/home.png', '../img/login.png', '../img/registration.png'];
     const windowWidthLimit = 576;
 
-    var flashBaseOffsetY = -20;
-    var flashMobileOffsetY = -80;
-
     function navBarScroll () {
         if ($('#mainNav').offset().top > 100) {
             $('#mainNav').css('background-color', '#4A6C6F').css('transition-duration', '0.5s');
@@ -42,7 +39,9 @@ $(function () {
     }
 
     $(window).scroll(function () {
-        navBarScroll();
+        if ($(this).width() > windowWidthLimit) {
+            navBarScroll();
+        }
     });
 
     $(window).resize(function () {
@@ -55,7 +54,7 @@ $(function () {
             setCopyrightText();
             setNavBar();
         }
-    })
+    });
 
     $("[class^=flash-]").each(function (index) {
 
@@ -69,18 +68,12 @@ $(function () {
             var color = 'red';
         }
 
-        if ($(window).width() < windowWidthLimit) {
-            var flashMsgOffsetY = flashMobileOffsetY;
-        } else {
-            var flashMsgOffsetY = flashBaseOffsetY;
-        }
-
         new jBox('notice', {
             addClass: 'jBox-wrapper jBox-Notice jBox-NoticeFancy jBox-Notice-color jBox-Notice-' + color,
-            autoClose: 2500,
+            autoClose: 100000,
             fixed: true,
             position: { x: 'left', y: 'bottom' },
-            offset: { x: 0, y: flashMsgOffsetY },
+            offset: { x: 0, y: -20 },
             responsiveWidth: true,
             content: message,
             overlay: false,
@@ -100,7 +93,6 @@ $(function () {
     } else {
         setNavBar();
         setCopyrightText();
+        navBarScroll();
     }
-
-    navBarScroll();
 });
