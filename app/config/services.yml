@@ -33,3 +33,7 @@ services:
     AppBundle\EventListener\UserListener:
         tags:
             - { name: doctrine.event_listener, event: prePersist }
+
+    AppBundle\EventListener\TokenListener:
+        tags:
+            - { name: doctrine.event_listener, event: prePersist }
