@@ -56,9 +56,16 @@ interface ImageInterface
     public function getTempFilename();
 
     /**
-     * Get uploadDir
+     * Get uploadDir (web path)
      * @access public
      * @return string
      */
     public function getUploadDir();
+
+    /**
+     * Get uploadRootDir
+     * @access public
+     * @return string
+     */
+    public function getUploadRootDir();
 }

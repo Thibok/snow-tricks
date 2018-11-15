@@ -28,7 +28,7 @@ services:
     AppBundle\Validator\CaptchaValidator:
         arguments:
             - "@request_stack"
-            - '%app.captcha_key%'
+            - '%captcha_secret_key%'
             
     AppBundle\EventListener\UserListener:
         tags:
@@ -37,3 +37,8 @@ services:
     AppBundle\EventListener\TokenListener:
         tags:
             - { name: doctrine.event_listener, event: prePersist }
+    
+    AppBundle\EventListener\UserImageListener:
+        tags:
+            - { name: doctrine.event_listener, event: prePersist }
+            - { name: doctrine.event_listener, event: postPersist }

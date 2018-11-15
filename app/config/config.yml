@@ -7,7 +7,6 @@ imports:
 # https://symfony.com/doc/current/best_practices/configuration.html#application-related-configuration
 parameters:
     locale: en
-    app.captcha_key: '%captcha_secret_key%'
 
 framework:
     #esi: ~

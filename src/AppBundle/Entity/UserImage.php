@@ -133,9 +133,17 @@ class UserImage implements ImageInterface
     /**
      * {@inheritdoc}
      */
+    public function getUploadRootDir()
+    {
+        return __DIR__.'/../../../web/'.$this->getUploadDir();
+    }
+
+    /**
+     * {@inheritdoc}
+     */
     public function getUploadDir()
     {
-        return __DIR__.'/../../../web/uploads/images';
+        return 'uploads/img';
     }
 }
 
