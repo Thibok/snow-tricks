@@ -70,7 +70,7 @@ $(function () {
 
         new jBox('notice', {
             addClass: 'jBox-wrapper jBox-Notice jBox-NoticeFancy jBox-Notice-color jBox-Notice-' + color,
-            autoClose: 100000,
+            autoClose: 2500,
             fixed: true,
             position: { x: 'left', y: 'bottom' },
             offset: { x: 0, y: -20 },

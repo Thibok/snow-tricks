@@ -143,7 +143,7 @@ class UserImage implements ImageInterface
      */
     public function getUploadDir()
     {
-        return 'uploads/img';
+        return 'uploads/img/user';
     }
 }
 

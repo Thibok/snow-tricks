@@ -31,5 +31,7 @@ class TokenListener
 
         $expiration->add(new \DateInterval($interval));
         $token->setExpirationDate($expiration);
+        $tokenCode = $this->tokenGenerator->generate(80);
+        $token->setCode($tokenCode);
     }
 }

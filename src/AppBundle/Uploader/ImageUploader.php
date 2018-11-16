@@ -23,8 +23,6 @@ class ImageUploader
     {
         if (file_exists(self::BASE_DIR.'/'.$filename)) {
             $path = self::BASE_DIR.'/'.$filename;
-        } else if (file_exists($this->targetDir.'/'.$filename)) {
-            $path = $this->targetDir.'/'.$filename;
         } else {
             return;
         }
@@ -48,7 +46,7 @@ class ImageUploader
         $width_destination = imagesx($destination);
         $height_destination = imagesy($destination);
 
-        imagecopyresampled($destination, $source, 0, 0, 0, 0, $largeur_destination, $hauteur_destination, $largeur_source, $hauteur_source);
+        imagecopyresampled($destination, $source, 0, 0, 0, 0, $width_destination, $height_destination, $width_source, $height_source);
 
         if ($this->targetDir !== null) {
             $destinationDir = $this->targetDir;
@@ -65,16 +63,17 @@ class ImageUploader
 
     public function remove($filename)
     {
-        if (file_exists(self::BASE_DIR.'/'.$filename)) {
-            $path = self::BASE_DIR.'/'.$filename;
-        } else if (file_exists($this->targetDir.'/'.$filename)) {
-            $path = $this->targetDir.'/'.$filename;
-        } else {
-            return;
-        }
+        $basePath = self::BASE_DIR.'/'.$filename;
+        $targetPath = $this->targetDir.'/'.$filename;
 
-        unlink($path);
+        if (file_exists($basePath)) {
+            unlink($basePath);
+        } else if (file_exists($targetPath)) {
+            $path = $this->targetDir.'/'.$filename;
+            unlink($targetPath);
+        }
         
+        return;
     }
 
     public function setTargetDir($targetDir)
