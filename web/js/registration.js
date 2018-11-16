@@ -123,6 +123,11 @@ $(function() {
     }
 
     function validateImage(filename) {
+        if (filename.length === 0) {
+            $('#image_error').text('You must choose an image !');
+            return false;
+        }
+        
         if ($.inArray(filename.split('.').pop().toLowerCase(), allowedFileExtension) == -1) {
             $('#image_error').text('Allowed extensions : jpg, jpeg, png');
             return false;
