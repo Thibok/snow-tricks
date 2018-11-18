@@ -137,7 +137,7 @@ class User implements AdvancedUserInterface, \Serializable
     /**
      * @var UserImage
      * @access private
-     * @ORM\OneToOne(targetEntity="AppBundle\Entity\UserImage", cascade={"persist"})
+     * @ORM\OneToOne(targetEntity="AppBundle\Entity\UserImage", cascade={"persist", "remove"})
      * @ORM\JoinColumn(nullable=false)
      * @Assert\Valid()
      */

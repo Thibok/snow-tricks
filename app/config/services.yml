@@ -31,11 +31,6 @@ services:
             - '%captcha_secret_key%'
             
     AppBundle\EventListener\UserListener:
-        arguments:
-            - "@security.password_encoder"
-            - "@mailer"
-            - "@twig"
-            - "%mailer_user%"
         tags:
             - { name: doctrine.event_listener, event: prePersist }
             - { name: doctrine.event_listener, event: postPersist }
@@ -48,3 +43,9 @@ services:
         tags:
             - { name: doctrine.event_listener, event: prePersist }
             - { name: doctrine.event_listener, event: postPersist }
+
+    AppBundle\Mailer\Mailer:
+        arguments:
+            - "@mailer"
+            - "@twig"
+            - "%mailer_user%"
