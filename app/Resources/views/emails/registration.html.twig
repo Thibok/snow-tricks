@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+    </head>
+    <body>
+        <table align="center" cellspacing="0" cellpadding="10" border="0" width="15%">
+            <tr>
+                <td align="center">
+                    <a href="{{ url('st_index') }}"><img src="{{ absolute_url(asset('img/logo.png')) }}" alt="snowboarder logo"/></a>
+                    <h1 style="font-family: arial;">WELCOME TO SNOWTRICKS !</h1>
+                </td>
+            </tr>
+            <tr>
+                <td align="center">
+                    <p style="font-family: arial;">
+                        Hi, {{ firstName }} !
+                        In order to finalize your registration, please click on the button below.
+                        You have <strong>one week</strong> to finalize your registration, otherwise your account will be deleted
+                    </p>
+                </td>
+            </tr>
+            <tr>
+                <td align="center" style="height:40px;background-color:rgb(72, 141, 222);">
+                    <a style="text-decoration:none;color:white;font-family: arial;" href="{{ url('st_valid_registration', { 'token': token }) }}">Confirm registration</a>
+                </td>
+            </tr>
+            <tr>
+                <td align="center">
+                    <small>This is an automatic message, thank you for not answering it.</small>
+                </td>
+            </tr>
+        </table>
+    </body>
+</html>

@@ -1,5 +1,5 @@
 <!DOCTYPE html>
-<html lang="fr">
+<html lang="en">
     <head>
         <meta charset="UTF-8" />
         <title>{% block title %}SnowTricks -{% endblock %}</title>
@@ -16,13 +16,13 @@
             <a id="logo" href="#"><img src="{{ asset('img/logo.png') }}" alt="snowboarder logo"/></a>
             <ul class="nav">
                 <li class="nav-item">
-                    <a id="home" class="nav-link text-light" href="#">Home</a>
+                    <a id="home" class="nav-link text-light" href="{{ path('st_index') }}">Home</a>
                 </li>
                 <li class="nav-item">
-                    <a id="registration" class="nav-link text-light" href="#">Sign in</a>
+                    <a id="registration" class="nav-link text-light" href="{{ path('st_registration') }}">Sign in</a>
                 </li>
                 <li class="nav-item">
-                    <a id="login" class="nav-link text-light" href="#">Sign up</a>
+                    <a id="login" class="nav-link text-light" href="{{ path('st_login') }}">Sign up</a>
                 </li>
             </ul>
         </nav>

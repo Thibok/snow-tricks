@@ -224,4 +224,20 @@ $(function() {
             grecaptcha.execute();
         }
     });
+
+    $(window).resize(function () {
+        var width = $(this).width();
+
+        if (width < 576) {
+            $('#already_account').show();
+        } else {
+            $('#already_account').hide();
+        }
+    });
+
+    if ($(window).width() < 576) {
+        $('#already_account').show();
+    } else {
+        $('#already_account').hide();
+    }
 });
