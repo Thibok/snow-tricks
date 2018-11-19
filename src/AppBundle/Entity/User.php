@@ -147,6 +147,7 @@ class User implements AdvancedUserInterface, \Serializable
      * @var Token
      * @access private
      * @ORM\OneToOne(targetEntity="AppBundle\Entity\Token", inversedBy="user", cascade={"persist"})
+     * @ORM\JoinColumn(onDelete="SET NULL")
      */
     private $token;
 

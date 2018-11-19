@@ -2,21 +2,21 @@
 
 namespace AppBundle\Purger;
 
-use AppBundle\Entity\User;
+use AppBundle\Entity\Token;
 use Doctrine\ORM\EntityManagerInterface;
 
-class UserPurger
+class TokenPurger
 {
     private $entityManager;
 
     public function purge(\DateTime $date)
     {
-        $repo = $this->entityManager->getRepository(User::class);
+        $repo = $this->entityManager->getRepository(Token::class);
 
-        $users = $repo->getInactiveUsers($date);
+        $tokens = $repo->getExpiredTokens($date);
 
-        foreach ($users as $user) {
-            $this->entityManager->remove($user);
+        foreach ($tokens as $token) {
+            $this->entityManager->remove($token);
         }
     }
 
