@@ -45,4 +45,34 @@ class UserImageListener
         $this->uploader->resize($filename, 300, 360, $name);
         $this->uploader->remove($filename);
     }
+
+    public function preRemove(LifecycleEventArgs $args)
+    {
+        $userImage = $args->getObject();
+
+        if (!$userImage instanceof UserImage) {
+            return;
+        }
+
+        $id = $userImage->getId();
+        $extension = $userImage->getExtension();
+
+        $userImage->setTempFilename('user-'.$id.'.'.$extension);
+    }
+
+    public function postRemove(LifecycleEventArgs $args)
+    {
+        $userImage = $args->getObject();
+
+        if (!$userImage instanceof UserImage) {
+            return;
+        }
+
+        $filename = $userImage->getTempFilename();
+        $thumb = str_replace('-', '-thumb-', $filename);
+        $this->uploader->setTargetDir($userImage->getUploadRootDir());
+
+        $this->uploader->remove($filename);
+        $this->uploader->remove($thumb);
+    }
 }
