@@ -21,4 +21,16 @@ class TokenRepository extends EntityRepository
             ->getResult()
         ;
     }
+
+    public function getTokenWithUser($tokenCode)
+    {
+        return $this->createQueryBuilder('t')
+            ->where('t.code = :tokenCode')
+            ->setParameter(':tokenCode', $tokenCode)
+            ->innerJoin('t.user', 'u')
+            ->addSelect('u')
+            ->getQuery()
+            ->getOneOrNullResult()
+        ;
+    }
 }

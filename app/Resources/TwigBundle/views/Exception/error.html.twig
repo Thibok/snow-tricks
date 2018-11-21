@@ -1,0 +1,16 @@
+{% extends 'base.html.twig' %}
+
+{% block title %}SnowTricks{% endblock %}
+{% block body %}
+<div class="container" id="wrap">
+    <div class="row d-flex flex-column m-auto" id="main">
+        <div class="col-md-12 text-center mt-5 pt-5">
+            <img src="{{ asset('img/error.png') }}" />
+            <h1>{{ status_code }}</h1>
+            <p>There is no snow here ...</p>
+            <a role="button" class="btn btn-primary" href="{{ path('st_index') }}">Go to home</a>
+        </div>
+    </div>
+</div>
+{% endblock %}
+-

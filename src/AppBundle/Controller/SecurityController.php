@@ -26,8 +26,11 @@ class SecurityController extends Controller
      */
     public function registrationAction(Request $request, CaptchaChecker $captchaChecker)
     {
-        $user = new User;
+        if ($this->isGranted('IS_AUTHENTICATED_FULLY')) {
+            $this->redirectToRoute('st_index');
+        }
 
+        $user = new User;
         $form = $this->createForm(UserType::class, $user);
         $form->handleRequest($request);
 
@@ -41,7 +44,7 @@ class SecurityController extends Controller
                 
             try {
                 $em->flush();
-                $this->addFlash('notice', 'Registration Success !');
+                $this->addFlash('notice', 'Registration Success !');    
                 $this->addFlash('notice', 'A confirmation link has been sent to you by email');
             } catch(ORMException $e) {
                 $this->addFlash('error', 'An error has occurred');
@@ -54,11 +57,34 @@ class SecurityController extends Controller
     }
 
     /**
-     * @Route("/validation-registration/{token}", name="st_valid_registration", requirements={"token"="[a-z0-9]{80}"})
+     * @Route("/validation-registration/{tokenCode}", name="st_valid_registration", requirements={"tokenCode"="[a-z0-9]{80}"})
      */
-    public function validRegistrationAction(Request $request)
+    public function validRegistrationAction(Request $request, $tokenCode)
     {
-        return new Response('Ok');
+        if ($this->isGranted('IS_AUTHENTICATED_FULLY')) {
+            $this->redirectToRoute('st_index');
+        }
+
+        $em = $this->getDoctrine()->getManager();
+        $token = $em->getRepository(Token::class)->getTokenWithUser($tokenCode);
+        $actualDate = new \DateTime;
+
+        if ($token == null || $token->getType() != 'registration' || $token->getExpirationDate() <= $actualDate) {
+            throw $this->createNotFoundException();
+        }
+        
+        $user = $token->getUser();
+        $user->setIsActive(true);
+        $em->remove($token);
+
+        try {
+            $em->flush();
+            $this->addFlash('notice', 'Valid registration !');
+        } catch(ORMException $e) {
+            $this->addFlash('error', 'An error has occurred');
+        }
+
+        return $this->redirectToRoute('st_index');
     }
 
     /**
