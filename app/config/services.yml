@@ -28,7 +28,8 @@ services:
     AppBundle\Validator\CaptchaValidator:
         arguments:
             - "@request_stack"
-            - '%captcha_secret_key%'
+            - "%captcha_secret_key%"
+            - "%kernel.environment%"
             
     AppBundle\EventListener\UserListener:
         tags:
