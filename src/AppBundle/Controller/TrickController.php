@@ -13,6 +13,6 @@ class TrickController extends Controller
      */
     public function indexAction()
     {
-        return new Response('Ok');
+        return $this->render('community/index.html.twig');
     }
 }

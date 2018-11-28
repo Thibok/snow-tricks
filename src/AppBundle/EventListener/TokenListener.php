@@ -32,11 +32,16 @@ class TokenListener
             $interval = 'P1W';
         }
 
-        $expiration->add(new \DateInterval($interval));
-        $token->setExpirationDate($expiration);
-        $tokenCode = $this->tokenGenerator->generate(80);
-        $token->setCode($tokenCode);
+        if ($token->getCode() == null) {
+            $tokenCode = $this->tokenGenerator->generate(80);
+            $token->setCode($tokenCode);
+        }
 
+        if ($token->getExpirationDate() == null) {
+            $expiration->add(new \DateInterval($interval));
+            $token->setExpirationDate($expiration);
+        }
+        
         $date = new \DateTime;
         $this->tokenPurger->setEntityManager($args->getObjectManager());
         $this->tokenPurger->purge($date);
