@@ -7,21 +7,21 @@ use Doctrine\ORM\EntityManagerInterface;
 
 class TokenPurger
 {
-    private $entityManager;
+    private $manager;
 
     public function purge(\DateTime $date)
     {
-        $repo = $this->entityManager->getRepository(Token::class);
+        $repo = $this->manager->getRepository(Token::class);
 
         $tokens = $repo->getExpiredTokens($date);
 
         foreach ($tokens as $token) {
-            $this->entityManager->remove($token);
+            $this->manager->remove($token);
         }
     }
 
-    public function setEntityManager(EntityManagerInterface $entityManager)
+    public function setManager(EntityManagerInterface $manager)
     {
-        $this->entityManager = $entityManager;
+        $this->manager = $manager;
     }
 }

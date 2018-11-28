@@ -43,7 +43,7 @@ class TokenListener
         }
         
         $date = new \DateTime;
-        $this->tokenPurger->setEntityManager($args->getObjectManager());
+        $this->tokenPurger->setManager($args->getObjectManager());
         $this->tokenPurger->purge($date);
     }
 }

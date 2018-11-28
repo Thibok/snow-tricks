@@ -1,4 +1,5 @@
 {% extends 'base.html.twig' %}
+{% import "macros/form_elements.html.twig" as formElements %}
 
 {% block title %} {{ parent() }} Registration{% endblock %}
 {% block body %}
@@ -42,7 +43,7 @@
             <button id="registrationBtn" class="btn btn-primary my-3 w-75 mx-auto">Create an account</button>
           </div>
           <a id="already_account" href="path('st_login')">Already an account ?</a>
-          <div class="g-recaptcha d-flex justify-content-center mt-4" id="recaptcha" data-badge="inline" data-callback="formSubmit" data-sitekey="6LeIxAcTAAAAAJcZVRqyHh71UMIEGNQ_MXjiZKhI" data-size="invisible"></div>
+          {{ formElements.recaptcha("g-recaptcha d-flex justify-content-center mt-4") }}
         {{ form_end(form )}}
       </div>
     </div>

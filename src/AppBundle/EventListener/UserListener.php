@@ -34,7 +34,7 @@ class UserListener
         $user->setPassword($encoded);
         $user->setRoles(['ROLE_MEMBER']);
 
-        $this->purger->setEntityManager($args->getObjectManager());
+        $this->purger->setManager($args->getObjectManager());
 
         $date = new \DateTime;
         $date->sub(new \DateInterval('P1W'));

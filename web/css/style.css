@@ -41,6 +41,12 @@ nav {
   padding-bottom: 120px;
 }
 
+#error_block {
+  overflow: auto;
+  padding-top: 245px;
+  padding-bottom: 120px;
+}
+
 #registration_block {
   margin: auto;
   text-align: center;
@@ -72,6 +78,12 @@ footer {
 
   .jBox-notice {
     padding-bottom: 62px;
+  }
+}
+
+@media screen and (max-width: 590px) and (max-height: 780px) {
+  #error_block {
+    padding-top: 10px;
   }
 }
 

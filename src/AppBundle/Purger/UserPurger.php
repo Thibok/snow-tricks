@@ -7,21 +7,21 @@ use Doctrine\ORM\EntityManagerInterface;
 
 class UserPurger
 {
-    private $entityManager;
+    private $manager;
 
     public function purge(\DateTime $date)
     {
-        $repo = $this->entityManager->getRepository(User::class);
+        $repo = $this->manager->getRepository(User::class);
 
         $users = $repo->getInactiveUsers($date);
 
         foreach ($users as $user) {
-            $this->entityManager->remove($user);
+            $this->manager->remove($user);
         }
     }
 
-    public function setEntityManager(EntityManagerInterface $entityManager)
+    public function setManager(EntityManagerInterface $manager)
     {
-        $this->entityManager = $entityManager;
+        $this->manager = $manager;
     }
 }
