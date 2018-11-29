@@ -1,5 +1,9 @@
 <?php
 
+/**
+ * UserImage Repository
+ */
+
 namespace AppBundle\Repository;
 
 /**

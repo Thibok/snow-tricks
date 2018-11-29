@@ -1,15 +1,31 @@
 <?php
 
+/**
+ * Token Fixtures
+ */
+
 namespace AppBundle\DataFixtures;
 
 use AppBundle\Entity\Token;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Common\Persistence\ObjectManager;
 
+/**
+ * TokenFixtures
+ */
 class TokenFixtures extends Fixture
 {
+    /**
+     * @var string
+     */
     const VALID_TOKEN_REGISTRATION_REFERENCE = 'registration-token';
 
+    /**
+     * Load fixtures
+     * @access public
+     * @param ObjectManager $manager
+     * @return void
+     */
     public function load(ObjectManager $manager)
     {
         $token = new Token;

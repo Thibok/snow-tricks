@@ -1,5 +1,9 @@
 <?php
 
+/**
+ * User Repository
+ */
+
 namespace AppBundle\Repository;
 
 use Doctrine\ORM\EntityRepository;
@@ -12,6 +16,13 @@ use Doctrine\ORM\EntityRepository;
  */
 class UserRepository extends EntityRepository
 {
+    /**
+     * Get inactive Users
+     * @access public
+     * @param \DateTime $date
+     * 
+     * @return array
+     */
     public function getInactiveUsers(\DateTime $date)
     {
         return $this->createQueryBuilder('u')

@@ -29,9 +29,11 @@ class CaptchaChecker
     
     /**
      * Constructor
-     *
+     * @access public
      * @param ValidatorInterface $validator
      * @param RequestStack $requestStack
+     * 
+     * @return void
      */
     public function __construct(ValidatorInterface $validator, RequestStack $request)
     {
@@ -41,7 +43,7 @@ class CaptchaChecker
 
     /**
      * Check the value of captcha with CaptchaValidator
-     *
+     * @access public
      * 
      * @return boolean
      */

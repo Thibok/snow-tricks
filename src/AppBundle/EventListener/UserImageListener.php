@@ -1,20 +1,45 @@
 <?php
 
+/**
+ * UserImage listener
+ */
+
 namespace AppBundle\EventListener;
 
 use AppBundle\Entity\UserImage;
 use AppBundle\Uploader\ImageUploader;
 use Doctrine\Common\Persistence\Event\LifecycleEventArgs;
 
+/**
+ * UserImageListener
+ */
 class UserImageListener
 {
+    /**
+     * @var ImageUploader
+     * @access private
+     */
     private $uploader;
 
+    /**
+     * Constructor
+     * @access public
+     * @param ImageUploader $uploader
+     * 
+     * @return void
+     */
     public function __construct(ImageUploader $uploader)
     {
         $this->uploader = $uploader;
     }
 
+    /**
+     * Listen Pre Persist event of UserImage
+     * @access public
+     * @param LifecycleEventArgs $args
+     * 
+     * @return void
+     */
     public function prePersist(LifecycleEventArgs $args)
     {
         $userImage = $args->getObject();
@@ -28,6 +53,13 @@ class UserImageListener
         $userImage->setExtension($extension);
     }
 
+    /**
+     * Listen Post Persist event of UserImage
+     * @access public
+     * @param LifecycleEventArgs $args
+     * 
+     * @return void
+     */
     public function postPersist(LifecycleEventArgs $args)
     {
         $userImage = $args->getObject();
@@ -46,6 +78,13 @@ class UserImageListener
         $this->uploader->remove($filename);
     }
 
+    /**
+     * Listen Pre Remove event of UserImage
+     * @access public
+     * @param LifecycleEventArgs $args
+     * 
+     * @return void
+     */
     public function preRemove(LifecycleEventArgs $args)
     {
         $userImage = $args->getObject();
@@ -60,6 +99,13 @@ class UserImageListener
         $userImage->setTempFilename('user-'.$id.'.'.$extension);
     }
 
+    /**
+     * Listen Pre Remove event of UserImage
+     * @access public
+     * @param LifecycleEventArgs $args
+     * 
+     * @return void
+     */
     public function postRemove(LifecycleEventArgs $args)
     {
         $userImage = $args->getObject();

@@ -14,6 +14,7 @@ use AppBundle\ParamChecker\CaptchaChecker;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
+use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 
 /**
@@ -22,7 +23,13 @@ use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 class SecurityController extends Controller
 {
     /**
+     * Registration
+     * @access public
+     * @param Request $request
+     * @param CaptchaChecker $captchaChecker
      * @Route("/registration", name="st_registration")
+     * 
+     * @return mixed Response | RedirectResponse
      */
     public function registrationAction(Request $request, CaptchaChecker $captchaChecker)
     {
@@ -57,7 +64,14 @@ class SecurityController extends Controller
     }
 
     /**
+     * /**
+     * Validation Registration
+     * @access public
+     * @param Request $request
+     * @param string $tokenCode
      * @Route("/validation-registration/{tokenCode}", name="st_valid_registration", requirements={"tokenCode"="[a-z0-9]{80}"})
+     * 
+     * @return RedirectResponse
      */
     public function validRegistrationAction(Request $request, $tokenCode)
     {

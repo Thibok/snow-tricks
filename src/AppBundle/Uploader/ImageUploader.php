@@ -1,15 +1,36 @@
 <?php
 
+/**
+ * Image Uploader
+ */
+
 namespace AppBundle\Uploader;
 
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 
+/**
+ * ImageUploader
+ */
 class ImageUploader
 {
+    /**
+     * @var string
+     */
     const BASE_DIR = __DIR__.'/../../../web/uploads/img';
 
+    /**
+     * @var string
+     * @access private
+     */
     private $targetDir;
 
+    /**
+     * Upload an image
+     * @access public
+     * @param UploadedFile $file
+     * 
+     * @return string
+     */
     public function upload(UploadedFile $file)
     {
         $fileName = md5(uniqid()).'.'.$file->guessExtension();
@@ -18,7 +39,17 @@ class ImageUploader
 
         return $fileName;
     }
-
+    
+    /**
+     * Resize an image
+     * @access public
+     * @param string $filename
+     * @param int $width
+     * @param int $height
+     * @param mixed string | null $newName
+     * 
+     * @return void
+     */
     public function resize($filename, $width, $height, $newName = null)
     {
         if (file_exists(self::BASE_DIR.'/'.$filename)) {
@@ -61,6 +92,13 @@ class ImageUploader
         }
     }
 
+    /**
+     * Remove an image
+     * @access public
+     * @param string $filename
+     * 
+     * @return void
+     */
     public function remove($filename)
     {
         $basePath = self::BASE_DIR.'/'.$filename;
@@ -76,6 +114,13 @@ class ImageUploader
         return;
     }
 
+    /**
+     * Set the target directory
+     * @access public
+     * @param string $targetDir
+     * 
+     * @return void
+     */
     public function setTargetDir($targetDir)
     {
         $this->targetDir = $targetDir;

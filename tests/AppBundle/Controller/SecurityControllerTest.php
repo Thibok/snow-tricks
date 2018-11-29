@@ -1,19 +1,42 @@
 <?php
 
+/**
+ * SecurityController Test
+ */
+
 namespace Tests\AppBundle\Controller;
 
+use Symfony\Bundle\FrameworkBundle\Client;
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 
+/**
+ * SecurityControllerTest
+ * @coversDefaultClass \AppBundle\Controller\SecurityController
+ */
 class SecurityControllerTest extends WebTestCase
 {
+    /**
+     * @var Client
+     * @access private
+     */
     private $client;
 
+    /**
+     * {@inheritdoc}
+     */
     public function setUp()
     {
         $this->client = self::createClient();
     }
 
+    /**
+     * Test Registration method of SecurityController
+     * @access public
+     * @covers ::registrationAction
+     *
+     * @return void
+     */
     public function testRegistration()
     {
         $crawler = $this->client->request('GET', '/registration');
@@ -39,6 +62,12 @@ class SecurityControllerTest extends WebTestCase
         $this->assertSame(302, $this->client->getResponse()->getStatusCode());
     }
 
+    /**
+     * Test the path to registration (Home - Registration)
+     * @access public
+     *
+     * @return void
+     */
     public function testPathToRegistration()
     {
         $crawler = $this->client->request('GET', '/');
@@ -50,7 +79,19 @@ class SecurityControllerTest extends WebTestCase
     }
 
     /**
+     * Test Registration method of SecurityController with bad values
+     * @access public
+     * @param string $username
+     * @param string $email
+     * @param string $pass
+     * @param string $name
+     * @param string $firstName
+     * @param UploadedFile $image
+     * @param int $result
+     * @covers ::registrationAction
      * @dataProvider valuesRegistrationForm
+     *
+     * @return void
      */
     public function testRegistrationWithBadValues($username, $email, $pass, $name, $firstName, $image, $result)
     {
@@ -70,6 +111,13 @@ class SecurityControllerTest extends WebTestCase
         
     }
 
+    /**
+     * Test Valid Registration method of SecurityController
+     * @access public
+     * @covers ::validRegistrationAction
+     *
+     * @return void
+     */
     public function testValidRegistration()
     {
         $this->client->request(
@@ -89,6 +137,12 @@ class SecurityControllerTest extends WebTestCase
         $this->assertSame(404, $this->client->getResponse()->getStatusCode());
     }
 
+    /**
+     * Form values
+     * @access public
+     *
+     * @return array
+     */
     public function valuesRegistrationForm()
     {
         return [
@@ -134,5 +188,13 @@ class SecurityControllerTest extends WebTestCase
                 6
             ]
         ];
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function tearDown()
+    {
+        $this->client = null;
     }
 }

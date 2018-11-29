@@ -1,13 +1,28 @@
 <?php
 
+/**
+ * ImageUploader Test
+ */
+
 namespace Tests\AppBundle\Uploader;
 
 use PHPUnit\Framework\TestCase;
 use AppBundle\Uploader\ImageUploader;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 
+/**
+ * ImageUploaderTest
+ * @coversDefaultClass \AppBundle\Uploader\ImageUploader
+ */
 class ImageUploaderTest extends TestCase
 {
+    /**
+     * Test upload method of ImageUploader
+     * @access public
+     * @covers ::upload
+     *
+     * @return void
+     */
     public function testUpload()
     {
         $fileDir = __DIR__.'/../../../tests/AppBundle/uploads/';
@@ -35,6 +50,13 @@ class ImageUploaderTest extends TestCase
         $this->assertTrue($result);
     }
 
+    /**
+     * Test resize method of ImageUploader
+     * @access public
+     * @covers ::resize
+     *
+     * @return void
+     */
     public function testResize()
     {
         $fileDir = __DIR__.'/../../../tests/AppBundle/uploads/userimage.png';
@@ -54,6 +76,13 @@ class ImageUploaderTest extends TestCase
 
     }
 
+    /**
+     * Test remove method of ImageUploader
+     * @access public
+     * @covers ::remove
+     *
+     * @return void
+     */
     public function testRemove()
     {
         $fileDir = __DIR__.'/../../../tests/AppBundle/uploads/userimage.png';

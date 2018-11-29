@@ -1,5 +1,9 @@
 <?php
 
+/**
+ * User Listener
+ */
+
 namespace AppBundle\EventListener;
 
 use AppBundle\Entity\User;
@@ -8,12 +12,38 @@ use AppBundle\Purger\UserPurger;
 use Doctrine\Common\Persistence\Event\LifecycleEventArgs;
 use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
 
+/**
+ * UserListener
+ */
 class UserListener
 {
+    /**
+     * @var UserPasswordEncoderInterface
+     * @access private
+     */
     private $encoder;
+
+    /**
+     * @var Mailer
+     * @access private
+     */
     private $mailer;
+
+    /**
+     * @var UserPurger
+     * @access private
+     */
     private $purger;
 
+    /**
+     * Constructor
+     * @access public
+     * @param UserPasswordEncoderInterface $encoder
+     * @param Mailer $mailer
+     * @param UserPurger $purger
+     * 
+     * @return void
+     */
     public function __construct(UserPasswordEncoderInterface $encoder, Mailer $mailer, UserPurger $purger)
     {
         $this->encoder = $encoder;
@@ -21,6 +51,13 @@ class UserListener
         $this->purger = $purger;
     }
 
+    /**
+     * Listen Pre Persist event of User
+     * @access public
+     * @param LifecycleEventArgs $args
+     * 
+     * @return void
+     */
     public function prePersist(LifecycleEventArgs $args)
     {
         $user = $args->getObject();
@@ -42,6 +79,13 @@ class UserListener
         $this->purger->purge($date);
     }
 
+    /**
+     * Listen Post Persist event of User
+     * @access public
+     * @param LifecycleEventArgs $args
+     * 
+     * @return void
+     */
     public function postPersist(LifecycleEventArgs $args)
     {
         $user = $args->getObject();

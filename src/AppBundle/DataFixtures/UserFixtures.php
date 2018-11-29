@@ -1,5 +1,9 @@
 <?php
 
+/**
+ * User Fixtures
+ */
+
 namespace AppBundle\DataFixtures;
 
 use AppBundle\Entity\User;
@@ -9,8 +13,18 @@ use AppBundle\DataFixtures\UserImageFixtures;
 use Doctrine\Common\Persistence\ObjectManager;
 use Doctrine\Common\DataFixtures\DependentFixtureInterface;
 
+/**
+ * UserFixtures
+ */
 class UserFixtures extends Fixture implements DependentFixtureInterface
 {
+    /**
+     * Load fixtures
+     * @access public
+     * @param ObjectManager $manager
+     * 
+     * @return void
+     */
     public function load(ObjectManager $manager)
     {
         $user = new User;
@@ -26,6 +40,12 @@ class UserFixtures extends Fixture implements DependentFixtureInterface
         $manager->flush();
     }
 
+    /**
+     * Get dependencies fixtures
+     * @access public
+     * 
+     * @return array
+     */
     public function getDependencies()
     {
         return array(

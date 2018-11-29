@@ -1,5 +1,9 @@
 <?php
 
+/**
+ * Token Repository
+ */
+
 namespace AppBundle\Repository;
 
 use Doctrine\ORM\EntityRepository;
@@ -12,6 +16,13 @@ use Doctrine\ORM\EntityRepository;
  */
 class TokenRepository extends EntityRepository
 {
+    /**
+     * Get the expired tokens
+     * @access public
+     * @param \DateTime $date
+     * 
+     * @return array
+     */
     public function getExpiredTokens(\DateTime $date)
     {
         return $this->createQueryBuilder('t')
@@ -22,6 +33,13 @@ class TokenRepository extends EntityRepository
         ;
     }
 
+    /**
+     * Get a Token with his User
+     * @access public
+     * @param string $tokenCode
+     * 
+     * @return mixed Token | null
+     */
     public function getTokenWithUser($tokenCode)
     {
         return $this->createQueryBuilder('t')

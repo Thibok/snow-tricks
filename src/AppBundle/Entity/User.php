@@ -159,7 +159,10 @@ class User implements AdvancedUserInterface, \Serializable
     private $registrationDate;
 
     /**
-     * Undocumented function
+     * Constructor
+     * @access public
+     * 
+     * @return void
      */
     public function __construct()
     {

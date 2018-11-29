@@ -29,6 +29,10 @@ class CaptchaValidator extends ConstraintValidator
      */
     private $captcha;
 
+    /**
+     * @var string
+     * @access private
+     */
     private $env;
 
     /**
@@ -36,6 +40,9 @@ class CaptchaValidator extends ConstraintValidator
      *
      * @param RequestStack $request
      * @param string $captchaSecretKey
+     * @param string $env
+     * 
+     * @return void
      */
     public function __construct(RequestStack $request, $captchaSecretKey, $env)
     {
