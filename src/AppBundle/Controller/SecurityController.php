@@ -69,7 +69,7 @@ class SecurityController extends Controller
      * @access public
      * @param Request $request
      * @param string $tokenCode
-     * @Route("/validation-registration/{tokenCode}", name="st_valid_registration", requirements={"tokenCode"="[a-z0-9]{80}"})
+     * @Route("/registration/validation/{tokenCode}", name="st_valid_registration", requirements={"tokenCode"="[a-z0-9]{80}"})
      * 
      * @return RedirectResponse
      */

@@ -122,7 +122,7 @@ class SecurityControllerTest extends WebTestCase
     {
         $this->client->request(
             'GET',
-            '/validation-registration/c15b26a3d01aa113ed235d570ca43d621a552be7c9821aab8238a40f40b53e686689559629535112'
+            '/registration/validation/c15b26a3d01aa113ed235d570ca43d621a552be7c9821aab8238a40f40b53e686689559629535112'
         );
 
         $crawler = $this->client->followRedirect();
@@ -132,7 +132,7 @@ class SecurityControllerTest extends WebTestCase
 
     public function testValidRegistrationWithBadToken()
     {
-        $this->client->request('GET', '/validation-registration/rdfpdfpfd58978512');
+        $this->client->request('GET', '/registration/validation/rdfpdfpfd58978512');
 
         $this->assertSame(404, $this->client->getResponse()->getStatusCode());
     }
