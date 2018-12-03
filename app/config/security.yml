@@ -6,8 +6,10 @@ security:
             algorithm: bcrypt
     # https://symfony.com/doc/current/security.html#b-configuring-how-users-are-loaded
     providers:
-        in_memory:
-            memory: ~
+        main:
+            entity:
+                class: AppBundle:User
+                property: username
 
     firewalls:
         # disables authentication for assets and the profiler, adapt it according to your needs
@@ -16,7 +18,19 @@ security:
             security: false
 
         main:
-            anonymous: ~
+            anonymous: true
+            pattern: ^/
+            guard:
+                authenticators:
+                    - AppBundle\Authenticator\UserAuthenticator
+            form_login:
+                login_path: st_login
+                check_path: st_login
+                csrf_token_generator: security.csrf.token_manager
+            logout:
+                path:       st_logout
+                target:     st_login
+            logout_on_user_change: true
             # activate different ways to authenticate
 
             # https://symfony.com/doc/current/security.html#a-configuring-how-your-users-will-authenticate

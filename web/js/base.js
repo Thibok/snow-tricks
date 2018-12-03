@@ -2,7 +2,7 @@ $(function () {
     
     const navLinksText = ['Home', 'Sign in', 'Sign up'];
     const navLinksIcon = ['../img/home.png', '../img/login.png', '../img/registration.png'];
-    const windowWidthLimit = 576;
+    const windowWidthLimit = 590;
 
     function navBarScroll () {
         if ($('#mainNav').offset().top > 100) {

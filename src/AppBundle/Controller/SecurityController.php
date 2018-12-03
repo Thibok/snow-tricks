@@ -16,6 +16,7 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Component\Security\Http\Authentication\AuthenticationUtils;
 
 /**
  * Security Controller
@@ -34,7 +35,7 @@ class SecurityController extends Controller
     public function registrationAction(Request $request, CaptchaChecker $captchaChecker)
     {
         if ($this->isGranted('IS_AUTHENTICATED_FULLY')) {
-            $this->redirectToRoute('st_index');
+            return $this->redirectToRoute('st_index');
         }
 
         $user = new User;
@@ -76,7 +77,7 @@ class SecurityController extends Controller
     public function validRegistrationAction(Request $request, $tokenCode)
     {
         if ($this->isGranted('IS_AUTHENTICATED_FULLY')) {
-            $this->redirectToRoute('st_index');
+            return $this->redirectToRoute('st_index');
         }
 
         $em = $this->getDoctrine()->getManager();
@@ -104,8 +105,23 @@ class SecurityController extends Controller
     /**
      * @Route("/login", name="st_login")
      */
-    public function loginAction()
+    public function loginAction(AuthenticationUtils $authenticationUtils)
     {
-        return new Response('Ok');
+        if ($this->isGranted('IS_AUTHENTICATED_FULLY')) {
+            return $this->redirectToRoute('st_index');
+        }
+
+        return $this->render('security/login.html.twig', array(
+            'last_username' => $authenticationUtils->getLastUsername(),
+            'error'         => $authenticationUtils->getLastAuthenticationError(),
+        ));
+    }
+
+    /**
+     * @Route("/logout", name="st_logout")
+     */
+    public function logoutAction() 
+    {
+        
     }
 }
