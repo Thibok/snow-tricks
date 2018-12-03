@@ -137,6 +137,30 @@ class SecurityControllerTest extends WebTestCase
         $this->assertSame(404, $this->client->getResponse()->getStatusCode());
     }
 
+    public function testPathToLogin()
+    {
+        $crawler = $this->client->request('GET', '/');
+
+        $link = $crawler->selectLink('Sign up')->link();
+        $crawler = $this->client->click($link);
+
+        $this->assertSame('Login', $crawler->filter('h1')->text());
+    }
+
+    public function testLogin()
+    {
+        $crawler = $this->client->request('GET', '/login');
+
+        $form = $crawler->selectButton('Login')->form();
+        $form['_username'] = 'EnabledUser';
+        $form['_password'] = 'verystrongpassword123';
+
+        $this->client->submit($form);
+        $crawler = $this->client->followRedirect();
+        
+        $this->assertSame(1, $crawler->filter('a:contains("Logout")')->count());
+    }
+
     /**
      * Form values
      * @access public

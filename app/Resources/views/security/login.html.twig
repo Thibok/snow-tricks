@@ -9,7 +9,7 @@
                 <h1 class="mb-4 text-center text-dark">Login</h1>
                 <form id="security_form" class="form-horizontal px-5 py-5" action="{{ path('st_login') }}" method="post">
                     {% if error %}
-                        <div>{{ error.messageKey }}</div>
+                        <div class="alert alert-danger">{{ error.messageKey }}</div>
                     {% endif %}
                     <div class="form-group">
                         <label class="control-label" for="username">Username</label>
@@ -25,7 +25,7 @@
                     </div>
                     <input type="hidden" name="_csrf_token" value="{{ csrf_token('authenticate') }}" />
                     <div id="buttonSection" class="d-flex">
-                        <button id="loginBtn" class="btn btn-primary my-3 w-25 mx-auto">Login</button>
+                        <button id="loginBtn" class="btn btn-primary my-3 mx-auto">Login</button>
                     </div>
                     {{ formElements.recaptcha("g-recaptcha d-flex justify-content-center mt-2") }}
                 </form>

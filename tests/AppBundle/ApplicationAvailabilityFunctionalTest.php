@@ -51,7 +51,8 @@ class ApplicationAvailabilityFunctionalTest extends WebTestCase
     public function urlProvider()
     {
         return array(
-            array('/registration')
+            array('/registration'),
+            array('/login')
         );
     }
 
