@@ -65,7 +65,6 @@ class SecurityController extends Controller
     }
 
     /**
-     * /**
      * Validation Registration
      * @access public
      * @param Request $request
@@ -103,7 +102,12 @@ class SecurityController extends Controller
     }
 
     /**
+     * Login
+     * @access public
+     * @param AuthenticationUtils $authenticationUtils
      * @Route("/login", name="st_login")
+     * 
+     * @return Response
      */
     public function loginAction(AuthenticationUtils $authenticationUtils)
     {
@@ -118,7 +122,11 @@ class SecurityController extends Controller
     }
 
     /**
+     * Logout
+     * @access public
      * @Route("/logout", name="st_logout")
+     * 
+     * @return void
      */
     public function logoutAction() 
     {

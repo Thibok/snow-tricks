@@ -1,5 +1,9 @@
 <?php
 
+/**
+ * Guard Authenticator
+ */
+
 namespace AppBundle\Authenticator;
 
 use AppBundle\Validator\Captcha;
@@ -19,13 +23,45 @@ use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
 use Symfony\Component\Security\Guard\Authenticator\AbstractFormLoginAuthenticator;
 use Symfony\Component\Security\Core\Exception\CustomUserMessageAuthenticationException;
 
+/**
+ * UserAuthenticator
+ */
 class UserAuthenticator extends AbstractFormLoginAuthenticator
 {
+    /**
+     * @var UserPasswordEncoderInterface $encoder
+     * @access private
+     */
     private $encoder;
+
+    /**
+     * @var RouterInterface $router
+     * @access private
+     */
     private $router;
+
+    /**
+     * @var ValidatorInterface $validator
+     * @access private
+     */
     private $validator;
+
+    /**
+     * @var CsrfTokenManagerInterface $csrfTokenManager
+     * @access private
+     */
     private $csrfTokenManager;
 
+    /**
+     * Constructor
+     * @access public
+     * @param RouterInterface $router
+     * @param UserPasswordEncoderInterface $encoder
+     * @param ValidatorInterface $validator
+     * @param CsrfTokenManagerInterface $csrfTokenManager
+     * 
+     * @return void
+     */
     public function __construct(
         RouterInterface $router,
         UserPasswordEncoderInterface $encoder,
@@ -38,12 +74,18 @@ class UserAuthenticator extends AbstractFormLoginAuthenticator
         $this->csrfTokenManager = $csrfTokenManager;
     }
 
+    /**
+     * {@inheritdoc}
+     */
     public function supports(Request $request)
     {
         return $request->attributes->get('_route') === 'st_login'
             && $request->isMethod('POST');
     }
 
+    /**
+     * {@inheritdoc}
+     */
     public function getCredentials(Request $request)
     {
         $csrfToken = $request->request->get('_csrf_token');
@@ -64,6 +106,9 @@ class UserAuthenticator extends AbstractFormLoginAuthenticator
         ];
     }
 
+    /**
+     * {@inheritdoc}
+     */
     public function getUser($credentials, UserProviderInterface $provider)
     {
         $captcha = $credentials['captcha'];
@@ -82,6 +127,9 @@ class UserAuthenticator extends AbstractFormLoginAuthenticator
         return $provider->loadUserByUsername($username);
     }
 
+    /**
+     * {@inheritdoc}
+     */
     public function checkCredentials($credentials, UserInterface $user)
     {
         if (!$user->isEnabled()) {
@@ -101,6 +149,9 @@ class UserAuthenticator extends AbstractFormLoginAuthenticator
         );
     }
 
+    /**
+     * {@inheritdoc}
+     */
     public function onAuthenticationSuccess(Request $request, TokenInterface $token, $providerKey)
     {
         $url = $this->getDefaultSuccessRedirectUrl();
@@ -108,6 +159,9 @@ class UserAuthenticator extends AbstractFormLoginAuthenticator
         return new RedirectResponse($url);
     }
 
+    /**
+     * {@inheritdoc}
+     */
     public function onAuthenticationFailure(Request $request, AuthenticationException $exception)
     {
        $request->getSession()->set(Security::AUTHENTICATION_ERROR, $exception);
@@ -117,16 +171,28 @@ class UserAuthenticator extends AbstractFormLoginAuthenticator
        return new RedirectResponse($url);
     }
 
+    /**
+     * {@inheritdoc}
+     */
     protected function getLoginUrl()
     {
         return $this->router->generate('st_login');
     }
 
+    /**
+     * Get default url to redirect when auth success
+     * @access protected
+     *
+     * @return string
+     */
     protected function getDefaultSuccessRedirectUrl()
     {
         return $this->router->generate('st_index');
     }
 
+    /**
+     * {@inheritdoc}
+     */
     public function supportsRememberMe()
     {
         return false;
