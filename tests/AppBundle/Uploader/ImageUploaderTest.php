@@ -37,12 +37,12 @@ class ImageUploaderTest extends TestCase
             true
         );
 
-        $uploader = new ImageUploader;
+        $uploader = new ImageUploader('test');
         $filename = $uploader->upload($file);
 
-        if (file_exists(ImageUploader::BASE_DIR.'/'.$filename)) {
+        if (file_exists(ImageUploader::BASE_TEST_DIR.'/'.$filename)) {
             $result = true;
-            unlink(ImageUploader::BASE_DIR.'/'.$filename);
+            unlink(ImageUploader::BASE_TEST_DIR.'/'.$filename);
         } else {
             $result = false;
         }
@@ -60,11 +60,11 @@ class ImageUploaderTest extends TestCase
     public function testResize()
     {
         $fileDir = __DIR__.'/../../../tests/AppBundle/uploads/userimage.png';
-        $destDir = ImageUploader::BASE_DIR.'/userimage.png';
+        $destDir = ImageUploader::BASE_TEST_DIR.'/userimage.png';
 
         copy($fileDir, $destDir);
 
-        $uploader = new ImageUploader;
+        $uploader = new ImageUploader('test');
 
         $uploader->resize('userimage.png', 200, 200);
         $imagesize = getimagesize($destDir);
@@ -86,11 +86,11 @@ class ImageUploaderTest extends TestCase
     public function testRemove()
     {
         $fileDir = __DIR__.'/../../../tests/AppBundle/uploads/userimage.png';
-        $destDir = ImageUploader::BASE_DIR.'/userimage.png';
+        $destDir = ImageUploader::BASE_TEST_DIR.'/userimage.png';
 
         copy($fileDir, $destDir);
 
-        $uploader = new ImageUploader;
+        $uploader = new ImageUploader('test');
 
         $uploader->remove('userimage.png');
 
