@@ -2,18 +2,18 @@
 # Set parameters here that may be different on each deployment target of the app, e.g. development, staging, production.
 # https://symfony.com/doc/current/best_practices/configuration.html#infrastructure-related-configuration
 parameters:
-    database_host: dbHost
+    database_host: 127.0.0.1
     database_port: ~
-    database_name: dbName
-    database_user: user
-    database_password: password
+    database_name: snowTricks
+    database_user: root
+    database_password: ~
     # You should uncomment this if you want to use pdo_sqlite
     #database_path: '%kernel.project_dir%/var/data/data.sqlite'
 
     mailer_transport: smtp
     mailer_host: host
     mailer_encryption: encrypt
-    mailer_port: port
+    mailer_port: 465
     mailer_user: userM
     mailer_password: passwordM
 
