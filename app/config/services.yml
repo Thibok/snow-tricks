@@ -27,10 +27,9 @@ services:
 
     AppBundle\Validator\CaptchaValidator:
         arguments:
-            - "@request_stack"
-            - "%captcha_secret_key%"
-            - "%kernel.environment%"
-            
+            $captchaSecretKey: '%captcha_secret_key%'
+            $env: '%kernel.environment%'
+
     AppBundle\EventListener\UserListener:
         tags:
             - { name: doctrine.event_listener, event: prePersist }
@@ -46,9 +45,13 @@ services:
             - { name: doctrine.event_listener, event: postPersist }
             - { name: doctrine.event_listener, event: preRemove }
             - { name: doctrine.event_listener, event: postRemove }
+        arguments:
+            $env: '%kernel.environment%'
 
     AppBundle\Mailer\Mailer:
         arguments:
-            - "@mailer"
-            - "@twig"
-            - "%mailer_user%"
+            $sender: '%mailer_user%'
+
+    AppBundle\Uploader\ImageUploader:
+        arguments:
+            $env: '%kernel.environment%'

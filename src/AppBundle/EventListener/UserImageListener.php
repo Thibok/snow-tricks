@@ -22,15 +22,23 @@ class UserImageListener
     private $uploader;
 
     /**
+     * @var string
+     * @access private
+     */
+    private $env;
+
+    /**
      * Constructor
      * @access public
      * @param ImageUploader $uploader
+     * @param string $env
      * 
      * @return void
      */
-    public function __construct(ImageUploader $uploader)
+    public function __construct(ImageUploader $uploader, $env)
     {
         $this->uploader = $uploader;
+        $this->env = $env;
     }
 
     /**
@@ -68,8 +76,14 @@ class UserImageListener
             return;
         }
 
+        if ($this->env == 'test') {
+            $targetDir = $userImage->getUploadRootTestDir();
+        } else {
+            $targetDir = $userImage->getUploadRootDir();
+        }
+
         $filename = $this->uploader->upload($userImage->getFile());
-        $this->uploader->setTargetDir($userImage->getUploadRootDir());
+        $this->uploader->setTargetDir($targetDir);
         $thumbName = 'user-thumb-'.$userImage->getId();
         $name = 'user-'.$userImage->getid();
 
@@ -114,9 +128,15 @@ class UserImageListener
             return;
         }
 
+        if ($this->env == 'test') {
+            $targetDir = $userImage->getUploadRootTestDir();
+        } else {
+            $targetDir = $userImage->getUploadRootDir();
+        }
+
         $filename = $userImage->getTempFilename();
         $thumb = str_replace('-', '-thumb-', $filename);
-        $this->uploader->setTargetDir($userImage->getUploadRootDir());
+        $this->uploader->setTargetDir($targetDir);
 
         $this->uploader->remove($filename);
         $this->uploader->remove($thumb);

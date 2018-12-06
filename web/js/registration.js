@@ -174,15 +174,10 @@ $(function() {
     var firstName = $('#appbundle_user_firstName');
     var image = $('#appbundle_user_image_file');
 
-    $('input').each(function() {
-        $(this).css('border', '1px solid grey');
-    });
-
     image.hide();
 
     $('#add_preview').click(function ($e) {
         $e.preventDefault();
-
         image.trigger("click");
     });
 
@@ -212,10 +207,10 @@ $(function() {
     })
 
     function formSubmit() {
-        $('#registration_form').submit();
-      }
+        $('#security_form').submit();
+    }
   
-      window.formSubmit = formSubmit;
+    window.formSubmit = formSubmit;
 
     $('#registrationBtn').click(function (event) {
         event.preventDefault();

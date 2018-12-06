@@ -47,12 +47,12 @@ nav {
   padding-bottom: 120px;
 }
 
-#registration_block {
+#security_block {
   margin: auto;
   text-align: center;
 }
 
-#registration_form {
+#security_form {
   border: 1px solid grey;
   background-color: white;
   border-radius: 10px;
@@ -68,6 +68,10 @@ footer {
 #copyright {
   padding-top: 35px;
   padding-left: 70px;
+}
+
+.form-control {
+  border: 1px solid grey;
 }
 
 
