@@ -5,9 +5,9 @@
 {% block body %}
   <div class="container" id="wrap">
     <div class="row" id="main">
-      <div class="col-lg-5" id="registration_block">
+      <div class="col-lg-5" id="security_block">
         <h1 class="mb-4 text-center text-dark">Registration</h1>
-        {{ form_start(form, {'attr': {'class': 'form-horizontal px-5 py-5', 'id': 'registration_form', 'novalidate': 'novalidate'}}) }}
+        {{ form_start(form, {'attr': {'class': 'form-horizontal px-5 py-5', 'id': 'security_form', 'novalidate': 'novalidate'}}) }}
           <div class="form-group">
             {{ form_label(form.username, "Username", {'label_attr' : {'class': 'control-label'}}) }}
             {{ form_widget(form.username, {'attr': {'class': 'form-control'}}) }}
@@ -39,10 +39,10 @@
             {{ form_widget(form.image.file, {'attr': {'class': 'form-control'}}) }}
           </div>
           <a id="add_preview" href="#"><img id="preview" src="{{ asset('/img/plus.png') }}"/></a>
-          <div id="button_section" class="d-flex">
+          <div class="d-flex">
             <button id="registrationBtn" class="btn btn-primary my-3 w-75 mx-auto">Create an account</button>
           </div>
-          <a id="already_account" href="path('st_login')">Already an account ?</a>
+          <a id="already_account" href="{{ path('st_login') }}">Already an account ?</a>
           {{ formElements.recaptcha("g-recaptcha d-flex justify-content-center mt-4") }}
         {{ form_end(form )}}
       </div>

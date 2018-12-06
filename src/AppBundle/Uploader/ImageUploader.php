@@ -20,9 +20,32 @@ class ImageUploader
 
     /**
      * @var string
+     */
+    const BASE_TEST_DIR = __DIR__.'/../../../web/uploads/img/tests';
+
+    /**
+     * @var string
      * @access private
      */
     private $targetDir;
+
+    /**
+     * @var string
+     * @access private
+     */
+    private $env;
+
+    /**
+     * Constructor
+     * @access public
+     * @param string $env
+     * 
+     * @return void
+     */
+    public function __construct($env)
+    {
+        $this->env = $env;
+    }
 
     /**
      * Upload an image
@@ -35,7 +58,13 @@ class ImageUploader
     {
         $fileName = md5(uniqid()).'.'.$file->guessExtension();
 
-        $file->move(self::BASE_DIR, $fileName);
+        if ($this->env == 'test') {
+            $dir = self::BASE_TEST_DIR;
+        } else {
+            $dir = self::BASE_DIR;
+        }
+
+        $file->move($dir, $fileName);
 
         return $fileName;
     }
@@ -52,9 +81,15 @@ class ImageUploader
      */
     public function resize($filename, $width, $height, $newName = null)
     {
-        if (file_exists(self::BASE_DIR.'/'.$filename)) {
-            $path = self::BASE_DIR.'/'.$filename;
+        if ($this->env == 'test') {
+            $baseDir = self::BASE_TEST_DIR;
         } else {
+            $baseDir = self::BASE_DIR;
+        }
+
+        $path = $baseDir.'/'.$filename;
+        
+        if (!file_exists($path)) {
             return;
         }
         
@@ -82,7 +117,7 @@ class ImageUploader
         if ($this->targetDir !== null) {
             $destinationDir = $this->targetDir;
         } else {
-            $destinationDir = self::BASE_DIR;
+            $destinationDir = $baseDir;
         }
 
         if ($newName != null) {
@@ -101,7 +136,12 @@ class ImageUploader
      */
     public function remove($filename)
     {
-        $basePath = self::BASE_DIR.'/'.$filename;
+        if ($this->env == 'test') {
+            $basePath = self::BASE_TEST_DIR.'/'.$filename;
+        } else {
+            $basePath = self::BASE_DIR.'/'.$filename;
+        }
+        
         $targetPath = $this->targetDir.'/'.$filename;
 
         if (file_exists($basePath)) {

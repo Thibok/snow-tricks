@@ -63,9 +63,23 @@ interface ImageInterface
     public function getUploadDir();
 
     /**
+     * Get uploadTestDir (web path)
+     * @access public
+     * @return string
+     */
+    public function getUploadTestDir();
+
+    /**
      * Get uploadRootDir
      * @access public
      * @return string
      */
     public function getUploadRootDir();
+
+    /**
+     * Get uploadRootTestDir
+     * @access public
+     * @return string
+     */
+    public function getUploadRootTestDir();
 }
