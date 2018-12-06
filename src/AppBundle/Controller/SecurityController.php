@@ -10,12 +10,15 @@ use AppBundle\Entity\User;
 use AppBundle\Entity\Token;
 use AppBundle\Form\UserType;
 use Doctrine\ORM\ORMException;
+use AppBundle\Event\UserEvents;
+use AppBundle\Form\UserForgotPassType;
 use AppBundle\ParamChecker\CaptchaChecker;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\HttpFoundation\RedirectResponse;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Symfony\Component\EventDispatcher\EventDispatcherInterface;
 use Symfony\Component\Security\Http\Authentication\AuthenticationUtils;
 
 /**
@@ -122,6 +125,49 @@ class SecurityController extends Controller
     }
 
     /**
+     * Forgot pass
+     * @access public
+     * @Route("/forgot_password", name="st_forgot_pass")
+     * 
+     * @return Response
+     */
+    public function forgotPassAction(Request $request, CaptchaChecker $captchaChecker, EventDispatcherInterface $dispatcher)
+    {
+        if ($this->isGranted('IS_AUTHENTICATED_FULLY')) {
+            return $this->redirectToRoute('st_index');
+        }
+
+        $form = $this->createForm(UserForgotPassType::class);
+
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $captchaChecker->check() && $form->isValid()) {
+            $data = $form->getData();
+
+            $em = $this->getDoctrine()->getManager();
+            $user = $em->getRepository(User::class)->findOneByUsername($data['username']);
+            $token = new Token;
+            $token->setType('reset-pass');
+            $user->setToken($token);
+            $em->persist($token);
+
+            try {
+                $em->flush();
+                $this->addFlash('notice', 'A reset password link has been sent to you by email');
+            } catch(ORMException $e) {
+                $this->addFlash('error', 'An error has occurred');
+            }
+
+            $event = new UserPostForgotEvent($user);
+            $dispatcher->dispatch(UserEvents::POST_FORGOT, $event);
+
+            return $this->redirectToRoute('st_index');
+        }
+
+        return $this->render('security/forgot_pass.html.twig', array('form' => $form->createView()));
+    }
+
+    /**
      * Logout
      * @access public
      * @Route("/logout", name="st_logout")
@@ -130,6 +176,6 @@ class SecurityController extends Controller
      */
     public function logoutAction() 
     {
-        
+    
     }
 }
