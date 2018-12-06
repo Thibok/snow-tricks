@@ -121,7 +121,7 @@ class UserListener
         ->setTo($user->getEmail())
         ->setBody(
             $this->mailer->getTwig()->render(
-                'emails/forgot-pass.html.twig',
+                'emails/reset_pass.html.twig',
                 array(
                     'firstName' => $user->getFirstName(),
                     'token' => $user->getToken()->getCode()

@@ -3,6 +3,7 @@
 namespace AppBundle\Event;
 
 use Symfony\Component\EventDispatcher\Event;
+use Symfony\Component\Security\Core\User\UserInterface;
 
 class UserPostForgotEvent extends Event
 {

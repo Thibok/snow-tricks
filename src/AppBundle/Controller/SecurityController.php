@@ -12,6 +12,7 @@ use AppBundle\Form\UserType;
 use Doctrine\ORM\ORMException;
 use AppBundle\Event\UserEvents;
 use AppBundle\Form\UserForgotPassType;
+use AppBundle\Event\UserPostForgotEvent;
 use AppBundle\ParamChecker\CaptchaChecker;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -110,7 +111,7 @@ class SecurityController extends Controller
      * @param AuthenticationUtils $authenticationUtils
      * @Route("/login", name="st_login")
      * 
-     * @return Response
+     * @return mixed Response | RedirectResponse
      */
     public function loginAction(AuthenticationUtils $authenticationUtils)
     {
@@ -125,11 +126,26 @@ class SecurityController extends Controller
     }
 
     /**
+     * Logout
+     * @access public
+     * @Route("/logout", name="st_logout")
+     * 
+     * @return void
+     */
+    public function logoutAction() 
+    {
+    
+    }
+
+    /**
      * Forgot pass
      * @access public
+     * @param Request $request
+     * @param CaptchaChecker $captchaChecker
+     * @param EventDispatcherInterface $dispatcher
      * @Route("/forgot_password", name="st_forgot_pass")
      * 
-     * @return Response
+     * @return mixed Response | RedirectResponse
      */
     public function forgotPassAction(Request $request, CaptchaChecker $captchaChecker, EventDispatcherInterface $dispatcher)
     {
@@ -138,7 +154,6 @@ class SecurityController extends Controller
         }
 
         $form = $this->createForm(UserForgotPassType::class);
-
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $captchaChecker->check() && $form->isValid()) {
@@ -168,14 +183,16 @@ class SecurityController extends Controller
     }
 
     /**
-     * Logout
+     * Reset pass
      * @access public
-     * @Route("/logout", name="st_logout")
+     * @param Request $request
+     * @param string $tokenCode
+     * @Route("/reset_password/{tokenCode}", name="st_reset_pass", requirements={"tokenCode"="[a-z0-9]{80}"})
      * 
-     * @return void
+     * @return mixed Response | RedirectResponse 
      */
-    public function logoutAction() 
+    public function resetPassAction(Request $request, $tokenCode)
     {
-    
+        return new Response('ok');
     }
 }
