@@ -63,7 +63,9 @@ class SecurityControllerTest extends WebTestCase
         );
 
         $this->client->submit($form);
-        $this->assertSame(302, $this->client->getResponse()->getStatusCode());
+        $crawler = $this->client->followRedirect();
+        
+        $this->assertSame(2, $crawler->filter('div.flash-notice')->count());
     }
 
     /**
@@ -115,6 +117,59 @@ class SecurityControllerTest extends WebTestCase
     }
 
     /**
+     * Form values
+     * @access public
+     *
+     * @return array
+     */
+    public function valuesRegistrationForm()
+    {
+        return [
+            [
+                '',
+                '',
+                '',
+                '',
+                '',
+                '',
+                6
+            ],
+            [
+                '!',
+                '!',
+                'sd',
+                '!',
+                '!',
+                new UploadedFile(
+                    __DIR__.'/../uploads/badFormat.gif',
+                    'badFormat.gif',
+                    'image/gif',
+                    null,
+                    null,
+                    true
+                ),
+                11
+            ],
+            [
+                'azertyuiopqsdfghjklmwxcvbnhjghr',
+                'azertyuiopqsdfghjklmwxcvbnhjgrazertyuiopqsdfghjklmwxcvbnhjgr@yahooo.com',
+                'azertyuiopqsdfghjklmwxcvbnhjgr56951fslepfmvjbfz2c',
+                'azertyuiopqsdfghjklmwxcvbnhjgr-hhhmmhlkvg',
+                'azertyuiopqsdfghjklmwxcvbnhjgr-hhhmmhlkvg',
+                new UploadedFile(
+                    __DIR__.'/../uploads/bigFile.jpg',
+                    'bigFile.jpg',
+                    'image/jpeg',
+                    null,
+                    null,
+                    true
+                ),
+                6
+            ]
+        ];
+    }
+
+    /**
      * Test Valid Registration method of SecurityController
      * @access public
      * @covers ::validRegistrationAction
@@ -130,7 +185,7 @@ class SecurityControllerTest extends WebTestCase
 
         $crawler = $this->client->followRedirect();
 
-        $this->assertSame(1, $crawler->filter('div:contains("Valid registration !")')->count());
+        $this->assertSame(1, $crawler->filter('div.flash-notice')->count());
     }
 
     /**
@@ -181,7 +236,7 @@ class SecurityControllerTest extends WebTestCase
         $this->client->submit($form);
         $crawler = $this->client->followRedirect();
         
-        $this->assertSame(1, $crawler->filter('a:contains("Logout")')->count());
+        $this->assertSame(1, $crawler->filter('div.flash-notice')->count());
     }
 
     /**
@@ -206,6 +261,30 @@ class SecurityControllerTest extends WebTestCase
         $crawler = $this->client->followRedirect();
         
         $this->assertSame(1, $crawler->filter('div[class="alert alert-danger"]')->count());    
+    }
+
+    /**
+     * Form values
+     * @access public
+     *
+     * @return array
+     */
+    public function valuesLoginForm()
+    {
+        return [
+            [
+                '',
+                ''
+            ],
+            [
+                'InactiveUser',
+                'verystrongpassword1222'
+            ],
+            [
+                'EnabledUser',
+                'badPass'
+            ]
+        ];
     }
 
     /**
@@ -280,85 +359,91 @@ class SecurityControllerTest extends WebTestCase
             ],
             [
                 '/registration/validation/c15b26a3d01aa113ed2fcd5e52a43d621a552be7c9821aab8238a40f40b53e686689559629512869'
+            ],
+            [
+                '/forgot_password'
             ]
         ];
     }
 
     /**
-     * Form values
+     * Test forgot password
      * @access public
+     * @covers ::forgotPassAction
      *
-     * @return array
+     * @return void
      */
-    public function valuesRegistrationForm()
+    public function testForgotPass()
     {
-        return [
-            [
-                '',
-                '',
-                '',
-                '',
-                '',
-                '',
-                6
-            ],
-            [
-                '!',
-                '!',
-                'sd',
-                '!',
-                '!',
-                new UploadedFile(
-                    __DIR__.'/../uploads/badFormat.gif',
-                    'badFormat.gif',
-                    'image/gif',
-                    null,
-                    null,
-                    true
-                ),
-                11
-            ],
-            [
-                'azertyuiopqsdfghjklmwxcvbnhjghr',
-                'azertyuiopqsdfghjklmwxcvbnhjgrazertyuiopqsdfghjklmwxcvbnhjgr@yahooo.com',
-                'azertyuiopqsdfghjklmwxcvbnhjgr56951fslepfmvjbfz2c',
-                'azertyuiopqsdfghjklmwxcvbnhjgr-hhhmmhlkvg',
-                'azertyuiopqsdfghjklmwxcvbnhjgr-hhhmmhlkvg',
-                new UploadedFile(
-                    __DIR__.'/../uploads/bigFile.jpg',
-                    'bigFile.jpg',
-                    'image/jpeg',
-                    null,
-                    null,
-                    true
-                ),
-                6
-            ]
-        ];
+        $crawler = $this->client->request('GET', '/forgot_password');
+
+        $form = $crawler->selectButton('Ask for reset password')->form();
+        $form['appbundle_user[username]'] = 'EnabledUser';
+
+        $this->client->submit($form);
+        $crawler = $this->client->followRedirect();
+
+        $this->assertSame(1, $crawler->filter('div.flash-notice')->count());
     }
 
     /**
-     * Form values
+     * Test forgot password with bad values
+     *
+     * @param string $username
+     * @covers ::forgotPassAction
+     * @dataProvider valuesForgotPassForm
+     * 
+     * @return void
+     */
+    public function testForgotPassWithBadValues($username)
+    {
+        $crawler = $this->client->request('GET', '/forgot_password');
+
+        $form = $crawler->selectButton('Ask for reset password')->form();
+        $form['appbundle_user[username]'] = $username;
+
+        $crawler = $this->client->submit($form);
+
+        $this->assertSame(1, $crawler->filter('span.form-error-message')->count());
+    }
+
+    /**
+     * Bad values for forgot password form
      * @access public
      *
      * @return array
      */
-    public function valuesLoginForm()
+    public function valuesForgotPassForm()
     {
         return [
             [
-                '',
                 ''
             ],
             [
-                'InactiveUser',
-                'verystrongpassword1222'
+                'InactiveUser'
             ],
             [
-                'EnabledUser',
-                'badPass'
-            ]
+                'NotExistUser'
+            ],
         ];
+    }
+
+    /**
+     * Test path to forgot password (Home - Login - Forgot Password)
+     *
+     * @return void
+     */
+    public function testPathToForgotPass()
+    {
+        $crawler = $this->client->request('GET', '/');
+
+        $loginLink = $crawler->selectLink('Sign up')->link();
+        $crawler = $this->client->click($loginLink);
+
+        $forgotLink = $crawler->selectLink('Forgot password ?')->link();
+        $crawler = $this->client->click($forgotLink);
+
+        $this->assertSame('Forgot Password', $crawler->filter('h1')->text());
     }
 
     /**

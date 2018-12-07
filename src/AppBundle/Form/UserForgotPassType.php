@@ -22,11 +22,9 @@ class UserForgotPassType extends AbstractType
      */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-        $builder
-            ->add('username', TextType::class, array(
-                'constraints' => new UserExists()
-            ))
-        ;
+        $builder->add('username', TextType::class, array(
+            'constraints' => new UserExists()
+        ));
     }
     
     /**

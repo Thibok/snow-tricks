@@ -169,12 +169,11 @@ class SecurityController extends Controller
             try {
                 $em->flush();
                 $this->addFlash('notice', 'A reset password link has been sent to you by email');
+                $event = new UserPostForgotEvent($user);
+                $dispatcher->dispatch(UserEvents::POST_FORGOT, $event);
             } catch(ORMException $e) {
                 $this->addFlash('error', 'An error has occurred');
             }
-
-            $event = new UserPostForgotEvent($user);
-            $dispatcher->dispatch(UserEvents::POST_FORGOT, $event);
 
             return $this->redirectToRoute('st_index');
         }
