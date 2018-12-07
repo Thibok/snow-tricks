@@ -9,6 +9,7 @@ namespace AppBundle\EventListener;
 use AppBundle\Entity\User;
 use AppBundle\Mailer\Mailer;
 use AppBundle\Purger\UserPurger;
+use AppBundle\Event\UserPostForgotEvent;
 use Doctrine\Common\Persistence\Event\LifecycleEventArgs;
 use Symfony\Component\Security\Core\Encoder\UserPasswordEncoderInterface;
 
@@ -100,6 +101,27 @@ class UserListener
         ->setBody(
             $this->mailer->getTwig()->render(
                 'emails/registration.html.twig',
+                array(
+                    'firstName' => $user->getFirstName(),
+                    'token' => $user->getToken()->getCode()
+                )
+            ),
+            'text/html'
+        );
+
+        $this->mailer->send($message);
+    }
+
+    public function postForgot(UserPostForgotEvent $event)
+    {
+        $user = $event->getUser();
+
+        $message = (new \Swift_Message('Reset your password'))
+        ->setFrom([$this->mailer->getSender() => 'SnowTricks'])
+        ->setTo($user->getEmail())
+        ->setBody(
+            $this->mailer->getTwig()->render(
+                'emails/reset_pass.html.twig',
                 array(
                     'firstName' => $user->getFirstName(),
                     'token' => $user->getToken()->getCode()

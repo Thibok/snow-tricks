@@ -36,4 +36,29 @@ class UserRepository extends EntityRepository
             ->getResult()
         ;
     }
+
+    /**
+     * Get if user exists
+     * @access public
+     * @param string $username
+     * 
+     * @return boolean
+     */
+    public function getUserExists($username)
+    {
+        $result = $this->createQueryBuilder('u')
+            ->select('count(u.id)')
+            ->where('u.username = :username')
+            ->setParameter(':username', $username)
+            ->andWhere('u.isActive = 1')
+            ->getQuery()
+            ->getSingleScalarResult()
+        ;
+        
+        if ($result == 1) {
+            return true;
+        } else {
+            return false;
+        }      
+    }
 }

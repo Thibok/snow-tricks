@@ -21,7 +21,7 @@
                     </div>
                     <div class="d-flex flex-column" id="links">
                         <a id="register" href="{{ path('st_registration') }}">Register</a>
-                        <a id="forgot_pass" href="#">Forgot password ?</a>
+                        <a id="forgot_pass" href="{{ path('st_forgot_pass') }}">Forgot password ?</a>
                     </div>
                     <input type="hidden" name="_csrf_token" value="{{ csrf_token('authenticate') }}" />
                     <div id="buttonSection" class="d-flex">

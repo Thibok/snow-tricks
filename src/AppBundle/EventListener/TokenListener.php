@@ -63,6 +63,10 @@ class TokenListener
             $interval = 'P1W';
         }
 
+        if ($token->getType() == 'reset-pass') {
+            $interval = 'P2D';
+        }
+
         if ($token->getCode() == null) {
             $tokenCode = $this->tokenGenerator->generate(80);
             $token->setCode($tokenCode);
