@@ -52,7 +52,8 @@ class ApplicationAvailabilityFunctionalTest extends WebTestCase
     {
         return array(
             array('/registration'),
-            array('/login')
+            array('/login'),
+            array('/forgot_password')
         );
     }
 

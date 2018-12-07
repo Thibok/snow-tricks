@@ -34,6 +34,7 @@ services:
         tags:
             - { name: doctrine.event_listener, event: prePersist }
             - { name: doctrine.event_listener, event: postPersist }
+            - { name: kernel.event_listener, event: st_user.post_forgot, method: postForgot }
 
     AppBundle\EventListener\TokenListener:
         tags:
