@@ -12,6 +12,7 @@ use AppBundle\Form\UserType;
 use Doctrine\ORM\ORMException;
 use AppBundle\Event\UserEvents;
 use AppBundle\Form\UserForgotPassType;
+use AppBundle\Handler\ResetPassHandler;
 use AppBundle\Event\UserPostForgotEvent;
 use AppBundle\ParamChecker\CaptchaChecker;
 use Symfony\Component\HttpFoundation\Request;
@@ -186,12 +187,41 @@ class SecurityController extends Controller
      * @access public
      * @param Request $request
      * @param string $tokenCode
+     * @param ResetPassHandler $handler
      * @Route("/reset_password/{tokenCode}", name="st_reset_pass", requirements={"tokenCode"="[a-z0-9]{80}"})
      * 
      * @return mixed Response | RedirectResponse 
      */
-    public function resetPassAction(Request $request, $tokenCode)
+    public function resetPassAction(Request $request, $tokenCode, ResetPassHandler $handler)
     {
-        return new Response('ok');
+        if ($this->isGranted('IS_AUTHENTICATED_FULLY')) {
+            return $this->redirectToRoute('st_index');
+        }
+
+        $em = $this->getDoctrine()->getManager();
+        $token = $em->getRepository(Token::class)->getTokenWithUser($tokenCode);
+        $actualDate = new \DateTime;
+
+        if ($token == null || $token->getType() != 'reset-pass' || $token->getExpirationDate() <= $actualDate) {
+            throw $this->createNotFoundException();
+        }
+        
+        $user = $token->getUser();
+        $form = $handler->createForm($user);
+
+        if ($handler->handle($form, $request, $user)) {
+            $em->remove($token);
+
+            try {
+                $em->flush();
+                $this->addFlash('notice', 'The password has been updated !');
+            } catch(ORMException $e) {
+                $this->addFlash('error', 'An error has occurred');
+            }
+
+            return $this->redirectToRoute('st_index');
+        }
+
+        return $this->render('security/reset_pass.html.twig', array('form' => $form->createView()));
     }
 }
