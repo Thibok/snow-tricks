@@ -1,7 +1,7 @@
 <?php
 
 /**
- * Handle the reset pass form (create and submit)
+ * Handle the reset pass (create form, valid form and set values)
  */
 
 namespace AppBundle\Handler;
@@ -102,14 +102,14 @@ class ResetPassHandler
     }
 
     /**
-     * Handle request, valid form and set new password for user
-     *
+     * Valid form and set new password for user
+     * @access public
      * @param FormInterface $form
      * @param Request $request
      * @param UserInterface $user
      * @return boolean
      */
-    public function handle(FormInterface $form, Request $request, UserInterface $user)
+    public function validAndHandle(FormInterface $form, Request $request, UserInterface $user)
     {
         $form->handleRequest($request);
 

@@ -169,9 +169,9 @@ class SecurityController extends Controller
 
             try {
                 $em->flush();
-                $this->addFlash('notice', 'A reset password link has been sent to you by email');
                 $event = new UserPostForgotEvent($user);
                 $dispatcher->dispatch(UserEvents::POST_FORGOT, $event);
+                $this->addFlash('notice', 'A reset password link has been sent to you by email');
             } catch(ORMException $e) {
                 $this->addFlash('error', 'An error has occurred');
             }
@@ -209,7 +209,7 @@ class SecurityController extends Controller
         $user = $token->getUser();
         $form = $handler->createForm($user);
 
-        if ($handler->handle($form, $request, $user)) {
+        if ($handler->validAndHandle($form, $request, $user)) {
             $em->remove($token);
 
             try {
