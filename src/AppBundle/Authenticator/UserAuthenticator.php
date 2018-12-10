@@ -155,7 +155,9 @@ class UserAuthenticator extends AbstractFormLoginAuthenticator
     public function onAuthenticationSuccess(Request $request, TokenInterface $token, $providerKey)
     {
         $url = $this->getDefaultSuccessRedirectUrl();
-        $request->getSession()->getFlashBag()->add('notice', 'You are now connected !');
+        $firstName = $token->getUser()->getFirstName();
+        
+        $request->getSession()->getFlashBag()->add('notice', 'Hi, '.$firstName.' !');
         return new RedirectResponse($url);
     }
 

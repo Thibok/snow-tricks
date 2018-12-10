@@ -362,6 +362,9 @@ class SecurityControllerTest extends WebTestCase
             ],
             [
                 '/forgot_password'
+            ],
+            [
+                '/reset_password/k15b26a3d01aaoo2ed2f8efe52a43d621a552be7c9821aab8238a4dc40b53e600689559629535115'
             ]
         ];
     }
@@ -444,6 +447,98 @@ class SecurityControllerTest extends WebTestCase
         $crawler = $this->client->click($forgotLink);
 
         $this->assertSame('Forgot Password', $crawler->filter('h1')->text());
+    }
+
+    /**
+     * Test Reset pass method of SecurityController
+     * @access public
+     * @covers ::resetPassAction
+     *
+     * @return void
+     */
+    public function testResetPass()
+    {
+        $crawler = $this->client->request(
+            'GET',
+            '/reset_password/k15b26a3d01aaoo2ed2f8efe52a43d621a552be7c9821aab8238a4dc40b53e600689559629535115'
+        );
+
+        $form = $crawler->selectButton('Reset')->form();
+        $form['form[email]'] = 'resetpass@email.com';
+        $form['form[password]'] = 'anewsimplypass45';
+
+        $this->client->submit($form);
+        $crawler = $this->client->followRedirect();
+        
+        $this->assertSame(1, $crawler->filter('div.flash-notice')->count());
+    }
+
+    /**
+     * Test Reset pass method of SecurityController with bad token
+     * @access public
+     * @covers ::resetPassAction
+     *
+     * @return void
+     */
+    public function testResetPassWithBadToken()
+    {
+        $this->client->request('GET', '/reset_password/rdfpdfpfd58978512');
+
+        $this->assertSame(404, $this->client->getResponse()->getStatusCode());
+    }
+
+    /**
+     * Test Reset Pass method of SecurityController with bad values
+     * @access public
+     * @param string $email
+     * @param string $pass
+     * @param int $result
+     * @covers ::resetPassAction
+     * @dataProvider valuesResetPassForm
+     *
+     * @return void
+     */
+    public function testResetPassWithBadValues($email, $pass, $result)
+    {
+        $crawler = $this->client->request(
+            'GET',
+            '/reset_password/k15b26a3d01aaoo2ed2f8effffa42d621a554be7c9821aab8238a4dc4et53e600689486629535115'
+        );
+
+        $form = $crawler->selectButton('Reset')->form();
+        $form['form[email]'] = $email;
+        $form['form[password]'] = $pass;
+
+        $crawler = $this->client->submit($form);
+        
+        $this->assertSame($result, $crawler->filter('span.form-error-message')->count());     
+    }
+
+    /**
+     * Bad values for reset password form
+     * @access public
+     *
+     * @return array
+     */
+    public function valuesResetPassForm()
+    {
+        return [
+            [
+                '',
+                '',
+                2
+            ],
+            [
+                'notgoodemail@email.com',
+                'dz3',
+                3
+            ],
+            [
+                'notgoodemail@email.com',
+                'vmfpdms5v7b2g6h9opemshzysickfjfhdhsklzoidzdzdzzdzdzd',
+                2
+            ],
+        ];
     }
 
     /**

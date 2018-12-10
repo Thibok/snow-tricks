@@ -53,7 +53,8 @@ class ApplicationAvailabilityFunctionalTest extends WebTestCase
         return array(
             array('/registration'),
             array('/login'),
-            array('/forgot_password')
+            array('/forgot_password'),
+            array('/reset_password/k15b26a3d01aaoo2ed2f8effffa42d621a554be7c9821aab8238a4dc4et53e600689486629535115')
         );
     }
 
