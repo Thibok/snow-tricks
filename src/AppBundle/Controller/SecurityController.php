@@ -209,7 +209,9 @@ class SecurityController extends Controller
         $user = $token->getUser();
         $form = $handler->createForm($user);
 
-        if ($handler->validAndHandle($form, $request, $user)) {
+        if ($handler->validateForm($form, $request)) {
+            
+            $handler->handleDataToUser($form, $user);
             $em->remove($token);
 
             try {

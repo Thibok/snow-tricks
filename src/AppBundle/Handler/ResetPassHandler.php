@@ -106,22 +106,34 @@ class ResetPassHandler
      * @access public
      * @param FormInterface $form
      * @param Request $request
-     * @param UserInterface $user
+     * 
      * @return boolean
      */
-    public function validAndHandle(FormInterface $form, Request $request, UserInterface $user)
+    public function validateForm(FormInterface $form, Request $request)
     {
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $this->captchaChecker->check() && $form->isValid()) {
-            $data = $form->getData();
             
-            $encode = $this->encoder->encodePassword($user, $data['password']);
-            $user->setPassword($encode);
-
             return true;
         } 
 
         return false;
+    }
+
+    /**
+     * Set password encode to User
+     * @access public
+     * @param FormInterface $form
+     * @param UserInterface $user
+     * 
+     * @return void
+     */
+    public function handleDataToUser(FormInterface $form, UserInterface $user)
+    {
+        $data = $form->getData();
+            
+        $encode = $this->encoder->encodePassword($user, $data['password']);
+        $user->setPassword($encode);
     }
 }
