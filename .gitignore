@@ -56,8 +56,4 @@
 # Embedded web-server pid file
 /.web-server-pid
 
-### Symfony Patch ###
-/web/css/
-/web/js/
-
 # End of https://www.gitignore.io/api/symfony
