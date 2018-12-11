@@ -11,7 +11,7 @@ use Symfony\Component\Validator\Constraints as Assert;
  *
  * @ORM\Table(name="st_trick")
  * @ORM\Entity(repositoryClass="AppBundle\Repository\TrickRepository")
- * @UniqueEntity(fields="name" message="A trick already exists with this name !")
+ * @UniqueEntity(fields="name", message="A trick already exists with this name !")
  */
 class Trick
 {
@@ -58,7 +58,8 @@ class Trick
      * @Assert\Regex(
      *      pattern="/^[<>]$/",
      *      match=false,
-     *      message="The description can't contain < or >")
+     *      message="The description can't contain < or >"
+     * )
      */
     private $description;
 

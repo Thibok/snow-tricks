@@ -3,11 +3,12 @@
 namespace AppBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
+use Symfony\Component\Validator\Constraints as Assert;
 
 /**
  * Category
  *
- * @ORM\Table(name="category")
+ * @ORM\Table(name="st_category")
  * @ORM\Entity(repositoryClass="AppBundle\Repository\CategoryRepository")
  */
 class Category
@@ -25,6 +26,7 @@ class Category
      * @var string
      *
      * @ORM\Column(name="name", type="string", length=30, unique=true)
+     * @Assert\NotBlank(message="You must choose a category !")
      */
     private $name;
 
