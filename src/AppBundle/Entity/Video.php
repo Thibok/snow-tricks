@@ -2,6 +2,7 @@
 
 namespace AppBundle\Entity;
 
+use AppBundle\Entity\Trick;
 use Doctrine\ORM\Mapping as ORM;
 use Symfony\Component\Validator\Constraints as Assert;
 
@@ -42,6 +43,13 @@ class Video
      */
     private $url;
 
+    /**
+     * @var Trick
+     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\Trick", inversedBy="videos")
+     * @ORM\JoinColumn(nullable=false)
+     */
+    private $trick;
+
 
     /**
      * Get id
@@ -76,5 +84,28 @@ class Video
     {
         return $this->url;
     }
-}
 
+    /**
+     * Set trick
+     *
+     * @param Trick $trick
+     *
+     * @return Video
+     */
+    public function setTrick(Trick $trick)
+    {
+        $this->trick = $trick;
+
+        return $this;
+    }
+
+    /**
+     * Get trick
+     *
+     * @return Trick
+     */
+    public function getTrick()
+    {
+        return $this->trick;
+    }
+}

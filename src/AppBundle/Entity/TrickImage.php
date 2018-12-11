@@ -2,6 +2,7 @@
 
 namespace AppBundle\Entity;
 
+use AppBundle\Entity\Trick;
 use Doctrine\ORM\Mapping as ORM;
 use AppBundle\Entity\ImageInterface;
 use Symfony\Component\Validator\Constraints as Assert;
@@ -53,6 +54,13 @@ class TrickImage implements ImageInterface
      * @access private
      */
     private $tempFilename;
+
+    /**
+     * @var Trick
+     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\Trick", inversedBy="images")
+     * @ORM\JoinColumn(nullable=false)
+     */
+    private $trick;
 
 
     /**
@@ -159,5 +167,29 @@ class TrickImage implements ImageInterface
     public function getUploadTestDir()
     {
         return 'uploads/img/tests/trick';
+    }
+
+    /**
+     * Set trick
+     *
+     * @param Trick $trick
+     *
+     * @return TrickImage
+     */
+    public function setTrick(Trick $trick)
+    {
+        $this->trick = $trick;
+
+        return $this;
+    }
+
+    /**
+     * Get trick
+     *
+     * @return Trick
+     */
+    public function getTrick()
+    {
+        return $this->trick;
     }
 }

@@ -2,9 +2,15 @@
 
 namespace AppBundle\Entity;
 
+use AppBundle\Entity\User;
+use AppBundle\Entity\Video;
+use AppBundle\Entity\Category;
+use AppBundle\Entity\TrickImage;
 use Doctrine\ORM\Mapping as ORM;
-use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
+use Doctrine\Common\Collections\Collection;
+use Doctrine\Common\Collections\ArrayCollection;
 use Symfony\Component\Validator\Constraints as Assert;
+use Symfony\Bridge\Doctrine\Validator\Constraints\UniqueEntity;
 
 /**
  * Trick
@@ -84,6 +90,35 @@ class Trick
      */
     private $slug;
 
+    /**
+     * @ORM\OneToMany(targetEntity="AppBundle\Entity\TrickImage", mappedBy="trick", cascade={"persist", "remove"})
+     */
+    private $images;
+
+    /**
+     * @var User
+     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\User")
+     * @ORM\JoinColumn(nullable=false)
+     */
+    private $user;
+
+    /**
+     * @var Category
+     * @ORM\ManyToOne(targetEntity="AppBundle\Entity\Category")
+     * @ORM\JoinColumn(nullable=false)
+     */
+    private $category;
+
+    /**
+     * @ORM\OneToMany(targetEntity="AppBundle\Entity\Video", mappedBy="trick", cascade={"persist", "remove"})
+     */
+    private $videos;
+
+    public function __construct()
+    {
+        $this->images = new ArrayCollection;
+        $this->addAt = new \DateTime;
+    }
 
     /**
      * Get id
@@ -214,5 +249,120 @@ class Trick
     {
         return $this->slug;
     }
-}
 
+    /**
+     * Add image
+     *
+     * @param TrickImage $image
+     *
+     * @return Trick
+     */
+    public function addImage(TrickImage $image)
+    {
+        $this->images[] = $image;
+
+        return $this;
+    }
+
+    /**
+     * Remove image
+     *
+     * @param TrickImage $image
+     */
+    public function removeImage(TrickImage $image)
+    {
+        $this->images->removeElement($image);
+    }
+
+    /**
+     * Get images
+     *
+     * @return Collection
+     */
+    public function getImages()
+    {
+        return $this->images;
+    }
+
+    /**
+     * Set user
+     *
+     * @param User $user
+     *
+     * @return Trick
+     */
+    public function setUser(User $user)
+    {
+        $this->user = $user;
+
+        return $this;
+    }
+
+    /**
+     * Get user
+     *
+     * @return User
+     */
+    public function getUser()
+    {
+        return $this->user;
+    }
+
+    /**
+     * Set category
+     *
+     * @param Category $category
+     *
+     * @return Trick
+     */
+    public function setCategory(Category $category)
+    {
+        $this->category = $category;
+
+        return $this;
+    }
+
+    /**
+     * Get category
+     *
+     * @return Category
+     */
+    public function getCategory()
+    {
+        return $this->category;
+    }
+
+    /**
+     * Add video
+     *
+     * @param Video $video
+     *
+     * @return Trick
+     */
+    public function addVideo(Video $video)
+    {
+        $this->videos[] = $video;
+
+        return $this;
+    }
+
+    /**
+     * Remove video
+     *
+     * @param Video $video
+     */
+    public function removeVideo(Video $video)
+    {
+        $this->videos->removeElement($video);
+    }
+
+    /**
+     * Get videos
+     *
+     * @return Collection
+     */
+    public function getVideos()
+    {
+        return $this->videos;
+    }
+}
