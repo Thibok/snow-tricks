@@ -1,5 +1,9 @@
 <?php
 
+/**
+ * Trick Entity
+ */
+
 namespace AppBundle\Entity;
 
 use AppBundle\Entity\User;
@@ -28,7 +32,7 @@ class Trick
 
     /**
      * @var int
-     *
+     * @access private
      * @ORM\Column(name="id", type="integer")
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="AUTO")
@@ -37,7 +41,7 @@ class Trick
 
     /**
      * @var string
-     *
+     * @access private
      * @ORM\Column(name="name", type="string", length=60, unique=true)
      * @Assert\NotBlank(message="You must enter a name for the trick !")
      * @Assert\Length(
@@ -55,7 +59,7 @@ class Trick
 
     /**
      * @var string
-     *
+     * @access private
      * @ORM\Column(name="description", type="text", nullable=true)
      * @Assert\Length(
      *      max=3000,
@@ -71,32 +75,35 @@ class Trick
 
     /**
      * @var \DateTime
-     *
+     * @access private
      * @ORM\Column(name="addAt", type="datetime")
      */
     private $addAt;
 
     /**
      * @var \DateTime
-     *
+     * @access private
      * @ORM\Column(name="updateAt", type="datetime", nullable=true)
      */
     private $updateAt;
 
     /**
      * @var string
-     *
+     * @access private
      * @ORM\Column(name="slug", type="string", length=60, unique=true)
      */
     private $slug;
 
     /**
+     * @var Collection
+     * @access private
      * @ORM\OneToMany(targetEntity="AppBundle\Entity\TrickImage", mappedBy="trick", cascade={"persist", "remove"})
      */
     private $images;
 
     /**
      * @var User
+     * @access private
      * @ORM\ManyToOne(targetEntity="AppBundle\Entity\User")
      * @ORM\JoinColumn(nullable=false)
      */
@@ -104,25 +111,36 @@ class Trick
 
     /**
      * @var Category
+     * @access private
      * @ORM\ManyToOne(targetEntity="AppBundle\Entity\Category")
      * @ORM\JoinColumn(nullable=false)
      */
     private $category;
 
     /**
+     * @var Collection
+     * @access private
      * @ORM\OneToMany(targetEntity="AppBundle\Entity\Video", mappedBy="trick", cascade={"persist", "remove"})
      */
     private $videos;
 
+    /**
+     * Constructor
+     * @access public
+     * 
+     * @return void
+     */
     public function __construct()
     {
         $this->images = new ArrayCollection;
+        $this->videos = new ArrayCollection;
         $this->addAt = new \DateTime;
     }
 
     /**
      * Get id
-     *
+     * @access public
+     * 
      * @return int
      */
     public function getId()
@@ -132,7 +150,7 @@ class Trick
 
     /**
      * Set name
-     *
+     * @access public
      * @param string $name
      *
      * @return Trick
@@ -146,7 +164,8 @@ class Trick
 
     /**
      * Get name
-     *
+     * @access public
+     * 
      * @return string
      */
     public function getName()
@@ -156,7 +175,7 @@ class Trick
 
     /**
      * Set description
-     *
+     * @access public
      * @param string $description
      *
      * @return Trick
@@ -170,7 +189,8 @@ class Trick
 
     /**
      * Get description
-     *
+     * @access public
+     * 
      * @return string
      */
     public function getDescription()
@@ -180,7 +200,7 @@ class Trick
 
     /**
      * Set addAt
-     *
+     * @access public
      * @param \DateTime $addAt
      *
      * @return Trick
@@ -194,6 +214,7 @@ class Trick
 
     /**
      * Get addAt
+     * @access public
      *
      * @return \DateTime
      */
@@ -204,7 +225,7 @@ class Trick
 
     /**
      * Set updateAt
-     *
+     * @access public
      * @param \DateTime $updateAt
      *
      * @return Trick
@@ -218,6 +239,7 @@ class Trick
 
     /**
      * Get updateAt
+     * @access public
      *
      * @return \DateTime
      */
@@ -228,7 +250,7 @@ class Trick
 
     /**
      * Set slug
-     *
+     * @access public
      * @param string $slug
      *
      * @return Trick
@@ -242,6 +264,7 @@ class Trick
 
     /**
      * Get slug
+     * @access public
      *
      * @return string
      */
@@ -252,7 +275,7 @@ class Trick
 
     /**
      * Add image
-     *
+     * @access public
      * @param TrickImage $image
      *
      * @return Trick
@@ -266,8 +289,10 @@ class Trick
 
     /**
      * Remove image
-     *
+     * @access public
      * @param TrickImage $image
+     * 
+     * @return void
      */
     public function removeImage(TrickImage $image)
     {
@@ -276,7 +301,8 @@ class Trick
 
     /**
      * Get images
-     *
+     * @access public
+     * 
      * @return Collection
      */
     public function getImages()
@@ -286,7 +312,7 @@ class Trick
 
     /**
      * Set user
-     *
+     * @access public
      * @param User $user
      *
      * @return Trick
@@ -300,6 +326,7 @@ class Trick
 
     /**
      * Get user
+     * @access public
      *
      * @return User
      */
@@ -310,7 +337,7 @@ class Trick
 
     /**
      * Set category
-     *
+     * @access public
      * @param Category $category
      *
      * @return Trick
@@ -324,6 +351,7 @@ class Trick
 
     /**
      * Get category
+     * @access public
      *
      * @return Category
      */
@@ -334,7 +362,7 @@ class Trick
 
     /**
      * Add video
-     *
+     * @access public
      * @param Video $video
      *
      * @return Trick
@@ -348,8 +376,10 @@ class Trick
 
     /**
      * Remove video
-     *
+     * @access public
      * @param Video $video
+     * 
+     * @return void
      */
     public function removeVideo(Video $video)
     {
@@ -358,6 +388,7 @@ class Trick
 
     /**
      * Get videos
+     * @access public
      *
      * @return Collection
      */

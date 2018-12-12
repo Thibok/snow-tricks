@@ -1,5 +1,9 @@
 <?php
 
+/**
+ * Video Entity
+ */
+
 namespace AppBundle\Entity;
 
 use AppBundle\Entity\Trick;
@@ -17,7 +21,7 @@ class Video
 {
     /**
      * @var int
-     *
+     * @access private
      * @ORM\Column(name="id", type="integer")
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="AUTO")
@@ -26,7 +30,7 @@ class Video
 
     /**
      * @var string
-     *
+     * @access private
      * @ORM\Column(name="url", type="text")
      * @Assert\Url(
      *      protocols={"http", "https"},
@@ -45,6 +49,7 @@ class Video
 
     /**
      * @var Trick
+     * @access private
      * @ORM\ManyToOne(targetEntity="AppBundle\Entity\Trick", inversedBy="videos")
      * @ORM\JoinColumn(nullable=false)
      */
@@ -53,7 +58,8 @@ class Video
 
     /**
      * Get id
-     *
+     * @access public
+     * 
      * @return int
      */
     public function getId()
@@ -63,7 +69,7 @@ class Video
 
     /**
      * Set url
-     *
+     * @access public
      * @param string $url
      *
      * @return Video
@@ -77,6 +83,7 @@ class Video
 
     /**
      * Get url
+     * @access public
      *
      * @return string
      */
@@ -87,7 +94,7 @@ class Video
 
     /**
      * Set trick
-     *
+     * @access public
      * @param Trick $trick
      *
      * @return Video
@@ -101,6 +108,7 @@ class Video
 
     /**
      * Get trick
+     * @access public
      *
      * @return Trick
      */

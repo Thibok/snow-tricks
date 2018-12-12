@@ -1,5 +1,9 @@
 <?php
 
+/**
+ * Category Entity
+ */
+
 namespace AppBundle\Entity;
 
 use Doctrine\ORM\Mapping as ORM;
@@ -15,7 +19,7 @@ class Category
 {
     /**
      * @var int
-     *
+     * @access private
      * @ORM\Column(name="id", type="integer")
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="AUTO")
@@ -24,7 +28,7 @@ class Category
 
     /**
      * @var string
-     *
+     * @access private
      * @ORM\Column(name="name", type="string", length=30, unique=true)
      * @Assert\NotBlank(message="You must choose a category !")
      */
@@ -33,6 +37,7 @@ class Category
 
     /**
      * Get id
+     * @access public
      *
      * @return int
      */
@@ -43,7 +48,7 @@ class Category
 
     /**
      * Set name
-     *
+     * @access public
      * @param string $name
      *
      * @return Category
@@ -57,7 +62,8 @@ class Category
 
     /**
      * Get name
-     *
+     * @access public
+     * 
      * @return string
      */
     public function getName()

@@ -1,5 +1,9 @@
 <?php
 
+/**
+ * TrickImage Entity
+ */
+
 namespace AppBundle\Entity;
 
 use AppBundle\Entity\Trick;
@@ -18,7 +22,7 @@ class TrickImage implements ImageInterface
 {
     /**
      * @var int
-     *
+     * @access private
      * @ORM\Column(name="id", type="integer")
      * @ORM\Id
      * @ORM\GeneratedValue(strategy="AUTO")
@@ -27,7 +31,7 @@ class TrickImage implements ImageInterface
 
     /**
      * @var string
-     *
+     * @access private
      * @ORM\Column(name="extension", type="string", length=5)
      */
     private $extension;
@@ -57,6 +61,7 @@ class TrickImage implements ImageInterface
 
     /**
      * @var Trick
+     * @access private
      * @ORM\ManyToOne(targetEntity="AppBundle\Entity\Trick", inversedBy="images")
      * @ORM\JoinColumn(nullable=false)
      */
@@ -65,6 +70,7 @@ class TrickImage implements ImageInterface
 
     /**
      * Get id
+     * @access public
      *
      * @return int
      */
@@ -75,7 +81,7 @@ class TrickImage implements ImageInterface
 
     /**
      * Set extension
-     *
+     * @access public
      * @param string $extension
      *
      * @return TrickImage
@@ -89,6 +95,7 @@ class TrickImage implements ImageInterface
 
     /**
      * Get extension
+     * @access public
      *
      * @return string
      */
@@ -119,8 +126,6 @@ class TrickImage implements ImageInterface
 
     /**
      * {@inheritdoc}
-     * 
-     * @return UserImage
      */
     public function setTempFilename($tempFilename)
     {
@@ -171,7 +176,7 @@ class TrickImage implements ImageInterface
 
     /**
      * Set trick
-     *
+     * @access public
      * @param Trick $trick
      *
      * @return TrickImage
@@ -185,6 +190,7 @@ class TrickImage implements ImageInterface
 
     /**
      * Get trick
+     * @access public
      *
      * @return Trick
      */
