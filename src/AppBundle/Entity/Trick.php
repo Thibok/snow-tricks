@@ -98,6 +98,7 @@ class Trick
      * @var Collection
      * @access private
      * @ORM\OneToMany(targetEntity="AppBundle\Entity\TrickImage", mappedBy="trick", cascade={"persist", "remove"})
+     * @Assert\Valid()
      */
     private $images;
 
@@ -114,6 +115,7 @@ class Trick
      * @access private
      * @ORM\ManyToOne(targetEntity="AppBundle\Entity\Category")
      * @ORM\JoinColumn(nullable=false)
+     * @Assert\Valid()
      */
     private $category;
 
@@ -121,6 +123,7 @@ class Trick
      * @var Collection
      * @access private
      * @ORM\OneToMany(targetEntity="AppBundle\Entity\Video", mappedBy="trick", cascade={"persist", "remove"})
+     * @Assert\Valid()
      */
     private $videos;
 
