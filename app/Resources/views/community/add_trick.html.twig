@@ -1,12 +1,63 @@
 {% extends 'base.html.twig' %}
 
-{% block body %}
+{% block title %} {{ parent() }} Add trick{% endblock %}
 
-{{ form_start(form) }}
-{{ form_widget(form) }}
-{{ form_end(form) }}
-
+{% block link %}
+  <link rel="stylesheet" type="text/css" href="//cdn.jsdelivr.net/npm/slick-carousel@1.8.1/slick/slick.css"/>
+  <link rel="stylesheet" type="text/css" href="http://kenwheeler.github.io/slick/slick/slick-theme.css"/>
 {% endblock %}
+
+{% block body %}
+  <div class="row" id="main">
+    <article class="col-lg-7" id="trick_block">
+      <div id ="trick_image">
+        <img class="img-fluid" src="{{ asset('img/preview_trick.png') }}" />
+      </div>
+        <div class="d-flex flex-row pl-4 pr-5 py-3" id="medias_container">
+          <div class="d-flex flex-column" id="addMedia">
+              <button class="btn btn-primary mb-2 mx-auto" id="addTrickImage">Add image</button>
+              <button class="btn btn-success mx-auto" href="#" id="addTrickVideo">Add video</button>
+          </div>
+          <div class="ml-4" id="medias">
+          </div>
+        </div>
+        {{ form_start(form, {'attr': {'class': 'form-horizontal px-5 py-5', 'id': 'trick_form', 'novalidate': 'novalidate'}}) }}
+        <div id="trickImages" data-prototype="{{ form_widget(form.images.vars.prototype.file)|e('html_attr') }}">
+          {% for image in form.images %}
+            {{ form_widget(image.file) }}
+            {{ form_errors(image.file) }}
+          {% endfor %}
+        </div>
+        <div class="form-group">    
+          {{ form_widget(form.videos, {'attr': {'class': 'form-control'}}) }}
+          <span class="invalid-feedback d-block" id="video_error"></span>
+        </div>
+        <div class="form-group">
+          {{ form_label(form.name, "Name", {'label_attr' : {'class': 'control-label'}}) }}    
+          {{ form_widget(form.name, {'attr': {'class': 'form-control'}}) }}
+          <span class="invalid-feedback d-block" id="name_error"></span>
+        </div>
+        <div class="form-group">
+          {{ form_label(form.description, "Description", {'label_attr' : {'class': 'control-label'}}) }} 
+          {{ form_widget(form.description, {'attr': {'class': 'form-control'}}) }}
+          <span class="invalid-feedback d-block" id="description_error"></span>
+        </div>
+        <div class="form-group">    
+          {{ form_widget(form.category, {'attr': {'class': 'form-control'}}) }}
+          <span class="invalid-feedback d-block" id="category_error"></span>
+        </div>
+        <div id="buttonSection" class="d-flex">
+          <button id="cancelBtn" class="btn btn-danger my-3 mx-auto">Cancel</button>
+          <button id="saveBtn" class="btn btn-primary my-3 mx-auto">Save</button>
+        </div>
+        {{ form_widget(form._token) }}
+      {{ form_end(form, {'render_rest': false}) }}
+    </article>
+  </div>
+{% endblock %}
+
 {% block javascripts %}
   {{ parent() }}
-{% endblock %}
+  <script src="//cdn.jsdelivr.net/npm/slick-carousel@1.8.1/slick/slick.min.js"></script>
+  <script src="{{ asset('/js/add_trick.js') }}"></script>
+{% endblock %}  

@@ -47,15 +47,20 @@ nav {
   padding-bottom: 120px;
 }
 
-#security_block {
+#security_block, #trick_block {
   margin: auto;
-  text-align: center;
 }
 
 #security_form {
   border: 1px solid grey;
   background-color: white;
   border-radius: 10px;
+  text-align: center;
+}
+
+#trick_form {
+  border: 1px solid grey;
+  background-color: white;
 }
 
 footer {
@@ -63,6 +68,19 @@ footer {
   height: 90px;
   margin-top: -90px;
   clear: both;
+}
+
+#addMedia {
+  width: 16%;
+}
+
+#medias {
+  width: 80%;
+}
+
+#addTrickImage, #addTrickVideo {
+  font-size:0.6em;
+  width:70px;
 }
 
 #copyright {
@@ -74,6 +92,9 @@ footer {
   border: 1px solid grey;
 }
 
+#medias_container {
+  background-color: #474c47;
+}
 
 @media screen and (max-width: 590px) {
   #main {

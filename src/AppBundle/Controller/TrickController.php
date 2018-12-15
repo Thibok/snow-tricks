@@ -34,6 +34,10 @@ class TrickController extends Controller
 
         $form = $this->createForm(TrickType::class, $trick);
 
+        $form->handleRequest($request);
+        if ($form->isSubmitted() && $form->isValid()) {
+            return new Response('ok');
+        }
         return $this->render('community/add_trick.html.twig', array('form' => $form->createView()));
     }
 }
