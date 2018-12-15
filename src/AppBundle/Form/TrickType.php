@@ -58,6 +58,4 @@ class TrickType extends AbstractType
     {
         return 'appbundle_trick';
     }
-
-
 }
