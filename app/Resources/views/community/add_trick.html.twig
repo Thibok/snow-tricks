@@ -2,25 +2,28 @@
 
 {% block title %} {{ parent() }} Add trick{% endblock %}
 
-{% block link %}
+{% block links %}
   <link rel="stylesheet" type="text/css" href="//cdn.jsdelivr.net/npm/slick-carousel@1.8.1/slick/slick.css"/>
-  <link rel="stylesheet" type="text/css" href="http://kenwheeler.github.io/slick/slick/slick-theme.css"/>
+  <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.8.1/slick-theme.min.css"/>
 {% endblock %}
 
 {% block body %}
   <div class="row" id="main">
     <article class="col-lg-7" id="trick_block">
       <div id ="trick_image">
-        <img class="img-fluid" src="{{ asset('img/preview_trick.png') }}" />
+        <img class="img-fluid border-black" src="{{ asset('img/preview_trick.jpg') }}" />
       </div>
-        <div class="d-flex flex-row pl-4 pr-5 py-3" id="medias_container">
-          <div class="d-flex flex-column" id="addMedia">
-              <button class="btn btn-primary mb-2 mx-auto" id="addTrickImage">Add image</button>
-              <button class="btn btn-success mx-auto" href="#" id="addTrickVideo">Add video</button>
-          </div>
-          <div class="ml-4" id="medias">
+        <div class="px-5 py-3" id="medias_container">
+          <div class="px-3" id="medias">
           </div>
         </div>
+        <div id="addMediaContainer" class="py-4">
+        <div id="addMedia">
+            <button class="btn btn-primary mr-1" id="addTrickImage">Add image</button> or
+            <button class="btn btn-success ml-1" href="#" id="addTrickVideo">Add video</button>
+        </div>
+        </div>
+        
         {{ form_start(form, {'attr': {'class': 'form-horizontal px-5 py-5', 'id': 'trick_form', 'novalidate': 'novalidate'}}) }}
         <div id="trickImages" data-prototype="{{ form_widget(form.images.vars.prototype.file)|e('html_attr') }}">
           {% for image in form.images %}
@@ -58,6 +61,6 @@
 
 {% block javascripts %}
   {{ parent() }}
-  <script src="//cdn.jsdelivr.net/npm/slick-carousel@1.8.1/slick/slick.min.js"></script>
+  <script type="text/javascript" src="//cdn.jsdelivr.net/npm/slick-carousel@1.8.1/slick/slick.min.js"></script>
   <script src="{{ asset('/js/add_trick.js') }}"></script>
 {% endblock %}  

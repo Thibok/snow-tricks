@@ -58,6 +58,10 @@ nav {
   text-align: center;
 }
 
+.border-black {
+  border: 1px solid black;
+}
+
 #trick_form {
   border: 1px solid grey;
   background-color: white;
@@ -68,14 +72,6 @@ footer {
   height: 90px;
   margin-top: -90px;
   clear: both;
-}
-
-#addMedia {
-  width: 16%;
-}
-
-#medias {
-  width: 80%;
 }
 
 #addTrickImage, #addTrickVideo {
@@ -96,6 +92,13 @@ footer {
   background-color: #474c47;
 }
 
+#addMediaContainer {
+  background-color: white;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+} 
+
 @media screen and (max-width: 590px) {
   #main {
     padding-top: 20px;
@@ -112,4 +115,8 @@ footer {
   }
 }
 
-
+.slick-slide {
+  margin-right:25px;
+  margin-left:25px;
+  width: 150px;
+}
