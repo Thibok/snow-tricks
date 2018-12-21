@@ -63,8 +63,8 @@ nav {
 }
 
 #trick_form {
-  border: 1px solid grey;
   background-color: white;
+  border-top: none;
 }
 
 footer {

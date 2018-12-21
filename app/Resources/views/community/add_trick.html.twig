@@ -13,18 +13,16 @@
       <div id ="trick_image">
         <img class="img-fluid border-black" src="{{ asset('img/preview_trick.jpg') }}" />
       </div>
-        <div class="px-5 py-3" id="medias_container">
-          <div class="px-3" id="medias">
-          </div>
-        </div>
-        <div id="addMediaContainer" class="py-4">
+      <div class="px-5 py-3" id="medias_container">
+        <div class="px-3" id="medias"></div>
+      </div>
+      <div id="addMediaContainer" class="py-4 border-black">
         <div id="addMedia">
-            <button class="btn btn-primary mr-1" id="addTrickImage">Add image</button> or
-            <button class="btn btn-success ml-1" href="#" id="addTrickVideo">Add video</button>
+          <a class="mr-1" id="addTrickImage" href="#"><img src="{{ asset('img/add.png') }}"/></a> or
+          <a class="ml-1" id="addTrickVideo" href="#"><img src="{{ asset('img/video.png') }}"/></a>
         </div>
-        </div>
-        
-        {{ form_start(form, {'attr': {'class': 'form-horizontal px-5 py-5', 'id': 'trick_form', 'novalidate': 'novalidate'}}) }}
+      </div>
+      {{ form_start(form, {'attr': {'class': 'form-horizontal px-5 py-5 border-black', 'id': 'trick_form', 'novalidate': 'novalidate'}}) }}
         <div id="trickImages" data-prototype="{{ form_widget(form.images.vars.prototype.file)|e('html_attr') }}">
           {% for image in form.images %}
             {{ form_widget(image.file) }}
