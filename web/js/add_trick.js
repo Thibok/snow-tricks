@@ -39,8 +39,8 @@ $(function () {
         let previewImgContainer = $('<div id="img-container-' + length + '" class="d-inline-block mt-1 mb-5 media"></div>');
         let controlsContainer = $('<div class="d-flex flex-row justify-content-around mt-2 border-black controls-container"></div>');
 
-        let editImg = $('<img class="mt-2" src="' + editIconPath + '"/>').css('height', '16px').css('width', '16px');
-        let deleteImg = $('<img class="mt-2" src="' + deleteIconPath + '"/>').css('height', '16px').css('width', '16px');
+        let editImg = $('<img class="test" src="' + editIconPath + '"/>').css('height', '16px').css('width', '16px');
+        let deleteImg = $('<img class="test" src="' + deleteIconPath + '"/>').css('height', '16px').css('width', '16px');
 
         let editLink = $('<a id="edit-img-' + length + '" class="edit-control px-1" href="#"></a>');
         let deleteLink = $('<a id="delete-img-' + length + '" class="delete-control px-1" href="#"></a>');
@@ -51,7 +51,7 @@ $(function () {
         let numberOfImg = $('<span class="compteur" id="img-number-' + length + '"></span>');
         numberOfImg.text(length).css('position', 'absolute').css('top', '78px').css('right', '8px');
 
-        $(editImg).click(function (e) {
+        $(editLink).click(function (e) {
             e.preventDefault();
             let idSplit = $(this).attr('id').split('-');
             $('#appbundle_trick_images_' + idSplit[2] +'_file').trigger('click');
@@ -59,7 +59,7 @@ $(function () {
             return false;
         });
 
-        $(deleteImg).click(function (e) {
+        $(deleteLink).click(function (e) {
             e.preventDefault();
             let idSplit = $(this).attr('id').split('-');
             deleteTrickImage(idSplit[2]);
@@ -67,8 +67,8 @@ $(function () {
             return false;
         });
 
-        controlsContainer.append(editImg);
-        controlsContainer.append(deleteImg);
+        controlsContainer.append(editLink);
+        controlsContainer.append(deleteLink);
 
         previewImgContainer.append(numberOfImg);
         previewImgContainer.append(trickImagePreview);
