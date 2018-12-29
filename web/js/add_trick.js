@@ -25,27 +25,31 @@ $(function () {
     }
 
     function deleteTrickImage(idNumber) {
-        let slider = $('#medias');
-        slider.slick('slickRemove', $('#img-container-' + idNumber));
-        slider.slick('refresh');
         $('#img-container-' + idNumber).remove();
         $('#appbundle_trick_images_' + idNumber +'_file').remove();
     }
 
     function createThumbImagePreview () {
         let previewImg = $('<img class="border-black" id="trickImg-sm-' + length + '"src="'+ previewThumbPath +'" alt="preview_mini"/>');
-        previewImg.css('width', '170px').css('height', '100px');
         previewImgContainer = addControlThumbImgPreview(previewImg);
-
-        $('#medias').slick('slickAdd', previewImgContainer);
+        $('#medias_container').append(previewImgContainer);
     }
 
     function addControlThumbImgPreview (trickImagePreview) {
-        let previewImgContainer = $('<div id="img-container-' + length + '" class="d-flex flex-column"></div>');
-        let controlsContainer = $('<div class="d-flex flex-row justify-content-around py-1 mt-2 border-black"></div>')
-        controlsContainer.css('background-color', 'white').css('width', '90px').css('height', '25px').css('margin-left', '80px');
-        let editImg = $('<a id="edit-img-' + length + '" class="px-1 media-img" href="#"><img src="' + editIconPath + '"/></a>');
-        let deleteImg = $('<a id="delete-img-' + length + '" class="px-1" href="#"><img src="' + deleteIconPath + '"/></a>');
+        let previewImgContainer = $('<div id="img-container-' + length + '" class="d-inline-block mt-1 mb-5 media"></div>');
+        let controlsContainer = $('<div class="d-flex flex-row justify-content-around mt-2 border-black controls-container"></div>');
+
+        let editImg = $('<img class="mt-2" src="' + editIconPath + '"/>').css('height', '16px').css('width', '16px');
+        let deleteImg = $('<img class="mt-2" src="' + deleteIconPath + '"/>').css('height', '16px').css('width', '16px');
+
+        let editLink = $('<a id="edit-img-' + length + '" class="edit-control px-1" href="#"></a>');
+        let deleteLink = $('<a id="delete-img-' + length + '" class="delete-control px-1" href="#"></a>');
+
+        editLink.append(editImg);
+        deleteLink.append(deleteImg);
+        
+        let numberOfImg = $('<span class="compteur" id="img-number-' + length + '"></span>');
+        numberOfImg.text(length).css('position', 'absolute').css('top', '78px').css('right', '8px');
 
         $(editImg).click(function (e) {
             e.preventDefault();
@@ -66,7 +70,9 @@ $(function () {
         controlsContainer.append(editImg);
         controlsContainer.append(deleteImg);
 
+        previewImgContainer.append(numberOfImg);
         previewImgContainer.append(trickImagePreview);
+
         previewImgContainer.append(controlsContainer);
 
         return previewImgContainer;
@@ -90,43 +96,6 @@ $(function () {
         let idSplit = input.attr('id').split('_');
         $('#trickImg-sm-' + idSplit[3]).attr('src', previewThumbPath);
     }
-
-    $('#medias').slick({
-        infinite: false,
-        slidesToShow: 5,
-        slidesToScroll: 5,
-        variableWidth: true,
-        responsive: [
-            {
-                breakpoint: 1900,
-                settings: {
-                    slidesToShow: 4,
-                    slidesToScroll: 4,
-                }
-            },
-            {
-                breakpoint: 1555,
-                settings: {
-                    slidesToShow: 3,
-                    slidesToScroll: 3
-                }
-            },
-            {
-                breakpoint: 1210,
-                settings: {
-                    slidesToShow: 2,
-                    slidesToScroll: 2
-                }
-            },
-            {
-                breakpoint: 510,
-                settings: {
-                    slidesToShow: 1,
-                    slidesToScroll: 1,
-                }
-            }
-        ]
-    });
 
     var containerImages = $('#trickImages');
     var imagesInputs = containerImages.children(':input');

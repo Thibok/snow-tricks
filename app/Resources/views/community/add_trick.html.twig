@@ -2,19 +2,13 @@
 
 {% block title %} {{ parent() }} Add trick{% endblock %}
 
-{% block links %}
-  <link rel="stylesheet" type="text/css" href="//cdn.jsdelivr.net/npm/slick-carousel@1.8.1/slick/slick.css"/>
-  <link rel="stylesheet" type="text/css" href="https://cdnjs.cloudflare.com/ajax/libs/slick-carousel/1.8.1/slick-theme.min.css"/>
-{% endblock %}
-
 {% block body %}
-  <div class="row" id="main">
+  <div id="main">
     <article class="col-lg-7" id="trick_block">
       <div id ="trick_image">
-        <img class="img-fluid border-black" src="{{ asset('img/preview_trick.jpg') }}" />
+        <img class="img-fluid border-black w-100" src="{{ asset('img/preview_trick.jpg') }}" />
       </div>
-      <div class="px-5 py-3" id="medias_container">
-        <div class="px-3" id="medias"></div>
+      <div class="py-4" id="medias_container">
       </div>
       <div id="addMediaContainer" class="py-4 border-black">
         <div id="addMedia">
@@ -59,6 +53,5 @@
 
 {% block javascripts %}
   {{ parent() }}
-  <script type="text/javascript" src="//cdn.jsdelivr.net/npm/slick-carousel@1.8.1/slick/slick.min.js"></script>
   <script src="{{ asset('/js/add_trick.js') }}"></script>
 {% endblock %}  
