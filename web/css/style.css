@@ -120,35 +120,27 @@ footer {
   height: 100px;
 }
 
-@media screen and (max-width: 1917px) {
+@media screen and (max-width: 1608px) {
   .media {
-    width: 22%;
-    margin-left: 15px;
-    margin-right: 15px;
+    width: 22.5%; 
   }
 }
 
-@media screen and (max-width: 1779px) {
+@media screen and (max-width: 1299px) {
   .media {
-    width: 31%;
-    margin-left: 9px;
-    margin-right: 9px;
+    width: 30.5%; 
   }
 }
 
-@media screen and (max-width: 1535px) {
+@media screen and (max-width: 1154px) {
   .media {
     width: 35%;
-    margin-left: 62px;
-    margin-right: 62px;
+    margin-left: 40px;
+    margin-right: 40px;
   }
 }
 
-@media screen and (max-width: 1483px) {
-  .media {
-   margin-left: 31.2%;   
-  }  
-}
+
 
 @media screen and (max-width: 991px) {
   .media {
@@ -164,17 +156,11 @@ footer {
   }
 }
 
-@media screen and (max-width: 901px) {
+@media screen and (max-width: 815px) {
   .media {
-    width: 35%;
-    margin-left: 55px;
-    margin-right: 55px;
-  }
-}
-
-@media screen and (max-width: 778px) {
-  .media {
-    margin-left: 30%;   
+    width: 34%;
+    margin-left: 8%;
+    margin-right: 8%;
   }
 }
 
