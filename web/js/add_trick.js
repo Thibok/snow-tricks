@@ -101,10 +101,106 @@ $(function () {
     var imagesInputs = containerImages.children(':input');
     var length = imagesInputs.length;
 
+    var containerVideos = $('#trickVideos');
+    var videosInputs = containerVideos.children(':input');
+    var videosLength = videosInputs.length;
+
     $('#addTrickImage').click(function (e) {
         e.preventDefault();
         addTrickImage(containerImages);
 
+        return false;
+    });
+
+    function createInputVideoUrl () {
+        var prototype = containerVideos.attr('data-prototype').replace(/__name__/g, length);
+        var urlField = $(prototype);
+
+        return urlField;
+    }
+
+    function createVideoIframe (videoSrc) {
+        let iframeVideoEl = $(
+            '<iframe class="align-middle" width=100% height=100% ' + videoSrc + ' frameborder="0" allow="fullscreen"></iframe>'
+        );
+
+        return iframeVideoEl;
+    }
+
+    function createVideoEl (videoSrc) {
+        let videoContainerEl = $('<div id="video-container-' + length + '" class="d-inline-block mt-1 mb-5 media video"></div>');
+        videoContainerEl.css('height', '100px');
+        let videoIframeEl = createVideoIframe(videoSrc);
+        let controlsEl = createControlsVideo();
+
+        videoContainerEl.append(videoIframeEl);
+        videoContainerEl.append(controlsEl);
+
+        return videoContainerEl;
+    }
+
+    function createControlsVideo () {
+        let controlsContainer = $('<div class="d-flex flex-row justify-content-around mt-2 border-black controls-container"></div>');
+        
+        let editImg = $('<img src="' + editIconPath + '"/>').css('height', '16px').css('width', '16px');
+        let deleteImg = $('<img src="' + deleteIconPath + '"/>').css('height', '16px').css('width', '16px');
+
+        let editLink = $('<a id="edit-video-' + length + '" class="edit-control px-1" href="#"></a>');
+        let deleteLink = $('<a id="delete-video-' + length + '" class="delete-control px-1" href="#"></a>');
+
+        $(deleteLink).click(function (e) {
+            e.preventDefault();
+            let idSplit = $(this).attr('id').split('-');
+            deleteTrickVideo(idSplit[2]);
+    
+            return false;
+        });
+
+        editLink.append(editImg);
+        deleteLink.append(deleteImg);
+
+        controlsContainer.append(editLink);
+        controlsContainer.append(deleteLink);
+
+        return controlsContainer;
+    }
+
+    function deleteTrickVideo(idNumber) {
+        $('#video-container-' + idNumber).remove();
+        $('#appbundle_trick_videos_' + idNumber +'_url').remove();
+    }
+
+    function uploadVideo() {
+        let iframeVideo  = $('#iframeVideo').val();
+
+        let regex = /src\s*=\s*"(.+?)"/;
+        let src = regex.exec(iframeVideo);
+
+        let videoEl = createVideoEl(src[0]);
+        let urlField = createInputVideoUrl();
+
+        let url = src[0].split('"');
+
+        urlField.val(url[1]);
+        urlField.hide();
+
+        containerVideos.append(urlField);
+        $('#medias_container').append(videoEl);
+        length++;
+    }
+
+    var addVideoModal = new jBox('Confirm', {
+        title: 'Add a video',
+        content: '<label class="control-label required" for="iframeVideo">Iframe</label><textarea id="iframeVideo" required="required" class="form-control"></textarea>',
+        cancelButton: 'Cancel',
+        confirmButton: 'Upload',
+        confirm: uploadVideo,
+    });
+
+    $('#addTrickVideo').click(function (e) {
+        e.preventDefault();
+        $('#iframeVideo').val('');
+        addVideoModal.open();
         return false;
     });
 });

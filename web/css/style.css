@@ -103,8 +103,8 @@ footer {
 .media {
   position: relative;
   width: 18%;
-  margin-left: 9px;
-  margin-right: 9px;
+  margin-left: 0.8%;
+  margin-right: 0.8%;
 }
 
 .controls-container {
@@ -135,18 +135,16 @@ footer {
 @media screen and (max-width: 1154px) {
   .media {
     width: 35%;
-    margin-left: 40px;
-    margin-right: 40px;
+    margin-left: 7%;
+    margin-right: 7%;
   }
 }
-
-
 
 @media screen and (max-width: 991px) {
   .media {
     width:23%;
-    margin-left: 9px;
-    margin-right: 9px;
+    margin-left: 0.8%;
+    margin-right: 0.8%;
   }  
 }
 
@@ -159,8 +157,8 @@ footer {
 @media screen and (max-width: 815px) {
   .media {
     width: 34%;
-    margin-left: 8%;
-    margin-right: 8%;
+    margin-left: 7%;
+    margin-right: 7%;
   }
 }
 
