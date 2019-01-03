@@ -120,6 +120,10 @@ footer {
   height: 100px;
 }
 
+.video {
+  background-color: black;
+}
+
 @media screen and (max-width: 1608px) {
   .media {
     width: 22.5%; 

@@ -1,8 +1,14 @@
 $(function () {
-    const previewThumbPath = '../img/preview_trick_thumb.jpg';
-    const previewLargePath = '../img/preview_trick.jpg';
-    const editIconPath = '../img/edit.png';
-    const deleteIconPath = '../img/delete.png';
+    const previewThumbPath = '/img/preview_trick_thumb.jpg';
+    const previewLargePath = '/img/preview_trick.jpg';
+    const editIconPath = '/img/edit.png';
+    const deleteIconPath = '/img/delete.png';
+    const iframeRegex = new RegExp('^<iframe .*><\/iframe>$');
+    const videoUrlSrcRegex = /src\s*=\s*"(.+?)"/;
+    const videoUrlRegex = new RegExp('^(https\:\/\/){1}(www\.youtube\.com\/embed\/[a-zA-Z0-9\?\=\&_-]{1,2053}|www\.dailymotion\.com\/embed\/video\/[a-zA-Z0-9\?\=\&_-]{1,2043}|player\.vimeo\.com\/video\/[a-zA-Z0-9\?\=\&_-]{1,2052})$');
+    const videoUrlMaxLength = 2083;
+    const minLengthMessage = "must be at least";
+    const maxLengthMessage = "must be at most";
 
     function addTrickImage(containerImg) {
         // Get html prototype 
@@ -170,11 +176,57 @@ $(function () {
         $('#appbundle_trick_videos_' + idNumber +'_url').remove();
     }
 
+    function validateIframe(iframe) {
+        if (!iframeRegex.test(iframe)) {
+            $('#iframe_error').text('Please enter a valid iframe tag');
+            return false;
+        }
+
+        let src = videoUrlSrcRegex.exec(iframe);
+
+        if (src === null) {
+            $('#iframe_error').text('The iframe tag must contain a valid src link');
+            return false;
+        }
+
+        let url = src[0].split('"');
+
+        if (!validateVideoUrl(url[1], $('#iframe_error'))) {
+            return false;
+        }
+
+        $('#iframe_error').text('');
+        return true;
+    }
+
+    function validateVideoUrl(url, errorTarget) {
+        if (url.length === 0) {
+            errorTarget.text('Url of the video can not be empty !')
+            return false;
+        }
+
+        if (url.length > videoUrlMaxLength) {
+            errorTarget.text('Url of the video ' + maxLengthMessage + ' ' + videoUrlMaxLength + ' characters !');
+            return false;
+        }
+
+        if (!videoUrlRegex.test(url)) {
+            errorTarget.text('The integration tag must come from Youtube, Dailymotion or Vimeo');
+            return false;
+        }
+
+        $(errorTarget).text('');
+        return true;
+    }
+
     function uploadVideo() {
         let iframeVideo  = $('#iframeVideo').val();
 
-        let regex = /src\s*=\s*"(.+?)"/;
-        let src = regex.exec(iframeVideo);
+        if (!validateIframe(iframeVideo)) {
+            return false;
+        }
+
+        let src = videoUrlSrcRegex.exec(iframeVideo);
 
         let videoEl = createVideoEl(src[0]);
         let urlField = createInputVideoUrl();
@@ -189,17 +241,37 @@ $(function () {
         length++;
     }
 
+    function clearModal() {
+        $('#iframeVideo').val('');
+        $('#iframe_error').text('');
+    }
+
+    var modalContainer = $('<div class="modalContainer"></div>');
+    var labelModalUrl = $('<label class="control-label required" for="iframeVideo">Iframe</label>');
+    var textareaModalUrl = $('<textarea id="iframeVideo" required="required" class="form-control"></textarea>')
+    var errorModalUrl = $('<span class="invalid-feedback d-block" id="iframe_error"></span>');
+
+    textareaModalUrl.on('keyup blur', function () {
+        validateIframe($(this).val());
+    });
+
+    modalContainer.append(labelModalUrl);
+    modalContainer.append(textareaModalUrl);
+    modalContainer.append(errorModalUrl);
+
     var addVideoModal = new jBox('Confirm', {
         title: 'Add a video',
-        content: '<label class="control-label required" for="iframeVideo">Iframe</label><textarea id="iframeVideo" required="required" class="form-control"></textarea>',
+        content: modalContainer,
         cancelButton: 'Cancel',
         confirmButton: 'Upload',
         confirm: uploadVideo,
+        cancel: clearModal,
     });
 
     $('#addTrickVideo').click(function (e) {
         e.preventDefault();
         $('#iframeVideo').val('');
+        $('#iframe_error').text('');
         addVideoModal.open();
         return false;
     });

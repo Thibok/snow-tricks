@@ -1,7 +1,7 @@
 $(function () {
     
     const navLinksText = ['Home', 'Sign in', 'Sign up', 'Logout'];
-    const navLinksIcon = ['../img/home.png', '../img/login.png', '../img/registration.png', '../img/logout.png'];
+    const navLinksIcon = ['/img/home.png', '/img/login.png', '/img/registration.png', '/img/logout.png'];
     const windowWidthLimit = 590;
 
     function navBarScroll () {
