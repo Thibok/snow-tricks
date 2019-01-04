@@ -124,6 +124,11 @@ footer {
   background-color: black;
 }
 
+#media_error_container {
+  background-color: white;
+  border-top: 1px solid black;
+}
+
 @media screen and (max-width: 1608px) {
   .media {
     width: 22.5%; 
