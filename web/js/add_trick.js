@@ -10,53 +10,51 @@ $(function () {
     const minLengthMessage = "must be at least";
     const maxLengthMessage = "must be at most";
 
-    function addTrickImage(containerImg) {
-        // Get html prototype 
-        var prototype = containerImg.attr('data-prototype').replace(/__name__/g, length);
-        var fileField = $(prototype);
+    function readURL(input) {
+        if (input.files && input.files[0]) {
+          let reader = new FileReader();
 
-        fileField.change(function () {
-            if ($(this).val().length !== 0) {
-                readURL(this);
-            } else {
-                loadDefaultThumbImgPreview($(this));
-            }
-        });
-
-        fileField.hide();
-        containerImg.append(fileField);
-        createThumbImagePreview();
-        length++;
-        fileField.trigger('click');
+          reader.onload = function(e) {
+            let idSplit = $(input).attr('id').split('_');
+            $('#trick-img-thumb-' + idSplit[3]).attr('src', e.target.result);
+          }
+      
+          reader.readAsDataURL(input.files[0]);
+        }
     }
 
-    function deleteTrickImage(idNumber) {
-        $('#img-container-' + idNumber).remove();
-        $('#appbundle_trick_images_' + idNumber +'_file').remove();
+    function loadDefaultThumbImgPreview (input) {
+        let idSplit = input.attr('id').split('_');
+        $('#trick-img-thumb-' + idSplit[3]).attr('src', previewThumbPath);
     }
 
-    function createThumbImagePreview () {
-        let previewImg = $('<img class="border-black" id="trickImg-sm-' + length + '"src="'+ previewThumbPath +'" alt="preview_mini"/>');
-        previewImgContainer = addControlThumbImgPreview(previewImg);
-        $('#medias_container').append(previewImgContainer);
+    function createImageEl() {
+        let previewImgContainer = $('<div id="img-container-' + imagesLength + '" class="d-inline-block mt-1 mb-5 media"></div>');
+        let previewImg = $('<img class="border-black" id="trick-img-thumb-' + imagesLength + '"src="'+ previewThumbPath +'" alt="preview_mini"/>');
+
+        let controlsEl = createControlsImage();
+
+        previewImgContainer.append(previewImg);
+        previewImgContainer.append(controlsEl);
+
+        return previewImgContainer;
     }
 
-    function addControlThumbImgPreview (trickImagePreview) {
-        let previewImgContainer = $('<div id="img-container-' + length + '" class="d-inline-block mt-1 mb-5 media"></div>');
+    function createControlsImage() {
         let controlsContainer = $('<div class="d-flex flex-row justify-content-around mt-2 border-black controls-container"></div>');
 
         let editImg = $('<img src="' + editIconPath + '"/>').css('height', '16px').css('width', '16px');
         let deleteImg = $('<img src="' + deleteIconPath + '"/>').css('height', '16px').css('width', '16px');
 
-        let editLink = $('<a id="edit-img-' + length + '" class="edit-control px-1" href="#"></a>');
-        let deleteLink = $('<a id="delete-img-' + length + '" class="delete-control px-1" href="#"></a>');
+        let editLink = $('<a id="edit-img-' + imagesLength + '" class="edit-control px-1" href="#"></a>');
+        let deleteLink = $('<a id="delete-img-' + imagesLength + '" class="delete-control px-1" href="#"></a>');
 
         editLink.append(editImg);
         deleteLink.append(deleteImg);
         
-        let numberOfImg = $('<span class="compteur px-1" id="img-number-' + length + '"></span>');
+        let numberOfImg = $('<span class="compteur px-1" id="img-number-' + imagesLength + '"></span>');
         numberOfImg.css('margin-top', '2px');
-        numberOfImg.text(length);
+        numberOfImg.text(imagesLength + 1);
 
         $(editLink).click(function (e) {
             e.preventDefault();
@@ -78,51 +76,45 @@ $(function () {
         controlsContainer.append(editLink);
         controlsContainer.append(deleteLink);
 
-       
-        previewImgContainer.append(trickImagePreview);
-
-        previewImgContainer.append(controlsContainer);
-
-        return previewImgContainer;
+        return controlsContainer;
     }
 
-    function readURL(input) {
+    function createInputImageFile() {
+        let prototype = containerImages.attr('data-prototype').replace(/__name__/g, imagesLength);
+        let fileField = $(prototype);
 
-        if (input.files && input.files[0]) {
-          let reader = new FileReader();
+        fileField.change(function () {
+            if ($(this).val().length !== 0) {
+                readURL(this);
+            } else {
+                loadDefaultThumbImgPreview($(this));
+            }
+        });
 
-          reader.onload = function(e) {
-            let idSplit = $(input).attr('id').split('_');
-            $('#trickImg-sm-' + idSplit[3]).attr('src', e.target.result);
-          }
-      
-          reader.readAsDataURL(input.files[0]);
-        }
+        return fileField;
     }
 
-    function loadDefaultThumbImgPreview (input) {
-        let idSplit = input.attr('id').split('_');
-        $('#trickImg-sm-' + idSplit[3]).attr('src', previewThumbPath);
+    function uploadImage() {
+        // Get html prototype 
+        let inputFile = createInputImageFile();
+        inputFile.hide();
+        containerImages.append(inputFile);
+
+        let imagePreview = createImageEl();
+        $('#medias_container').append(imagePreview);
+
+        imagesLength++;
+        inputFile.trigger('click');
     }
 
-    var containerImages = $('#trickImages');
-    var imagesInputs = containerImages.children(':input');
-    var length = imagesInputs.length;
+    function deleteTrickImage(imageId) {
+        $('#img-container-' + imageId).remove();
+        $('#appbundle_trick_images_' + imageId +'_file').remove();
+    }
 
-    var containerVideos = $('#trickVideos');
-    var videosInputs = containerVideos.children(':input');
-    var videosLength = videosInputs.length;
-
-    $('#addTrickImage').click(function (e) {
-        e.preventDefault();
-        addTrickImage(containerImages);
-
-        return false;
-    });
-
-    function createInputVideoUrl () {
-        var prototype = containerVideos.attr('data-prototype').replace(/__name__/g, length);
-        var urlField = $(prototype);
+    function createInputVideoUrl() {
+        let prototype = containerVideos.attr('data-prototype').replace(/__name__/g, videosLength);
+        let urlField = $(prototype);
 
         urlField.change(function () {
             let idSplit = $(this).attr('id').split('_');
@@ -139,7 +131,7 @@ $(function () {
     }
 
     function createVideoEl (videoSrc) {
-        let videoContainerEl = $('<div id="video-container-' + length + '" class="d-inline-block mt-1 mb-5 media video"></div>');
+        let videoContainerEl = $('<div id="video-container-' + videosLength + '" class="d-inline-block mt-1 mb-5 media video"></div>');
         videoContainerEl.css('height', '100px');
         let videoIframeEl = createVideoIframe(videoSrc);
         let controlsEl = createControlsVideo();
@@ -155,12 +147,12 @@ $(function () {
         let src = 'src="' + url + '"';
         let iframeEl = createVideoIframe(src);
 
-        var modalEditContainer = $('<div class="modalContainer"></div>');
-        var modalEditTitle = '<h6 id="editModalTitle">Edit video - ' + videoId + '</h6>';
-        var labelModalEditUrl = $('<label class="control-label required" for="iframeEditVideo">Iframe</label>');
-        var textareaModalEditUrl = $('<textarea id="iframeEditVideo" required="required" class="form-control"></textarea>');
+        let modalEditContainer = $('<div class="modalContainer"></div>');
+        let modalEditTitle = '<h6 id="editModalTitle">Edit video - ' + videoId + '</h6>';
+        let labelModalEditUrl = $('<label class="control-label required" for="iframeEditVideo">Iframe</label>');
+        let textareaModalEditUrl = $('<textarea id="iframeEditVideo" required="required" class="form-control"></textarea>');
         textareaModalEditUrl.val(iframeEl);
-        var errorModalEditUrl = $('<span class="invalid-feedback d-block" id="iframe_edit_error"></span>');
+        let errorModalEditUrl = $('<span class="invalid-feedback d-block" id="iframe_edit_error"></span>');
 
         textareaModalEditUrl.on('keyup blur', function () {
             validateIframe($(this).val(), $('#iframe_edit_error'));
@@ -177,10 +169,10 @@ $(function () {
     }
 
     function createAddVideoModalContent() {
-        var modalContainer = $('<div class="modalContainer"></div>');
-        var labelModalUrl = $('<label class="control-label required" for="iframeVideo">Iframe</label>');
-        var textareaModalUrl = $('<textarea id="iframeVideo" required="required" class="form-control"></textarea>')
-        var errorModalUrl = $('<span class="invalid-feedback d-block" id="iframe_error"></span>');
+        let modalContainer = $('<div class="modalContainer"></div>');
+        let labelModalUrl = $('<label class="control-label required" for="iframeVideo">Iframe</label>');
+        let textareaModalUrl = $('<textarea id="iframeVideo" required="required" class="form-control"></textarea>')
+        let errorModalUrl = $('<span class="invalid-feedback d-block" id="iframe_error"></span>');
 
         textareaModalUrl.on('keyup blur', function () {
             validateIframe($(this).val(), $('#iframe_error'));
@@ -199,8 +191,12 @@ $(function () {
         let editImg = $('<img src="' + editIconPath + '"/>').css('height', '16px').css('width', '16px');
         let deleteImg = $('<img src="' + deleteIconPath + '"/>').css('height', '16px').css('width', '16px');
 
-        let editLink = $('<a id="edit-video-' + length + '" class="edit-control px-1" href="#"></a>');
-        let deleteLink = $('<a id="delete-video-' + length + '" class="delete-control px-1" href="#"></a>');
+        let editLink = $('<a id="edit-video-' + videosLength + '" class="edit-control px-1" href="#"></a>');
+        let deleteLink = $('<a id="delete-video-' + videosLength + '" class="delete-control px-1" href="#"></a>');
+
+        let numberOfVideos = $('<span class="compteur px-1" id="img-number-' + videosLength + '"></span>');
+        numberOfVideos.css('margin-top', '2px');
+        numberOfVideos.text(videosLength + 1);
 
         $(editLink).click(function (e) {
             e.preventDefault();
@@ -220,6 +216,7 @@ $(function () {
         editLink.append(editImg);
         deleteLink.append(deleteImg);
 
+        controlsContainer.append(numberOfVideos);
         controlsContainer.append(editLink);
         controlsContainer.append(deleteLink);
 
@@ -313,7 +310,7 @@ $(function () {
         $('#medias_container').append(videoEl);
 
         urlField.change();
-        length++;
+        videosLength++;
     }
 
     function editVideo() {
@@ -341,6 +338,28 @@ $(function () {
         $('#iframe_error').text('');
     }
 
+    $('#addTrickImage').click(function (e) {
+        e.preventDefault();
+        uploadImage();
+
+        return false;
+    });
+
+    $('#addTrickVideo').click(function (e) {
+        e.preventDefault();
+        clearModal()
+        addVideoModal.open();
+        return false;
+    });
+    
+    var containerImages = $('#trickImages');
+    var imagesInputs = containerImages.children(':input');
+    var imagesLength= imagesInputs.length;
+
+    var containerVideos = $('#trickVideos');
+    var videosInputs = containerVideos.children(':input');
+    var videosLength = videosInputs.length;
+
     var addVideoModalContent = createAddVideoModalContent();
 
     var addVideoModal = new jBox('Confirm', {
@@ -356,12 +375,5 @@ $(function () {
         cancelButton: 'Cancel',
         confirmButton: 'Edit',
         confirm: editVideo,
-    });
-
-    $('#addTrickVideo').click(function (e) {
-        e.preventDefault();
-        clearModal()
-        addVideoModal.open();
-        return false;
     });
 });
