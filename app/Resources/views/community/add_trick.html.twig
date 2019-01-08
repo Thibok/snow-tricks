@@ -9,8 +9,12 @@
         <img class="img-fluid border-black w-100" src="{{ asset('img/preview_trick.jpg') }}" />
       </div>
       <div class="py-4" id="medias_container"></div>
+      <div class="pb-2" id="pagination">
+        <a class="mr-2" id="previous" href="#"><img src="{{ asset('img/prev_disabled.png') }}"/></a>
+        <a class="ml-2" id="next" href="#"><img src="{{ asset('img/next_disabled.png') }}"/></a>
+      </div>
       <div id="media_error_container">
-        <span class="invalid-feedback d-block text-center" id="media_error"></span>
+        <span class="invalid-feedback d-block text-center mt-0" id="media_error"></span>
       </div>
       <div id="addMediaContainer" class="py-4">
         <div id="addMedia">

@@ -3,9 +3,14 @@ $(function () {
     const previewLargePath = '/img/preview_trick.jpg';
     const editIconPath = '/img/edit.png';
     const deleteIconPath = '/img/delete.png';
+    const nextEnabledPath = '/img/next.png';
+    const prevEnabledPath = '/img/prev.png';
+    const nextDisableddPath = '/img/next_disabled.png';
+    const prevDisabledPath = '/img/prev_disabled.png';
     const iframeRegex = new RegExp('^<iframe .*><\/iframe>$');
     const videoUrlSrcRegex = /src\s*=\s*"(.+?)"/;
-    const videoUrlRegex = new RegExp('^(https\:\/\/){1}(www\.youtube\.com\/embed\/[a-zA-Z0-9\?\=\&_-]{1,2053}|www\.dailymotion\.com\/embed\/video\/[a-zA-Z0-9\?\=\&_-]{1,2043}|player\.vimeo\.com\/video\/[a-zA-Z0-9\?\=\&_-]{1,2052})$');
+    const videoUrlRegex = new RegExp('^(https\:\/\/){1}(www\.youtube\.com\/embed\/[a-zA-Z0-9\?\=\&_-]{1,2053}|'
+    + 'www\.dailymotion\.com\/embed\/video\/[a-zA-Z0-9\?\=\&_-]{1,2043}|player\.vimeo\.com\/video\/[a-zA-Z0-9\?\=\&_-]{1,2052})$');
     const videoUrlMaxLength = 2083;
     const minLengthMessage = "must be at least";
     const maxLengthMessage = "must be at most";
@@ -29,10 +34,10 @@ $(function () {
     }
 
     function createImageEl() {
-        let previewImgContainer = $('<div id="img-container-' + imagesLength + '" class="d-inline-block mt-1 mb-5 media"></div>');
-        let previewImg = $('<img class="border-black" id="trick-img-thumb-' + imagesLength + '"src="'+ previewThumbPath +'" alt="preview_mini"/>');
+        var previewImgContainer = $('<div id="img-container-' + imagesLength + '" class="d-inline-block mt-1 mb-5 media"></div>');
+        var previewImg = $('<img class="border-black" id="trick-img-thumb-' + imagesLength + '"src="'+ previewThumbPath +'" alt="preview_mini"/>');
 
-        let controlsEl = createControlsImage();
+        var controlsEl = createControlsImage();
 
         previewImgContainer.append(previewImg);
         previewImgContainer.append(controlsEl);
@@ -41,18 +46,18 @@ $(function () {
     }
 
     function createControlsImage() {
-        let controlsContainer = $('<div class="d-flex flex-row justify-content-around mt-2 border-black controls-container"></div>');
+        let controlsContainer = $('<div class="d-flex justify-content-around mt-2 border-black controls-container"></div>');
 
         let editImg = $('<img src="' + editIconPath + '"/>').css('height', '16px').css('width', '16px');
         let deleteImg = $('<img src="' + deleteIconPath + '"/>').css('height', '16px').css('width', '16px');
 
-        let editLink = $('<a id="edit-img-' + imagesLength + '" class="edit-control px-1" href="#"></a>');
-        let deleteLink = $('<a id="delete-img-' + imagesLength + '" class="delete-control px-1" href="#"></a>');
+        let editLink = $('<a id="edit-img-' + imagesLength + '" class="edit-control" href="#"></a>');
+        let deleteLink = $('<a id="delete-img-' + imagesLength + '" class="delete-control" href="#"></a>');
 
         editLink.append(editImg);
         deleteLink.append(deleteImg);
         
-        let numberOfImg = $('<span class="compteur px-1" id="img-number-' + imagesLength + '"></span>');
+        let numberOfImg = $('<span class="compteur" id="img-number-' + imagesLength + '"></span>');
         numberOfImg.css('margin-top', '2px');
         numberOfImg.text(imagesLength + 1);
 
@@ -68,6 +73,15 @@ $(function () {
             e.preventDefault();
             let idSplit = $(this).attr('id').split('-');
             deleteTrickImage(idSplit[2]);
+            totalMedias--;
+
+            refreshPagination();
+
+            if (getNbOfMediaActualPage() === 0) {
+                if (canPrev()) {
+                    pagePrevious();
+                }
+            }
     
             return false;
         });
@@ -101,9 +115,21 @@ $(function () {
         containerImages.append(inputFile);
 
         let imagePreview = createImageEl();
-        $('#medias_container').append(imagePreview);
 
+        if (getNbOfMediaActualPage() < getMediaPerPage()) {
+            imagePreview.addClass('reveal-media');
+        } else {
+            imagePreview.removeClass('d-inline-block');
+            imagePreview.hide();
+        }        
+
+        $('#medias_container').append(imagePreview);
+        
         imagesLength++;
+        totalMedias++;
+
+        showPagination();
+
         inputFile.trigger('click');
     }
 
@@ -209,6 +235,15 @@ $(function () {
             e.preventDefault();
             let idSplit = $(this).attr('id').split('-');
             deleteTrickVideo(idSplit[2]);
+            totalMedias--;
+
+            refreshPagination();
+
+            if (getNbOfMediaActualPage() === 0) {
+                if (canPrev()) {
+                    pagePrevious();
+                }
+            }
     
             return false;
         });
@@ -306,11 +341,21 @@ $(function () {
         urlField.val(url[1]);
         urlField.hide();
 
+        if (getNbOfMediaActualPage() < getMediaPerPage()) {
+            videoEl.addClass('reveal-media');
+        } else {
+            videoEl.removeClass('d-inline-block');
+            videoEl.hide();
+        }   
+
         containerVideos.append(urlField);
         $('#medias_container').append(videoEl);
 
         urlField.change();
         videosLength++;
+        totalMedias++;
+
+        showPagination();
     }
 
     function editVideo() {
@@ -338,6 +383,207 @@ $(function () {
         $('#iframe_error').text('');
     }
 
+    function getTotalMedias() {
+        return $('.media').length;
+    }
+
+    function getMediaPerPage() {
+        if (window.innerWidth < 1609 && window.innerWidth > 1299 || window.innerWidth < 992  && window.innerWidth > 944) {
+            return 4;
+        }
+
+        if (window.innerWidth < 1300 && window.innerWidth > 1154 || window.innerWidth < 945  && window.innerWidth > 815) {
+            return 3;
+        }
+
+        if (window.innerWidth < 1155 && window.innerWidth > 991 || window.innerWidth < 816  && window.innerWidth > 590) {
+            return 2;
+        }
+
+        if (window.innerWidth < 591){
+            return 1;
+        }
+
+        return 5;
+    }
+
+    function getTotalPages() {
+        var totalPages = Math.ceil(totalMedias / mediaPerPage);
+
+        if (totalPages === 0) {
+            return 1;
+        }
+
+        return totalPages;
+    }
+
+    function showPagination() {
+        if (getTotalMedias() <= getMediaPerPage()) {
+            disableNext();
+            disablePrev();
+            $('#pagination').hide();
+            return;
+        }
+
+        if (getTotalMedias() > getMediaPerPage()) {
+            $('#pagination').show();
+
+            if (canNext()) {
+                enableNext();
+            } else {
+                disableNext();
+            }
+
+            if (canPrev()) {
+                enablePrev();
+            } else {
+                disablePrev();
+            }
+
+            return;
+        }
+    }
+
+    function canPrev() {
+        if (actualPage > 1) {
+            return true;
+        }
+
+        return false;
+    }
+
+    function canNext() {
+        if (actualPage < getTotalPages()) {
+            return true;
+        }
+
+        return false;
+    }
+
+    function pageNext() {
+        $('.reveal-media').each(function () {
+            $(this).removeClass('reveal-media d-inline-block');
+            $(this).hide();
+        })
+
+        actualPage++;
+
+        if (!canNext()) {
+            disableNext();
+        } else {
+            enableNext();
+        }
+
+        if (!canPrev()) {
+            disablePrev();
+        } else {
+            enablePrev();
+        }
+
+        if (mediaPerPage === 1) {
+            $('.media').eq(actualPage - 1).addClass('reveal-media d-inline-block').show();
+            return;
+        }
+
+        var lastPos = actualPage * mediaPerPage;
+        var firstPos = lastPos - mediaPerPage;
+
+        while(firstPos < lastPos) {
+            $('.media').eq(firstPos).addClass('reveal-media d-inline-block').show();
+            firstPos++;
+        }
+
+        return;      
+    }
+
+    function pagePrevious() {
+        $('.reveal-media').each(function () {
+            $(this).removeClass('reveal-media d-inline-block');
+            $(this).hide();
+        })
+
+        actualPage--;
+
+        if (!canNext()) {
+            disableNext();
+        } else {
+            enableNext();
+        }
+
+        if (!canPrev()) {
+            disablePrev();
+        } else {
+            enablePrev();
+        }
+
+        if (mediaPerPage === 1) {
+            $('.media').eq(actualPage - 1).addClass('reveal-media d-inline-block').show();
+            return;
+        }
+
+        var lastPos = actualPage * mediaPerPage;
+        var firstPos = lastPos - mediaPerPage;
+
+        while(firstPos < lastPos) {
+            $('.media').eq(firstPos).addClass('reveal-media d-inline-block').show();
+            firstPos++;
+        }
+
+        return;
+    }
+
+    function refreshPagination() {
+        $('.reveal-media').each(function () {
+            $(this).removeClass('reveal-media d-inline-block');
+            $(this).hide();
+        })
+
+        if (mediaPerPage === 1) {
+            $('.media').eq(actualPage - 1).addClass('reveal-media d-inline-block').show();
+            return;
+        }
+
+        var lastPos = actualPage * mediaPerPage;
+        var firstPos = lastPos - mediaPerPage;
+
+        while(firstPos < lastPos) {
+            $('.media').eq(firstPos).addClass('reveal-media d-inline-block').show();
+            firstPos++;
+        }
+
+        showPagination();
+
+        return;
+    }
+
+    function disableNext() {
+        $('#next').removeAttr('href');
+        $('#next img').attr('src', nextDisableddPath);
+        return;
+    }
+
+    function disablePrev() {
+        $('#previous').removeAttr('href');
+        $('#previous img').attr('src', prevDisabledPath);
+        return;
+    }
+
+    function enableNext() {
+        $('#next').attr('href', '#');
+        $('#next img').attr('src', nextEnabledPath);
+        return;
+    }
+
+    function enablePrev() {
+        $('#previous').attr('href', '#');
+        $('#previous img').attr('src', prevEnabledPath);
+        return;
+    }
+
+    function getNbOfMediaActualPage() {
+        return $('.reveal-media').length;
+    }
+
     $('#addTrickImage').click(function (e) {
         e.preventDefault();
         uploadImage();
@@ -351,7 +597,38 @@ $(function () {
         addVideoModal.open();
         return false;
     });
-    
+
+    $('#next').click(function (e) {
+        e.preventDefault();
+
+        if (canNext()) {
+            pageNext();
+
+            return false;
+        }
+
+        return false;
+    });
+
+    $('#previous').click(function (e) {
+        e.preventDefault();
+
+        if (canPrev()) {
+            pagePrevious();
+
+            return false;
+        }
+
+        return false;
+    });
+
+    var actualPage = 1;
+    var totalMedias = getTotalMedias();
+    var mediaPerPage = getMediaPerPage();
+    var totalPages = getTotalPages();
+
+    showPagination();
+
     var containerImages = $('#trickImages');
     var imagesInputs = containerImages.children(':input');
     var imagesLength= imagesInputs.length;
