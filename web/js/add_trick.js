@@ -133,6 +133,35 @@ $(function () {
         inputFile.trigger('click');
     }
 
+    function refreshImages() {
+        var fileInputs = containerImages.children(':input');
+        var fileInputsLength = fileInputs.length;
+
+        if (fileInputsLength === 0) {
+            return 0;
+        }
+
+        fileInputs.hide();
+
+        while(imagesLength < fileInputsLength) {
+            let imagePreview = createImageEl();
+
+            if (getNbOfMediaActualPage() < getMediaPerPage()) {
+                imagePreview.addClass('reveal-media');
+            } else {
+                imagePreview.removeClass('d-inline-block');
+                imagePreview.hide();
+            }        
+
+            $('#medias_container').append(imagePreview);
+        
+            imagesLength++;
+            totalMedias++;
+        }
+
+        return;
+    }
+
     function deleteTrickImage(imageId) {
         $('#img-container-' + imageId).remove();
         $('#appbundle_trick_images_' + imageId +'_file').remove();
@@ -408,7 +437,7 @@ $(function () {
     }
 
     function getTotalPages() {
-        var totalPages = Math.ceil(totalMedias / mediaPerPage);
+        var totalPages = Math.ceil(totalMedias / getMediaPerPage());
 
         if (totalPages === 0) {
             return 1;
@@ -480,13 +509,13 @@ $(function () {
             enablePrev();
         }
 
-        if (mediaPerPage === 1) {
+        if (getMediaPerPage() === 1) {
             $('.media').eq(actualPage - 1).addClass('reveal-media d-inline-block').show();
             return;
         }
 
-        var lastPos = actualPage * mediaPerPage;
-        var firstPos = lastPos - mediaPerPage;
+        var lastPos = actualPage * getMediaPerPage();
+        var firstPos = lastPos - getMediaPerPage();
 
         while(firstPos < lastPos) {
             $('.media').eq(firstPos).addClass('reveal-media d-inline-block').show();
@@ -516,13 +545,13 @@ $(function () {
             enablePrev();
         }
 
-        if (mediaPerPage === 1) {
+        if (getMediaPerPage() === 1) {
             $('.media').eq(actualPage - 1).addClass('reveal-media d-inline-block').show();
             return;
         }
 
-        var lastPos = actualPage * mediaPerPage;
-        var firstPos = lastPos - mediaPerPage;
+        var lastPos = actualPage * getMediaPerPage();
+        var firstPos = lastPos - getMediaPerPage();
 
         while(firstPos < lastPos) {
             $('.media').eq(firstPos).addClass('reveal-media d-inline-block').show();
@@ -538,13 +567,14 @@ $(function () {
             $(this).hide();
         })
 
-        if (mediaPerPage === 1) {
+        if (getMediaPerPage() === 1) {
             $('.media').eq(actualPage - 1).addClass('reveal-media d-inline-block').show();
+            showPagination();
             return;
         }
 
-        var lastPos = actualPage * mediaPerPage;
-        var firstPos = lastPos - mediaPerPage;
+        var lastPos = actualPage * getMediaPerPage();
+        var firstPos = lastPos - getMediaPerPage();
 
         while(firstPos < lastPos) {
             $('.media').eq(firstPos).addClass('reveal-media d-inline-block').show();
@@ -622,16 +652,20 @@ $(function () {
         return false;
     });
 
+    $(window).resize(function () {
+        refreshPagination();
+    });
+
     var actualPage = 1;
-    var totalMedias = getTotalMedias();
+    var totalMedias = 0;
     var mediaPerPage = getMediaPerPage();
     var totalPages = getTotalPages();
 
-    showPagination();
-
     var containerImages = $('#trickImages');
-    var imagesInputs = containerImages.children(':input');
-    var imagesLength= imagesInputs.length;
+
+    var imagesLength = 0;
+    refreshImages();
+    showPagination();
 
     var containerVideos = $('#trickVideos');
     var videosInputs = containerVideos.children(':input');
