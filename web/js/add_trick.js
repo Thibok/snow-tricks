@@ -34,8 +34,8 @@ $(function () {
     }
 
     function createImageEl() {
-        var previewImgContainer = $('<div id="img-container-' + imagesLength + '" class="d-inline-block mt-1 mb-5 media"></div>');
-        var previewImg = $('<img class="border-black" id="trick-img-thumb-' + imagesLength + '"src="'+ previewThumbPath +'" alt="preview_mini"/>');
+        var previewImgContainer = $('<div id="img-container-' + imagesLength + '" class="d-inline-block mt-1 mb-5 media image"></div>');
+        var previewImg = $('<img class="border-black media-img" id="trick-img-thumb-' + imagesLength + '"src="'+ previewThumbPath +'" alt="preview_mini"/>');
 
         var controlsEl = createControlsImage();
 
@@ -51,13 +51,13 @@ $(function () {
         let editImg = $('<img src="' + editIconPath + '"/>').css('height', '16px').css('width', '16px');
         let deleteImg = $('<img src="' + deleteIconPath + '"/>').css('height', '16px').css('width', '16px');
 
-        let editLink = $('<a id="edit-img-' + imagesLength + '" class="edit-control" href="#"></a>');
-        let deleteLink = $('<a id="delete-img-' + imagesLength + '" class="delete-control" href="#"></a>');
+        let editLink = $('<a id="edit-img-' + imagesLength + '" class="edit-control-img" href="#"></a>');
+        let deleteLink = $('<a id="delete-img-' + imagesLength + '" class="delete-control-img" href="#"></a>');
 
         editLink.append(editImg);
         deleteLink.append(deleteImg);
         
-        let numberOfImg = $('<span class="compteur" id="img-number-' + imagesLength + '"></span>');
+        let numberOfImg = $('<span class="counter-img" id="img-number-' + imagesLength + '"></span>');
         numberOfImg.css('margin-top', '2px');
         numberOfImg.text(imagesLength + 1);
 
@@ -75,6 +75,7 @@ $(function () {
             deleteTrickImage(idSplit[2]);
             totalMedias--;
 
+            refreshImages();
             refreshPagination();
 
             if (getNbOfMediaActualPage() === 0) {
@@ -123,27 +124,44 @@ $(function () {
             imagePreview.hide();
         }        
 
-        $('#medias_container').append(imagePreview);
+        if (videosLength === 0) {
+            $('#medias_container').append(imagePreview);
+        } else {
+            $('.video').eq(0).before(imagePreview);
+        }
         
         imagesLength++;
         totalMedias++;
 
-        showPagination();
+        refreshPagination();
 
         inputFile.trigger('click');
     }
 
-    function refreshImages() {
+    function recreateImages() {
         var fileInputs = containerImages.children(':input');
         var fileInputsLength = fileInputs.length;
 
         if (fileInputsLength === 0) {
-            return 0;
+            return;
         }
 
         fileInputs.hide();
 
         while(imagesLength < fileInputsLength) {
+            let fileInputId = 'appbundle_trick_images_' + imagesLength + '_file';
+            let fileInputName = 'appbundle_trick[images][' + imagesLength + '][file]';
+            
+            let fileInput = fileInputs.eq(imagesLength).attr('id', fileInputId).attr('name', fileInputName);
+
+            fileInput.change(function () {
+                if ($(this).val().length !== 0) {
+                    readURL(this);
+                } else {
+                    loadDefaultThumbImgPreview($(this));
+                }
+            });
+
             let imagePreview = createImageEl();
 
             if (getNbOfMediaActualPage() < getMediaPerPage()) {
@@ -157,6 +175,39 @@ $(function () {
         
             imagesLength++;
             totalMedias++;
+        }
+
+        return;
+    }
+
+    function refreshImages() {
+        let inputsFile = containerImages.children(':input');
+        let inputsFileLength = inputsFile.length;
+
+        if (inputsFileLength === 0) {
+            imagesLength  = 0;
+            return;
+        }
+
+        imagesLength = 0;
+
+        while(imagesLength < inputsFileLength) {
+            let mediaId = 'img-container-' + imagesLength;
+            let mediaImgId = 'trick-img-thumb-' + imagesLength;
+            let counterId = 'img-number-' + imagesLength;
+            let editControlId = 'edit-img-' + imagesLength;
+            let deleteControlId = 'delete-img-' + imagesLength;
+            let inputId = 'appbundle_trick_images_' + imagesLength + '_file';
+            let inputName = 'appbundle_trick[images][' + imagesLength + '][file]';
+
+            $('.image').eq(imagesLength).attr('id', mediaId);
+            $('.media-img').eq(imagesLength).attr('id', mediaImgId);
+            $('.counter-img').eq(imagesLength).attr('id', counterId).text(imagesLength + 1);
+            $('.edit-control-img').eq(imagesLength).attr('id', editControlId);
+            $('.delete-control-img').eq(imagesLength).attr('id', deleteControlId);
+            inputsFile.eq(imagesLength).attr('id', inputId).attr('name', inputName);
+
+            imagesLength++;
         }
 
         return;
@@ -246,10 +297,10 @@ $(function () {
         let editImg = $('<img src="' + editIconPath + '"/>').css('height', '16px').css('width', '16px');
         let deleteImg = $('<img src="' + deleteIconPath + '"/>').css('height', '16px').css('width', '16px');
 
-        let editLink = $('<a id="edit-video-' + videosLength + '" class="edit-control px-1" href="#"></a>');
-        let deleteLink = $('<a id="delete-video-' + videosLength + '" class="delete-control px-1" href="#"></a>');
+        let editLink = $('<a id="edit-video-' + videosLength + '" class="edit-control-video px-1" href="#"></a>');
+        let deleteLink = $('<a id="delete-video-' + videosLength + '" class="delete-control-video px-1" href="#"></a>');
 
-        let numberOfVideos = $('<span class="compteur px-1" id="img-number-' + videosLength + '"></span>');
+        let numberOfVideos = $('<span class="counter-video px-1" id="video-number-' + videosLength + '"></span>');
         numberOfVideos.css('margin-top', '2px');
         numberOfVideos.text(videosLength + 1);
 
@@ -266,6 +317,7 @@ $(function () {
             deleteTrickVideo(idSplit[2]);
             totalMedias--;
 
+            refreshVideos();
             refreshPagination();
 
             if (getNbOfMediaActualPage() === 0) {
@@ -384,7 +436,73 @@ $(function () {
         videosLength++;
         totalMedias++;
 
-        showPagination();
+        refreshPagination();
+    }
+
+    function recreateVideos() {
+        let videosInputs = containerVideos.children(':input');
+        let videosInputsLength = videosInputs.length;
+
+        videosInputs.hide();
+
+        if (videosInputsLength === 0) {
+            return;
+        }
+
+        while (videosLength < videosInputsLength) {
+            let videoInputId = 'appbundle_trick_videos_' + videosLength + '_url';
+            let videoInputName = 'appbundle_trick[videos][' + videosLength + '][url]';
+
+            let videoInput = videosInputs.eq(videosLength);
+            videoInput.attr('id', videoInputId).attr('name', videoInputName);
+
+            let srcVideo = 'src="' + videoInput.val() + '"';
+
+            let videoEl = createVideoEl(srcVideo);
+
+            if (getNbOfMediaActualPage() < getMediaPerPage()) {
+                videoEl.addClass('reveal-media');
+            } else {
+                videoEl.removeClass('d-inline-block');
+                videoEl.hide();
+            }
+
+            $('#medias_container').append(videoEl);
+
+            videosLength++;
+            totalMedias++;
+        }
+    }
+
+    function refreshVideos() {
+        let inputsUrl = containerVideos.children(':input');
+        let inputsUrlLength = inputsUrl.length;
+
+        if (inputsUrlLength === 0) {
+            videosLength  = 0;
+            return;
+        }
+
+        videosLength = 0;
+
+        while(videosLength < inputsUrlLength) {
+            let mediaId = 'video-container-' + videosLength;
+            let counterId = 'video-number-' + videosLength;
+            let editControlId = 'edit-video-' + videosLength;
+            let deleteControlId = 'delete-video-' + videosLength;
+            let inputId = 'appbundle_trick_videos_' + videosLength + '_url';
+            let inputName = 'appbundle_trick[videos][' + videosLength + '][url]';
+
+            $('.video').eq(videosLength).attr('id', mediaId);
+            $('.counter-video').eq(videosLength).attr('id', counterId).text(videosLength + 1);
+            $('.edit-control-video').eq(videosLength).attr('id', editControlId);
+            $('.delete-control-video').eq(videosLength).attr('id', deleteControlId);
+            inputsUrl.eq(videosLength).attr('id', inputId).attr('name', inputName);
+
+            videosLength++;
+        }
+
+        return;
     }
 
     function editVideo() {
@@ -664,12 +782,14 @@ $(function () {
     var containerImages = $('#trickImages');
 
     var imagesLength = 0;
-    refreshImages();
-    showPagination();
+    recreateImages();
 
     var containerVideos = $('#trickVideos');
-    var videosInputs = containerVideos.children(':input');
-    var videosLength = videosInputs.length;
+
+    var videosLength = 0;
+    recreateVideos();
+
+    showPagination();
 
     var addVideoModalContent = createAddVideoModalContent();
 
