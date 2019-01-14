@@ -7,10 +7,20 @@ $(function () {
     const prevEnabledPath = '/img/prev.png';
     const nextDisableddPath = '/img/next_disabled.png';
     const prevDisabledPath = '/img/prev_disabled.png';
+    const youtubeEmbedFormat = 'https://www.youtube.com/embed/';
+    const dailymotionEmbedFormat = 'https://www.dailymotion.com/embed/video/';
+    const vimeoEmbedFormat = 'https://player.vimeo.com/video/';
     const iframeRegex = new RegExp('^<iframe .*><\/iframe>$');
     const videoUrlSrcRegex = /src\s*=\s*"(.+?)"/;
-    const videoUrlRegex = new RegExp('^(https\:\/\/){1}(www\.youtube\.com\/embed\/[a-zA-Z0-9\?\=\&_-]{1,2053}|'
-    + 'www\.dailymotion\.com\/embed\/video\/[a-zA-Z0-9\?\=\&_-]{1,2043}|player\.vimeo\.com\/video\/[a-zA-Z0-9\?\=\&_-]{1,2052})$');
+    const urlRegex = new RegExp('^(https\:\/\/){1}(www\.youtube\.com\/embed\/[a-zA-Z0-9\?\=\&_-]{1,2053}|www\.dailymotion\.com\/embed\/video\/[a-zA-Z0-9\?\=\&_-]{1,2043}|player\.vimeo\.com\/video\/[a-zA-Z0-9\?\=\#\&_-]{1,2052}|youtu\.be\/[a-zA-Z0-9\?\=\&_-]{1,2066}|www\.youtube\.com\/watch\\?v\=[a-zA-Z0-9\?\=\&_-]{1,2051}|www\.dailymotion\.com\/video\/[a-zA-Z0-9\?\=\&_-]{1,2049}|dai\.ly\/[a-zA-Z0-9\?\=\&_-]{1,2068}|vimeo\.com\/[a-zA-Z0-9\?\=\#\&_-]{1,2065})$');
+    const urlEmbedRegex = new RegExp('^(https\:\/\/){1}(www\.youtube\.com\/embed\/[a-zA-Z0-9\?\=\&_-]{1,2053}|'
+    + 'www\.dailymotion\.com\/embed\/video\/[a-zA-Z0-9\?\=\&_-]{1,2043}|player\.vimeo\.com\/video\/[a-zA-Z0-9\?\=\#\&_-]{1,2052})$');
+    const linksRegex = new RegExp('^(https\:\/\/){1}(www\.youtube\.com\/watch\\?v\=[a-zA-Z0-9\?\=\&_-]{1,2051}|youtu\.be\/[a-zA-Z0-9\?\=\&_-]{1,2066}|www\.dailymotion\.com\/video\/[a-zA-Z0-9\?\=\&_-]{1,2049}|dai\.ly\/[a-zA-Z0-9\?\=\&_-]{1,2068}|vimeo\.com\/[a-zA-Z0-9\?\=\#\&_-]{1,2065})$');
+    const youtubeRegex = new RegExp('^(https\:\/\/){1}(www\.youtube\.com\/watch\\?v\=[a-zA-Z0-9\?\=\&_-]{1,2051})$');
+    const youtubeShortRegex = new RegExp('^(https\:\/\/){1}(youtu\.be\/[a-zA-Z0-9\?\=\&_-]{1,2066})$');
+    const vimeoRegex = new RegExp('^(https\:\/\/){1}(vimeo\.com\/[a-zA-Z0-9\?\=\#\&_-]{1,2065})$');
+    const dailymotionRegex = new RegExp('^(https\:\/\/){1}(www\.dailymotion\.com\/video\/[a-zA-Z0-9\?\=\&_-]{1,2049})$');
+    const dailymotionShortRegex = new RegExp('^(https\:\/\/){1}(dai\.ly\/[a-zA-Z0-9\?\=\&_-]{1,2068})$');
     const videoUrlMaxLength = 2083;
     const minLengthMessage = "must be at least";
     const maxLengthMessage = "must be at most";
@@ -224,7 +234,7 @@ $(function () {
 
         urlField.change(function () {
             let idSplit = $(this).attr('id').split('_');
-            validateVideoUrl($(this).val(), $('#media_error'), idSplit[3]);
+            validateUrl($(this).val(), Number(idSplit[3]) + 1);
         });
 
         return urlField;
@@ -274,7 +284,7 @@ $(function () {
         return editVideoModal;
     }
 
-    function createAddVideoModalContent() {
+    function createAddVideoIframeModalContent() {
         let modalContainer = $('<div class="modalContainer"></div>');
         let labelModalUrl = $('<label class="control-label required" for="iframeVideo">Iframe</label>');
         let textareaModalUrl = $('<textarea id="iframeVideo" required="required" class="form-control"></textarea>')
@@ -359,7 +369,7 @@ $(function () {
 
         let url = src[0].split('"');
 
-        if (!validateVideoUrl(url[1], errorTarget, null)) {
+        if (!validateEmbedUrl(url[1], errorTarget)) {
             return false;
         }
 
@@ -367,13 +377,9 @@ $(function () {
         return true;
     }
 
-    function validateVideoUrl(url, errorTarget, videoId) {
+    function validateEmbedUrl(url, errorTarget) {
         if (url.length === 0) {
             let errorMsg = 'Url of the video can not be empty !';
-
-            if (videoId !== null) {
-                errorMsg = 'Video ' + videoId + ' : ' + errorMsg;
-            }
 
             errorTarget.text(errorMsg);
             return false;
@@ -382,26 +388,74 @@ $(function () {
         if (url.length > videoUrlMaxLength) {
             let errorMsg = 'Url of the video ' + maxLengthMessage + ' ' + videoUrlMaxLength + ' characters !'
 
-            if (videoId !== null) {
-                errorMsg = 'Video ' + videoId + ' : ' + errorMsg;
-            }
-
             errorTarget.text(errorMsg);
             return false;
         }
 
-        if (!videoUrlRegex.test(url)) {
+        if (!urlEmbedRegex.test(url)) {
             let errorMsg = 'The integration tag must come from Youtube, Dailymotion or Vimeo';
-
-            if (videoId !== null) {
-                errorMsg = 'Video ' + videoId + ' : ' + errorMsg;
-            }
 
             errorTarget.text(errorMsg);
             return false;
         }
 
         $(errorTarget).text('');
+        return true;
+    }
+
+    function validateLink(link, errorTarget) {
+        if (link.length === 0) {
+            let errorMsg = 'You must enter a link !';
+
+            errorTarget.text(errorMsg);
+            return false;
+        }
+
+        if (link.length > videoUrlMaxLength) {
+            let errorMsg = 'The link ' + maxLengthMessage + ' ' + videoUrlMaxLength + ' characters !'
+
+            errorTarget.text(errorMsg);
+            return false;
+        }
+
+        if (!linksRegex.test(link)) {
+            let errorMsg = 'The link must come from Youtube, Dailymotion or Vimeo';
+
+            errorTarget.text(errorMsg);
+            return false;
+        }
+
+        errorTarget.text('');
+        return true;
+    }
+
+    function validateUrl(url, videoId) {
+        if (url.length === 0) {
+            let errorMsg = 'Url of the video can not be empty !';
+            errorMsg = 'Video ' + videoId + ' : ' + errorMsg;
+            
+
+            $('#media_error').text(errorMsg);
+            return false;
+        }
+
+        if (url.length > videoUrlMaxLength) {
+            let errorMsg = 'Url of the video ' + maxLengthMessage + ' ' + videoUrlMaxLength + ' characters !'
+            errorMsg = 'Video ' + videoId + ' : ' + errorMsg;
+
+            $('#media_error').text(errorMsg);
+            return false;
+        }
+
+        if (!urlRegex.test(url)) {
+            let errorMsg = 'The video must come from Youtube, Dailymotion or Vimeo';
+            errorMsg = 'Video ' + videoId + ' : ' + errorMsg;
+
+            $('#media_error').text(errorMsg);
+            return false;
+        }
+
+        $('#media_error').text('');
         return true;
     }
 
@@ -437,6 +491,77 @@ $(function () {
         totalMedias++;
 
         refreshPagination();
+    }
+
+    function uploadVideoLink() {
+        let linkVideo  = $('#linkVideo').val();
+
+        if (!validateLink(linkVideo, $('#link_error'))) {
+            return false;
+        }
+
+        let embedLink = convertLinkToEmbed(linkVideo);
+
+        let src = 'src="' + embedLink + '"';
+
+        let videoEl = createVideoEl(src);
+        let urlField = createInputVideoUrl();
+
+        urlField.val(linkVideo);
+        urlField.hide();
+
+        if (getNbOfMediaActualPage() < getMediaPerPage()) {
+            videoEl.addClass('reveal-media');
+        } else {
+            videoEl.removeClass('d-inline-block');
+            videoEl.hide();
+        }   
+
+        containerVideos.append(urlField);
+        $('#medias_container').append(videoEl);
+
+        urlField.change();
+        videosLength++;
+        totalMedias++;
+
+        refreshPagination();
+    }
+
+    function convertLinkToEmbed(link) {
+        if (youtubeRegex.test(link)) {
+            let videoCode = link.split('v=');
+            let embedLink = youtubeEmbedFormat + videoCode[1];
+
+            return embedLink;
+        }
+
+        if (youtubeShortRegex.test(link)) {
+            let videoCode = link.split('/');
+            let embedLink = youtubeEmbedFormat + videoCode[3];
+            
+            return embedLink;
+        }
+
+        if (dailymotionRegex.test(link)) {
+            let videoCode = link.split('/');
+            let embedLink = dailymotionEmbedFormat + videoCode[4];
+
+            return embedLink;
+        }
+
+        if (dailymotionShortRegex.test(link)) {
+            let videoCode = link.split('/');
+            let embedLink = dailymotionEmbedFormat + videoCode[3];
+
+            return embedLink;
+        }
+
+        if (vimeoRegex.test(link)) {
+            let videoCode = link.split('/');
+            let embedLink = vimeoEmbedFormat + videoCode[3];
+
+            return embedLink;
+        }
     }
 
     function recreateVideos() {
@@ -525,9 +650,56 @@ $(function () {
         videoUrlInput.change();
     }
 
+    function createAddVideoModalContent() {
+        let addVideoContainer = $('<ul></ul>');
+        let videoIframeLi = $('<li></li>').css('list-style-type', 'none');
+        let videoLinkLi = $('<li></li>').css('list-style-type', 'none');
+        let videoIframeLink = $('<a href="#">Add video with embed tag</a>');
+        let videoLink = $('<a href="#">Add video with link</a>');
+
+        videoIframeLink.click(function (e) {
+            e.preventDefault();
+            addVideoModal.close();
+            addVideoIframeModal.open();
+        });
+
+        videoLink.click(function (e) {
+            e.preventDefault();
+            addVideoModal.close();
+            addVideoLinkModal.open();
+        });
+
+        videoIframeLi.append(videoIframeLink);
+        videoLinkLi.append(videoLink);
+
+        addVideoContainer.append(videoIframeLi);
+        addVideoContainer.append(videoLinkLi);
+
+        return addVideoContainer;
+    }
+
+    function createAddVideoLinkModalContent() {
+        let modalContainer = $('<div class="modalContainer"></div>');
+        let labelModalUrl = $('<label class="control-label required" for="linkVideo">Link</label>');
+        let textareaModalUrl = $('<textarea id="linkVideo" required="required" class="form-control"></textarea>')
+        let errorModalUrl = $('<span class="invalid-feedback d-block" id="link_error"></span>');
+
+        textareaModalUrl.on('keyup blur', function () {
+            validateLink($(this).val(), $('#link_error'));
+        });
+
+        modalContainer.append(labelModalUrl);
+        modalContainer.append(textareaModalUrl);
+        modalContainer.append(errorModalUrl);
+
+        return modalContainer;
+    }
+
     function clearModal() {
         $('#iframeVideo').val('');
+        $('#linkVideo').val('');
         $('#iframe_error').text('');
+        $('#link_error').text('');
     }
 
     function getTotalMedias() {
@@ -791,15 +963,31 @@ $(function () {
 
     showPagination();
 
+    var addVideoIframeModalContent = createAddVideoIframeModalContent();
     var addVideoModalContent = createAddVideoModalContent();
+    var addVideoLinkModalContent = createAddVideoLinkModalContent();
 
-    var addVideoModal = new jBox('Confirm', {
+    var addVideoIframeModal = new jBox('Confirm', {
         title: 'Add a video',
-        content: addVideoModalContent,
+        content: addVideoIframeModalContent,
         cancelButton: 'Cancel',
         confirmButton: 'Upload',
         confirm: uploadVideo,
         cancel: clearModal,
+    });
+
+    var addVideoLinkModal = new jBox('Confirm', {
+        title: 'Add a video',
+        content: addVideoLinkModalContent,
+        cancelButton: 'Cancel',
+        confirmButton: 'Upload',
+        confirm: uploadVideoLink,
+        cancel: clearModal,
+    });
+
+    var addVideoModal = new jBox('Modal', {
+        title: 'Add a video',
+        content: addVideoModalContent,
     });
 
     var editVideoModal = new jBox('Confirm', {
