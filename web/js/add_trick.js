@@ -258,21 +258,32 @@ $(function () {
         return videoContainerEl;
     }
 
-    function createEditVideoModal(videoId) {
-        let url = $('#appbundle_trick_videos_' + videoId +'_url').val();
-        let src = 'src="' + url + '"';
-        let iframeEl = createVideoIframe(src);
-
+    function createEditVideoModal(videoId) {       
         let modalEditContainer = $('<div class="modalContainer"></div>');
-        let modalEditTitle = '<h6 id="editModalTitle">Edit video - ' + videoId + '</h6>';
-        let labelModalEditUrl = $('<label class="control-label required" for="iframeEditVideo">Iframe</label>');
-        let textareaModalEditUrl = $('<textarea id="iframeEditVideo" required="required" class="form-control"></textarea>');
-        textareaModalEditUrl.val(iframeEl);
-        let errorModalEditUrl = $('<span class="invalid-feedback d-block" id="iframe_edit_error"></span>');
+        let numberTitle = Number(videoId) + 1;
+        let modalEditTitle = '<h6 id="editModalTitle">Edit video - ' + numberTitle + '</h6>';
+        let labelModalEditUrl = $('<label id="labelEditVideo" class="control-label required" for="editVideo"></label>');
+        let textareaModalEditUrl = $('<textarea id="editVideo" required="required" class="form-control"></textarea>');
+        let errorModalEditUrl = $('<span class="invalid-feedback d-block" id="video_edit_error"></span>');
 
-        textareaModalEditUrl.on('keyup blur', function () {
-            validateIframe($(this).val(), $('#iframe_edit_error'));
-        });
+        let videoValue = $('#appbundle_trick_videos_' + videoId +'_url').val();
+
+        if (urlEmbedRegex.test(videoValue)) {
+            labelModalEditUrl.text('Iframe');
+            var src = 'src="' + videoValue + '"';
+            videoValue = createVideoIframe(src);
+
+            textareaModalEditUrl.on('keyup blur', function () {
+                validateIframe($(this).val(), $('#video_edit_error'));
+            });
+        } else {
+            labelModalEditUrl.text('Link');
+            textareaModalEditUrl.on('keyup blur', function () {
+                validateLink($(this).val(), $('#video_edit_error'));
+            });
+        }
+
+        textareaModalEditUrl.val(videoValue);
 
         modalEditContainer.append(labelModalEditUrl);
         modalEditContainer.append(textareaModalEditUrl);
@@ -284,21 +295,23 @@ $(function () {
         return editVideoModal;
     }
 
-    function createAddVideoIframeModalContent() {
+    function createAddVideoIframeModal() {
         let modalContainer = $('<div class="modalContainer"></div>');
-        let labelModalUrl = $('<label class="control-label required" for="iframeVideo">Iframe</label>');
-        let textareaModalUrl = $('<textarea id="iframeVideo" required="required" class="form-control"></textarea>')
-        let errorModalUrl = $('<span class="invalid-feedback d-block" id="iframe_error"></span>');
+        let labelModalUrl = $('<label id="addVideoLabel" class="control-label required" for="addVideo">Iframe</label>');
+        let textareaModalUrl = $('<textarea id="addVideo" required="required" class="form-control"></textarea>')
+        let errorModalUrl = $('<span class="invalid-feedback d-block" id="add_video_error"></span>');
 
         textareaModalUrl.on('keyup blur', function () {
-            validateIframe($(this).val(), $('#iframe_error'));
+            validateIframe($(this).val(), $('#add_video_error'));
         });
 
         modalContainer.append(labelModalUrl);
         modalContainer.append(textareaModalUrl);
         modalContainer.append(errorModalUrl);
 
-        return modalContainer;
+        addVideoModal.setContent(modalContainer);
+
+        return;
     }
 
     function createControlsVideo () {
@@ -460,54 +473,34 @@ $(function () {
     }
 
     function uploadVideo() {
-        let iframeVideo  = $('#iframeVideo').val();
+        let videoValue  = $('#addVideo').val();
 
-        if (!validateIframe(iframeVideo, $('#iframe_error'))) {
-            return false;
-        }
+        let videoEl;
+        let urlField;
 
-        let src = videoUrlSrcRegex.exec(iframeVideo);
+        if ($('#addVideoLabel').text() === 'Iframe') {
+            if (!validateIframe(videoValue, $('#add_video_error'))) {
+                return;
+            }
 
-        let videoEl = createVideoEl(src[0]);
-        let urlField = createInputVideoUrl();
+            let src = videoUrlSrcRegex.exec(videoValue);
+            videoEl = createVideoEl(src[0]);
+            urlField = createInputVideoUrl();
+            let url = src[0].split('"');
 
-        let url = src[0].split('"');
-
-        urlField.val(url[1]);
-        urlField.hide();
-
-        if (getNbOfMediaActualPage() < getMediaPerPage()) {
-            videoEl.addClass('reveal-media');
+            urlField.val(url[1]);
         } else {
-            videoEl.removeClass('d-inline-block');
-            videoEl.hide();
-        }   
+            if (!validateLink(videoValue, $('#add_video_error'))) {
+                return;
+            }
 
-        containerVideos.append(urlField);
-        $('#medias_container').append(videoEl);
-
-        urlField.change();
-        videosLength++;
-        totalMedias++;
-
-        refreshPagination();
-    }
-
-    function uploadVideoLink() {
-        let linkVideo  = $('#linkVideo').val();
-
-        if (!validateLink(linkVideo, $('#link_error'))) {
-            return false;
+            let embedLink = convertLinkToEmbed(videoValue);
+            let src = 'src="' + embedLink + '"';
+            videoEl = createVideoEl(src);
+            urlField = createInputVideoUrl();
+            urlField.val(videoValue);
         }
 
-        let embedLink = convertLinkToEmbed(linkVideo);
-
-        let src = 'src="' + embedLink + '"';
-
-        let videoEl = createVideoEl(src);
-        let urlField = createInputVideoUrl();
-
-        urlField.val(linkVideo);
         urlField.hide();
 
         if (getNbOfMediaActualPage() < getMediaPerPage()) {
@@ -581,7 +574,13 @@ $(function () {
             let videoInput = videosInputs.eq(videosLength);
             videoInput.attr('id', videoInputId).attr('name', videoInputName);
 
-            let srcVideo = 'src="' + videoInput.val() + '"';
+            var videoUrl = videoInput.val();
+
+            if (linksRegex.test(videoUrl)) {
+                var videoUrl = convertLinkToEmbed(videoUrl);
+            }
+
+            let srcVideo = 'src="' + videoUrl + '"';
 
             let videoEl = createVideoEl(srcVideo);
 
@@ -631,26 +630,43 @@ $(function () {
     }
 
     function editVideo() {
-        let iframeVideo  = $('#iframeEditVideo').val();
+        let videoValue  = $('#editVideo').val();
         let titleSplit = $('#editModalTitle').text().split(' ');
+        let videoId = Number(titleSplit[3]) - 1;
 
-        if (!validateIframe(iframeVideo, $('#iframe_edit_error'))) {
-            return false;
+        if ($('#labelEditVideo').text() === 'Iframe') {
+            if(!validateIframe(videoValue, $('#video_edit_error'))) {
+                return;
+            }
+
+            let src = videoUrlSrcRegex.exec(videoValue);
+            let url = src[0].split('"');
+
+            let videoIframePreview = $('#video-container-' + videoId + ' iframe');
+            videoIframePreview.attr('src', url[1]);
+
+            let videoUrlInput = $('#appbundle_trick_videos_' + videoId + '_url');
+            videoUrlInput.val(url[1]);
+            videoUrlInput.change();
+        } else {
+            if (!validateLink(videoValue, $('#video_edit_error'))) {
+                return;
+            }
+
+            let embedLink = convertLinkToEmbed(videoValue);
+
+            let videoIframePreview = $('#video-container-' + videoId + ' iframe');
+            videoIframePreview.attr('src', embedLink);
+
+            let videoUrlInput = $('#appbundle_trick_videos_' + videoId + '_url');
+            videoUrlInput.val(videoValue);
+            videoUrlInput.change();
         }
 
-        let src = videoUrlSrcRegex.exec(iframeVideo);
-        let url = src[0].split('"');
-
-        let videoIframePreview = $('#video-container-' + titleSplit[3] + ' iframe');
-        videoIframePreview.attr('src', url[1]);
-
-        let videoUrlInput = $('#appbundle_trick_videos_' + titleSplit[3] + '_url');
-        videoUrlInput.val(url[1]);
-
-        videoUrlInput.change();
+        return;
     }
 
-    function createAddVideoModalContent() {
+    function createAddVideoByModalContent() {
         let addVideoContainer = $('<ul></ul>');
         let videoIframeLi = $('<li></li>').css('list-style-type', 'none');
         let videoLinkLi = $('<li></li>').css('list-style-type', 'none');
@@ -659,14 +675,16 @@ $(function () {
 
         videoIframeLink.click(function (e) {
             e.preventDefault();
-            addVideoModal.close();
-            addVideoIframeModal.open();
+            addVideoByModal.close();
+            createAddVideoIframeModal();
+            addVideoModal.open();
         });
 
         videoLink.click(function (e) {
             e.preventDefault();
-            addVideoModal.close();
-            addVideoLinkModal.open();
+            addVideoByModal.close();
+            createAddVideoLinkModal()
+            addVideoModal.open();
         });
 
         videoIframeLi.append(videoIframeLink);
@@ -678,28 +696,23 @@ $(function () {
         return addVideoContainer;
     }
 
-    function createAddVideoLinkModalContent() {
+    function createAddVideoLinkModal() {
         let modalContainer = $('<div class="modalContainer"></div>');
-        let labelModalUrl = $('<label class="control-label required" for="linkVideo">Link</label>');
-        let textareaModalUrl = $('<textarea id="linkVideo" required="required" class="form-control"></textarea>')
-        let errorModalUrl = $('<span class="invalid-feedback d-block" id="link_error"></span>');
+        let labelModalUrl = $('<label id="addVideoLabel" class="control-label required" for="addVideo">Link</label>');
+        let textareaModalUrl = $('<textarea id="addVideo" required="required" class="form-control"></textarea>')
+        let errorModalUrl = $('<span class="invalid-feedback d-block" id="add_video_error"></span>');
 
         textareaModalUrl.on('keyup blur', function () {
-            validateLink($(this).val(), $('#link_error'));
+            validateLink($(this).val(), $('#add_video_error'));
         });
 
         modalContainer.append(labelModalUrl);
         modalContainer.append(textareaModalUrl);
         modalContainer.append(errorModalUrl);
 
-        return modalContainer;
-    }
+        addVideoModal.setContent(modalContainer);
 
-    function clearModal() {
-        $('#iframeVideo').val('');
-        $('#linkVideo').val('');
-        $('#iframe_error').text('');
-        $('#link_error').text('');
+        return;
     }
 
     function getTotalMedias() {
@@ -913,8 +926,7 @@ $(function () {
 
     $('#addTrickVideo').click(function (e) {
         e.preventDefault();
-        clearModal()
-        addVideoModal.open();
+        addVideoByModal.open();
         return false;
     });
 
@@ -963,31 +975,18 @@ $(function () {
 
     showPagination();
 
-    var addVideoIframeModalContent = createAddVideoIframeModalContent();
-    var addVideoModalContent = createAddVideoModalContent();
-    var addVideoLinkModalContent = createAddVideoLinkModalContent();
+    var addVideoByModalContent = createAddVideoByModalContent();
 
-    var addVideoIframeModal = new jBox('Confirm', {
+    var addVideoByModal = new jBox('Modal', {
         title: 'Add a video',
-        content: addVideoIframeModalContent,
+        content: addVideoByModalContent,
+    });
+
+    var addVideoModal = new jBox('Confirm', {
+        title: 'Add a video',
         cancelButton: 'Cancel',
         confirmButton: 'Upload',
         confirm: uploadVideo,
-        cancel: clearModal,
-    });
-
-    var addVideoLinkModal = new jBox('Confirm', {
-        title: 'Add a video',
-        content: addVideoLinkModalContent,
-        cancelButton: 'Cancel',
-        confirmButton: 'Upload',
-        confirm: uploadVideoLink,
-        cancel: clearModal,
-    });
-
-    var addVideoModal = new jBox('Modal', {
-        title: 'Add a video',
-        content: addVideoModalContent,
     });
 
     var editVideoModal = new jBox('Confirm', {
