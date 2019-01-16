@@ -7,6 +7,8 @@ $(function () {
     const prevEnabledPath = '/img/prev.png';
     const nextDisableddPath = '/img/next_disabled.png';
     const prevDisabledPath = '/img/prev_disabled.png';
+    const favIconPath = '/img/fav.png';
+    const notFavIconPath = '/img/not_fav.png';
     const youtubeEmbedFormat = 'https://www.youtube.com/embed/';
     const dailymotionEmbedFormat = 'https://www.dailymotion.com/embed/video/';
     const vimeoEmbedFormat = 'https://player.vimeo.com/video/';
@@ -32,6 +34,10 @@ $(function () {
           reader.onload = function(e) {
             let idSplit = $(input).attr('id').split('_');
             $('#trick-img-thumb-' + idSplit[3]).attr('src', e.target.result);
+
+            if ($(input).hasClass('fav-input')) {
+                $('#mainTrickImg').attr('src', e.target.result);
+            }
           }
       
           reader.readAsDataURL(input.files[0]);
@@ -41,10 +47,14 @@ $(function () {
     function loadDefaultThumbImgPreview (input) {
         let idSplit = input.attr('id').split('_');
         $('#trick-img-thumb-' + idSplit[3]).attr('src', previewThumbPath);
+
+        if ($(input).hasClass('fav-input')) {
+            $('#mainTrickImg').attr('src', previewLargePath);
+        }
     }
 
     function createImageEl() {
-        var previewImgContainer = $('<div id="img-container-' + imagesLength + '" class="d-inline-block mt-1 mb-5 media image"></div>');
+        var previewImgContainer = $('<div id="img-container-' + imagesLength + '" class="d-inline-block mt-1 mb-5 media image fav"></div>');
         var previewImg = $('<img class="border-black media-img" id="trick-img-thumb-' + imagesLength + '"src="'+ previewThumbPath +'" alt="preview_mini"/>');
 
         var controlsEl = createControlsImage();
@@ -61,11 +71,23 @@ $(function () {
         let editImg = $('<img src="' + editIconPath + '"/>').css('height', '16px').css('width', '16px');
         let deleteImg = $('<img src="' + deleteIconPath + '"/>').css('height', '16px').css('width', '16px');
 
+        let favImg;
+        let favLink;
+
+        if (imagesLength === 0) {
+            favImg = $('<img src="' + favIconPath + '"/>').css('height', '16px').css('width', '16px');
+            favLink = $('<a id="fav-' + imagesLength + '" class="fav-check star" href="#"></a>');
+        } else {
+            favImg = $('<img src="' + notFavIconPath + '"/>').css('height', '16px').css('width', '16px');
+            favLink = $('<a id="fav-' + imagesLength + '" class="fav-uncheck star" href="#"></a>');
+        }
+
         let editLink = $('<a id="edit-img-' + imagesLength + '" class="edit-control-img" href="#"></a>');
         let deleteLink = $('<a id="delete-img-' + imagesLength + '" class="delete-control-img" href="#"></a>');
 
         editLink.append(editImg);
         deleteLink.append(deleteImg);
+        favLink.append(favImg);
         
         let numberOfImg = $('<span class="counter-img" id="img-number-' + imagesLength + '"></span>');
         numberOfImg.css('margin-top', '2px');
@@ -88,6 +110,21 @@ $(function () {
             refreshImages();
             refreshPagination();
 
+            if ($('fav').length === 0) {
+                let newMainImg = $('#img-container-0');
+                let src = newMainImg.children('img').attr('src');
+                $('#fav-0').children('img').attr('src', favIconPath);
+                $('#fav-0').removeClass('fav-uncheck').addClass('fav-check');
+                $('#appbundle_trick_images_0_file').addClass('fav-input');
+                newMainImg.addClass('fav');
+    
+                if (src === previewThumbPath || src === undefined) {
+                    $('#mainTrickImg').attr('src', previewLargePath);
+                } else {
+                    $('#mainTrickImg').attr('src', src);
+                }
+            }
+
             if (getNbOfMediaActualPage() === 0) {
                 if (canPrev()) {
                     pagePrevious();
@@ -97,7 +134,57 @@ $(function () {
             return false;
         });
 
+        favLink.click(function (e) {
+            e.preventDefault();
+            let imgId = $(this).attr('id').split('-');
+            if ($(this).hasClass('fav-check')) {
+
+                if (Number(imgId[1]) === 0) {
+                    return;
+                }
+
+                $(this).removeClass('fav-check').addClass('fav-uncheck');
+                $(this).children('img').attr('src', notFavIconPath);
+                $('#img-container-' + imgId[1]).removeClass('fav');
+                $('#appbundle_trick_images_' + imgId[1] + '_file').removeClass('fav-input');
+                let imgPreview = $('#img-container-0');
+                imgPreview.addClass('fav');
+                let src = imgPreview.children('img').attr('src');
+
+                if (src !== previewThumbPath) {
+                    $('#mainTrickImg').attr('src', src);
+                } else {
+                    $('#mainTrickImg').attr('src', previewLargePath);
+                }
+
+                $('#appbundle_trick_images_0_file').addClass('fav-input');
+                $('#fav-0').removeClass('fav-unchek').addClass('fav-check');
+                $('#fav-0 img').attr('src', favIconPath);
+
+            } else {
+                $('.fav').removeClass('fav');
+                $('.fav-check').addClass('fav-uncheck').removeClass('fav-check').children('img').attr('src', notFavIconPath);
+                $('.fav-input').removeClass('fav-input');
+                $(this).removeClass('fav-uncheck').addClass('fav-check');
+                $(this).children('img').attr('src', favIconPath);
+                let imgThumb = $('#img-container-' + imgId[1]);
+                $('#appbundle_trick_images_' + imgId[1] + '_file').addClass('fav-input');
+
+                imgThumb.addClass('fav');
+                let src = imgThumb.children('img').attr('src');
+
+                if (src !== previewThumbPath) {
+                    $('#mainTrickImg').attr('src', src);
+                } else {
+                    $('#mainTrickImg').attr('src', previewLargePath);
+                }
+            }
+
+            return false;
+        });
+
         controlsContainer.append(numberOfImg);
+        controlsContainer.append(favLink);
         controlsContainer.append(editLink);
         controlsContainer.append(deleteLink);
 
@@ -107,6 +194,10 @@ $(function () {
     function createInputImageFile() {
         let prototype = containerImages.attr('data-prototype').replace(/__name__/g, imagesLength);
         let fileField = $(prototype);
+
+        if (imagesLength === 0) {
+            fileField.addClass('fav-input');
+        }
 
         fileField.change(function () {
             if ($(this).val().length !== 0) {
@@ -207,6 +298,7 @@ $(function () {
             let counterId = 'img-number-' + imagesLength;
             let editControlId = 'edit-img-' + imagesLength;
             let deleteControlId = 'delete-img-' + imagesLength;
+            let favId = 'fav-' + imagesLength;
             let inputId = 'appbundle_trick_images_' + imagesLength + '_file';
             let inputName = 'appbundle_trick[images][' + imagesLength + '][file]';
 
@@ -215,6 +307,7 @@ $(function () {
             $('.counter-img').eq(imagesLength).attr('id', counterId).text(imagesLength + 1);
             $('.edit-control-img').eq(imagesLength).attr('id', editControlId);
             $('.delete-control-img').eq(imagesLength).attr('id', deleteControlId);
+            $('.star').eq(imagesLength).attr('id', favId);
             inputsFile.eq(imagesLength).attr('id', inputId).attr('name', inputName);
 
             imagesLength++;
