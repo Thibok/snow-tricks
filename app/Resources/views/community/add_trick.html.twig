@@ -5,9 +5,13 @@
 {% block body %}
   <div id="main">
     <article class="col-lg-7" id="trick_block">
-      <div id ="trick_image">
-        <img id="mainTrickImg" class="img-fluid border-black w-100" src="{{ asset('img/preview_trick.jpg') }}" />
+    <div id="mainTrickImgContainer">
+      <img id="mainTrickImg" class="border-black img-fluid w-100" src="{{ asset('img/preview_trick.jpg') }}" />
+      <div class="pb-1 d-flex justify-content-around" id="mainTrickImgControls">
+        <a href="#" class='edit-main-trick-img'><img src="{{ asset('img/edit.png') }}" /></a>
+        <a href="#" class="delete-main-trick-img"><img src="{{ asset('img/delete.png') }}" /></a>
       </div>
+    </div> 
       <div class="py-4" id="medias_container"></div>
       <div class="pb-2" id="pagination">
         <a class="mr-2" id="previous" href="#"><img src="{{ asset('img/prev_disabled.png') }}"/></a>

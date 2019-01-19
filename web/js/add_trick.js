@@ -27,21 +27,52 @@ $(function () {
     const minLengthMessage = "must be at least";
     const maxLengthMessage = "must be at most";
 
-    function readURL(input) {
+    function readThumbURL(input) {
         if (input.files && input.files[0]) {
-          let reader = new FileReader();
+            let thumbReader = new FileReader();
 
-          reader.onload = function(e) {
-            let idSplit = $(input).attr('id').split('_');
-            $('#trick-img-thumb-' + idSplit[3]).attr('src', e.target.result);
-
-            if ($(input).hasClass('fav-input')) {
-                $('#mainTrickImg').attr('src', e.target.result);
+            thumbReader.onload = function(e) {
+                let idSplit = $(input).attr('id').split('_');
+                $('#trick-img-thumb-' + idSplit[3]).attr('src', e.target.result);
             }
-          }
-      
-          reader.readAsDataURL(input.files[0]);
+
+            thumbReader.readAsDataURL(input.files[0]);
         }
+
+        return;
+    }
+
+    function readMainUrl(input) {
+        if (input.files && input.files[0]) {
+            if ($(input).hasClass('fav-input')) {
+                var mainReader = new FileReader();
+
+                mainReader.onload = function(e) {
+
+                    var img = document.createElement("img");
+                    img.src = e.target.result;
+
+                    var canvas = document.createElement("canvas");
+                    var ctx = canvas.getContext("2d");
+                    ctx.drawImage(img, 0, 0);
+
+                    var width = 1200;
+                    var height = 500;
+
+                    canvas.width = width;
+                    canvas.height = height;
+                    var ctx = canvas.getContext("2d");
+                    ctx.drawImage(img, 0, 0, width, height);
+
+                    dataurl = canvas.toDataURL(input.files[0].type);
+                    $('#mainTrickImg').attr('src', dataurl);
+                }
+                    
+                mainReader.readAsDataURL(input.files[0]);
+            }
+        }
+
+        return;
     }
 
     function loadDefaultThumbImgPreview (input) {
@@ -54,7 +85,10 @@ $(function () {
     }
 
     function createImageEl() {
-        var previewImgContainer = $('<div id="img-container-' + imagesLength + '" class="d-inline-block mt-1 mb-5 media image fav"></div>');
+        var previewImgContainer = $('<div id="img-container-' + imagesLength + '" class="d-inline-block mt-1 mb-5 media image"></div>');
+        if (imagesLength === 0) {
+            previewImgContainer.addClass('fav');
+        }
         var previewImg = $('<img class="border-black media-img" id="trick-img-thumb-' + imagesLength + '"src="'+ previewThumbPath +'" alt="preview_mini"/>');
 
         var controlsEl = createControlsImage();
@@ -79,7 +113,7 @@ $(function () {
             favLink = $('<a id="fav-' + imagesLength + '" class="fav-check star" href="#"></a>');
         } else {
             favImg = $('<img src="' + notFavIconPath + '"/>').css('height', '16px').css('width', '16px');
-            favLink = $('<a id="fav-' + imagesLength + '" class="fav-uncheck star" href="#"></a>');
+            favLink = $('<a id="fav-' + imagesLength + '" class="star" href="#"></a>');
         }
 
         let editLink = $('<a id="edit-img-' + imagesLength + '" class="edit-control-img" href="#"></a>');
@@ -114,15 +148,21 @@ $(function () {
                 let newMainImg = $('#img-container-0');
                 let src = newMainImg.children('img').attr('src');
                 $('#fav-0').children('img').attr('src', favIconPath);
-                $('#fav-0').removeClass('fav-uncheck').addClass('fav-check');
-                $('#appbundle_trick_images_0_file').addClass('fav-input');
+                $('#fav-0').addClass('fav-check');
                 newMainImg.addClass('fav');
+                let inputFile = document.getElementById('appbundle_trick_images_0_file');
+                if (inputFile !== null) {
+                    inputFile.className += " fav-input";
+                }
     
                 if (src === previewThumbPath || src === undefined) {
                     $('#mainTrickImg').attr('src', previewLargePath);
                 } else {
-                    $('#mainTrickImg').attr('src', src);
+                    readMainUrl(inputFile);
                 }
+
+                $('.delete-main-trick-img').attr('id', 'delete-main-0');
+                $('.edit-main-trick-img').attr('id', 'edit-main-0');
             }
 
             if (getNbOfMediaActualPage() === 0) {
@@ -143,41 +183,49 @@ $(function () {
                     return;
                 }
 
-                $(this).removeClass('fav-check').addClass('fav-uncheck');
+                $(this).removeClass('fav-check');
                 $(this).children('img').attr('src', notFavIconPath);
                 $('#img-container-' + imgId[1]).removeClass('fav');
                 $('#appbundle_trick_images_' + imgId[1] + '_file').removeClass('fav-input');
                 let imgPreview = $('#img-container-0');
                 imgPreview.addClass('fav');
+                let inputFile = document.getElementById('appbundle_trick_images_0_file');
+                inputFile.className +=  " fav-input";
                 let src = imgPreview.children('img').attr('src');
 
                 if (src !== previewThumbPath) {
-                    $('#mainTrickImg').attr('src', src);
+                    readMainUrl(inputFile);
                 } else {
                     $('#mainTrickImg').attr('src', previewLargePath);
                 }
 
-                $('#appbundle_trick_images_0_file').addClass('fav-input');
-                $('#fav-0').removeClass('fav-unchek').addClass('fav-check');
+                $('#fav-0').addClass('fav-check');
                 $('#fav-0 img').attr('src', favIconPath);
+                $('.delete-main-trick-img').attr('id', 'delete-main-0');
+                $('.edit-main-trick-img').attr('id', 'edit-main-0');
 
             } else {
                 $('.fav').removeClass('fav');
-                $('.fav-check').addClass('fav-uncheck').removeClass('fav-check').children('img').attr('src', notFavIconPath);
+                $('.fav-check').removeClass('fav-check').children('img').attr('src', notFavIconPath);
                 $('.fav-input').removeClass('fav-input');
-                $(this).removeClass('fav-uncheck').addClass('fav-check');
+                $(this).addClass('fav-check');
                 $(this).children('img').attr('src', favIconPath);
                 let imgThumb = $('#img-container-' + imgId[1]);
-                $('#appbundle_trick_images_' + imgId[1] + '_file').addClass('fav-input');
+                let inputFileId = 'appbundle_trick_images_' + imgId[1] + '_file';
+                let inputFile = document.getElementById(inputFileId);
+                inputFile.className += " fav-input";
 
                 imgThumb.addClass('fav');
                 let src = imgThumb.children('img').attr('src');
 
                 if (src !== previewThumbPath) {
-                    $('#mainTrickImg').attr('src', src);
+                    readMainUrl(inputFile);
                 } else {
                     $('#mainTrickImg').attr('src', previewLargePath);
                 }
+
+                $('.delete-main-trick-img').attr('id', 'delete-main-' + imgId[1]);
+                $('.edit-main-trick-img').attr('id', 'edit-main-' + imgId[1]);
             }
 
             return false;
@@ -197,11 +245,16 @@ $(function () {
 
         if (imagesLength === 0) {
             fileField.addClass('fav-input');
+            $('.edit-main-trick-img').attr('id', 'edit-main-' + imagesLength);
+            $('.delete-main-trick-img').attr('id', 'delete-main-' + imagesLength);
         }
 
         fileField.change(function () {
             if ($(this).val().length !== 0) {
-                readURL(this);
+                readThumbURL(this);
+                if ($(this).hasClass('fav-input')) {
+                    readMainUrl(this);
+                }
             } else {
                 loadDefaultThumbImgPreview($(this));
             }
@@ -247,9 +300,16 @@ $(function () {
             return;
         }
 
+        fileInputs.eq(0).addClass('fav-input');
         fileInputs.hide();
 
         while(imagesLength < fileInputsLength) {
+
+            if (imagesLength === 0) {
+                $('.edit-main-trick-img').attr('id', 'edit-main-0');
+                $('.delete-main-trick-img').attr('id', 'delete-main-0');
+            }
+            
             let fileInputId = 'appbundle_trick_images_' + imagesLength + '_file';
             let fileInputName = 'appbundle_trick[images][' + imagesLength + '][file]';
             
@@ -257,7 +317,10 @@ $(function () {
 
             fileInput.change(function () {
                 if ($(this).val().length !== 0) {
-                    readURL(this);
+                    readThumbURL(this);
+                    if ($(this).hasClass('fav-input')) {
+                        readMainUrl(this)
+                    }
                 } else {
                     loadDefaultThumbImgPreview($(this));
                 }
@@ -1086,5 +1149,43 @@ $(function () {
         cancelButton: 'Cancel',
         confirmButton: 'Edit',
         confirm: editVideo,
+    });
+
+    $('.edit-main-trick-img').click(function (e) {
+        e.preventDefault();
+
+        if ($('.fav').length === 0) {
+            $('#addTrickImage').trigger('click');
+            $(this).attr('id', 'edit-main-0');
+            return;
+        }
+
+        let idSplit = $(this).attr('id').split('-');
+        let editPrevId = '#edit-img-' + idSplit[2];
+        $(editPrevId).trigger('click');
+
+        return;
+    });
+
+    $('.delete-main-trick-img').click(function (e) {
+        e.preventDefault();
+
+        if ($('.fav').length === 0) {
+            return;
+        }
+
+        let idSplit = $(this).attr('id').split('-');
+        let deletePrevId = '#delete-img-' + idSplit[2];
+        $(deletePrevId).trigger('click');
+    });
+
+    $('#saveBtn').click(function (e) {
+        e.preventDefault();
+
+        if ($('.fav').length !== 0) {
+            $('#trickImages').prepend($('.fav-input'));
+            $('.image').eq(0).before($('.fav'));
+            refreshImages();
+        }
     });
 });
