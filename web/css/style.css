@@ -156,19 +156,19 @@ footer {
   width: 80px;
 }
 
-#addTrickInfos {
+#manageTrickInfos {
   margin-left:15%;
 }
 
-#addTrickNameContainer {
+#manageTrickNameContainer {
   width: 60%;
 }
 
-#addTrickDescriptionContainer, #trickButtonSection {
+#manageTrickDescriptionContainer, #trickButtonSection {
   width: 80%;
 }
 
-#addTrickCategoryContainer {
+#manageTrickCategoryContainer {
   width: 100px;
 }
 
@@ -233,11 +233,11 @@ footer {
     margin-left: 23%;
   }
 
-  #addTrickNameContainer, #addTrickDescriptionContainer, #trickButtonSection {
+  #manageTrickNameContainer, #manageTrickDescriptionContainer, #trickButtonSection {
     width: 100%;
   }
 
-  #addTrickInfos {
+  #manageTrickInfos {
     margin-left: 0;
   }
 

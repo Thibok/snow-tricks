@@ -27,6 +27,13 @@ $(function () {
     const minLengthMessage = "must be at least";
     const maxLengthMessage = "must be at most";
     const allowedFileExtension = ['jpg', 'jpeg', 'png'];
+    const nameMinLength = 2;
+    const nameMaxLength = 60;
+    const nameRegex = new RegExp('^[a-zA-Z0-9 ]{2,60}$');
+    const descriptionMaxLength = 3000;
+    const descriptionRegex = new RegExp('[<>]');
+
+
 
     function readThumbURL(input) {
         if (input.files && input.files[0]) {
@@ -1113,6 +1120,41 @@ $(function () {
         return $('.reveal-media').length;
     }
 
+    function validateName(name) {
+        if (name.length < nameMinLength) {
+            $('#name_error').text('The name ' + minLengthMessage + ' ' + nameMinLength + ' characters !');
+            return false;
+        }
+
+        if (name.length > nameMaxLength) {
+            $('#name_error').text('The name ' + maxLengthMessage + ' ' + nameMaxLength + ' characters !');
+            return false;
+        }
+
+        if (!nameRegex.test(name)) {
+            $('#name_error').text('The name can contain letters, numbers and spaces');
+            return false;
+        }
+
+        $('#name_error').text('');
+        return true;
+    }
+
+    function validateDescription(description) {
+        if (description.length > descriptionMaxLength) {
+            $('#description_error').text('The description ' + maxLengthMessage + ' ' + descriptionMaxLength + ' characters !');
+            return false;
+        }
+
+        if (descriptionRegex.test(description)) {
+            $('#description_error').text('The description can\'t contain < or >');
+            return false;
+        }
+
+        $('#description_error').text('');
+        return true;
+    }
+
     $('#addTrickImage').click(function (e) {
         e.preventDefault();
         uploadImage();
@@ -1171,6 +1213,8 @@ $(function () {
         refreshPagination();
     });
 
+    var name = $('#appbundle_trick_name');
+    var description = $('#appbundle_trick_description');
     var actualPage = 1;
     var totalMedias = 0;
     var mediaPerPage = getMediaPerPage();
@@ -1266,5 +1310,13 @@ $(function () {
         
         showPagination();
         return false;
+    });
+
+    name.on('keyup blur', function () {
+        validateName($(this).val());
+    });
+
+    description.on('keyup blur', function () {
+        validateDescription($(this).val());
     });
 });
