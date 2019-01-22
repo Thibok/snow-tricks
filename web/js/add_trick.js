@@ -26,6 +26,7 @@ $(function () {
     const videoUrlMaxLength = 2083;
     const minLengthMessage = "must be at least";
     const maxLengthMessage = "must be at most";
+    const allowedFileExtension = ['jpg', 'jpeg', 'png'];
 
     function readThumbURL(input) {
         if (input.files && input.files[0]) {
@@ -250,7 +251,7 @@ $(function () {
         }
 
         fileField.change(function () {
-            if ($(this).val().length !== 0) {
+            if ($(this).val().length !== 0 && validateImage($(this))) {
                 readThumbURL(this);
                 if ($(this).hasClass('fav-input')) {
                     readMainUrl(this);
@@ -267,6 +268,7 @@ $(function () {
         // Get html prototype 
         let inputFile = createInputImageFile();
         inputFile.hide();
+        
         containerImages.append(inputFile);
 
         let imagePreview = createImageEl();
@@ -290,6 +292,19 @@ $(function () {
         refreshPagination();
 
         inputFile.trigger('click');
+
+        if (window.innerWidth < 591) {
+            if (seeMedia === false) {
+                $('#medias_container').hide();
+                $('#media_error_container').hide();
+
+                if ($('.media').length > 0) {
+                    $('#see_media_container').show();
+                } else {
+                    $('#see_media_container').hide();
+                }
+            }
+        }
     }
 
     function recreateImages() {
@@ -316,7 +331,7 @@ $(function () {
             let fileInput = fileInputs.eq(imagesLength).attr('id', fileInputId).attr('name', fileInputName);
 
             fileInput.change(function () {
-                if ($(this).val().length !== 0) {
+                if ($(this).val().length !== 0 && validateImage($(this))) {
                     readThumbURL(this);
                     if ($(this).hasClass('fav-input')) {
                         readMainUrl(this)
@@ -382,6 +397,25 @@ $(function () {
     function deleteTrickImage(imageId) {
         $('#img-container-' + imageId).remove();
         $('#appbundle_trick_images_' + imageId +'_file').remove();
+    }
+
+    function validateImage(image) {
+        let val = image.val();
+        let imageId = image.attr('id').split('_');
+        imageId = Number(imageId[3]) + 1;
+
+        if (val.length === 0) {
+            $('#media_error').text('');
+            return true;
+        }
+
+        if ($.inArray(val.split('.').pop().toLowerCase(), allowedFileExtension) == -1) {
+            $('#media_error').text('Image ' + imageId + ' : Allowed extensions : jpg, jpeg, png');
+            return false;
+        }
+
+        $('#media_error').text('');
+        return true;
     }
 
     function createInputVideoUrl() {
@@ -906,6 +940,12 @@ $(function () {
     }
 
     function showPagination() {
+
+        if (window.innerWidth < 591 && seeMedia === false) {
+            $('#pagination').hide();
+            return;
+        }
+        
         if (getTotalMedias() <= getMediaPerPage()) {
             disableNext();
             disablePrev();
@@ -1111,6 +1151,23 @@ $(function () {
     });
 
     $(window).resize(function () {
+        if (window.innerWidth < 591) {
+            $('#medias_container').hide();
+            $('#media_error_container').hide();
+
+            if ($('.media').length > 0) {
+                $('#see_media_container').show();
+                seeMedia = false;
+            } else {
+                $('#see_media_container').hide();
+            }
+        } else {
+            $('#medias_container').show();
+            $('#media_error_container').show();
+            $('#see_media_container').hide();
+        }
+
+        actualPage = 1;
         refreshPagination();
     });
 
@@ -1128,6 +1185,9 @@ $(function () {
 
     var videosLength = 0;
     recreateVideos();
+
+    $('#see_media_container').hide();
+    var seeMedia = false;
 
     showPagination();
 
@@ -1180,12 +1240,31 @@ $(function () {
     });
 
     $('#saveBtn').click(function (e) {
-        e.preventDefault();
-
         if ($('.fav').length !== 0) {
             $('#trickImages').prepend($('.fav-input'));
             $('.image').eq(0).before($('.fav'));
             refreshImages();
         }
+    });
+
+    if(window.innerWidth < 591) {
+        $('#medias_container').hide();
+        $('#media_error_container').hide();
+
+        if ($('.media').length > 0) {
+            $('#see_media_container').show();
+        } else {
+            $('#see_media_container').hide();
+        }
+    }
+
+    $('#see_media').click(function (e) {
+        e.preventDefault();
+        $('#see_media_container').hide();
+        $('#medias_container').show();
+        seeMedia = true;
+        
+        showPagination();
+        return false;
     });
 });

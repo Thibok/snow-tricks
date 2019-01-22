@@ -1,4 +1,5 @@
 {% extends 'base.html.twig' %}
+{% import "macros/form_elements.html.twig" as formElements %}
 
 {% block title %} {{ parent() }} Add trick{% endblock %}
 
@@ -20,13 +21,16 @@
       <div id="media_error_container">
         <span class="invalid-feedback d-block text-center mt-0 pt-1" id="media_error"></span>
       </div>
-      <div id="addMediaContainer" class="py-4">
+      <div class="py-4" id="see_media_container">
+        <button id="see_media" class="btn btn-primary">See medias</button>
+      </div>
+      <div id="addMediaContainer" class="pt-4">
         <div id="addMedia">
           <a class="mr-1" id="addTrickImage" href="#"><img src="{{ asset('img/add_image.png') }}"/></a> or
           <a class="ml-1" id="addTrickVideo" href="#"><img src="{{ asset('img/add_video.png') }}"/></a>
         </div>
       </div>
-      {{ form_start(form, {'attr': {'class': 'form-horizontal px-5 py-5 border-black', 'id': 'trick_form', 'novalidate': 'novalidate'}}) }}
+      {{ form_start(form, {'attr': {'class': 'form-horizontal px-5 py-5', 'id': 'trick_form', 'novalidate': 'novalidate'}}) }}
         <div id="trickImages" data-prototype="{{ form_widget(form.images.vars.prototype.file)|e('html_attr') }}">
           {% for image in form.images %}
             {{ form_widget(image.file) }}
@@ -39,23 +43,25 @@
             {{ form_errors(video.url) }}
           {% endfor %}
         </div>
-        <div class="form-group">
+        <div id="addTrickInfos">
+        <div id="addTrickNameContainer" class="form-group">
           {{ form_label(form.name, "Name", {'label_attr' : {'class': 'control-label'}}) }}    
           {{ form_widget(form.name, {'attr': {'class': 'form-control'}}) }}
           <span class="invalid-feedback d-block" id="name_error"></span>
         </div>
-        <div class="form-group">
+        <div id="addTrickDescriptionContainer" class="form-group">
           {{ form_label(form.description, "Description", {'label_attr' : {'class': 'control-label'}}) }} 
           {{ form_widget(form.description, {'attr': {'class': 'form-control'}}) }}
           <span class="invalid-feedback d-block" id="description_error"></span>
         </div>
-        <div class="form-group">    
+        <div id="addTrickCategoryContainer" class="form-group">    
           {{ form_widget(form.category, {'attr': {'class': 'form-control'}}) }}
           <span class="invalid-feedback d-block" id="category_error"></span>
         </div>
-        <div id="buttonSection" class="d-flex">
-          <button id="cancelBtn" class="btn btn-danger my-3 mx-auto">Cancel</button>
-          <button id="saveBtn" class="btn btn-primary my-3 mx-auto">Save</button>
+        {{ formElements.recaptcha("g-recaptcha trick-captcha") }}
+        <div id="trickButtonSection" class="d-flex justify-content-end mt-4">
+          <button id="saveBtn" class="btn btn-primary">Save</button>
+        </div>
         </div>
         {{ form_widget(form._token) }}
       {{ form_end(form, {'render_rest': false}) }}
@@ -64,6 +70,7 @@
 {% endblock %}
 
 {% block javascripts %}
+  <script src="https://www.google.com/recaptcha/api.js" async defer></script>
   {{ parent() }}
   <script src="{{ asset('/js/add_trick.js') }}"></script>
 {% endblock %}  

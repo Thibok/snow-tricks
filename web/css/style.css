@@ -93,6 +93,13 @@ footer {
   width:100%;
 }
 
+#see_media_container {
+  background-color: #474c47;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+}
+
 #addMediaContainer {
   background-color: white;
   display: flex;
@@ -149,6 +156,27 @@ footer {
   width: 80px;
 }
 
+#addTrickInfos {
+  margin-left:15%;
+}
+
+#addTrickNameContainer {
+  width: 60%;
+}
+
+#addTrickDescriptionContainer, #trickButtonSection {
+  width: 80%;
+}
+
+#addTrickCategoryContainer {
+  width: 100px;
+}
+
+.trick-captcha {
+  display: flex;
+  justify-content: flex-start;
+}
+
 @media screen and (max-width: 1608px) {
   .media {
     width: 22.5%; 
@@ -203,6 +231,18 @@ footer {
   .media {
     width: 50%;
     margin-left: 23%;
+  }
+
+  #addTrickNameContainer, #addTrickDescriptionContainer, #trickButtonSection {
+    width: 100%;
+  }
+
+  #addTrickInfos {
+    margin-left: 0;
+  }
+
+  .trick-captcha {
+    justify-content: center;
   }
 }
 
