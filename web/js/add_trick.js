@@ -1155,6 +1155,50 @@ $(function () {
         return true;
     }
 
+    function validateForm() {
+
+        if($('.image').length !== 0) {
+            let images = $('.form-control-file');
+            images.each(function () {
+                let validImg = validateImage($(this));
+
+                if (validImg === false) {
+                    return false;
+                }
+            });
+        }
+
+        if($('.video').length !== 0) {
+            let videos = $('.video');
+
+            videos.each(function () {
+                let videoIdSplit = $(this).attr().split('-');
+                let videoId = videoIdSplit[2];
+
+                let validVideo = validateUrl($('#appbundle_trick_videos_' + videoId + '_url').val(), videoId);
+
+                if (validVideo === false) {
+                    return false;
+                }
+            });
+        }
+
+        let validName = validateName(name.val());
+        let validDescription = validateDescription(description.val());
+
+        let results = [validName, validDescription];
+
+        if ($.inArray(false, results) !== -1) {
+            return false;
+        }
+
+        return true;
+    }
+
+    function formSubmit() {
+        $('#trick_form').submit();
+    }
+
     $('#addTrickImage').click(function (e) {
         e.preventDefault();
         uploadImage();
@@ -1318,5 +1362,15 @@ $(function () {
 
     description.on('keyup blur', function () {
         validateDescription($(this).val());
+    });
+  
+    window.formSubmit = formSubmit;
+
+    $('#saveBtn').click(function (event) {
+        event.preventDefault();
+        if (validateForm()) {
+            grecaptcha.reset();
+            grecaptcha.execute();
+        }
     });
 });
