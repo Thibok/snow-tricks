@@ -1327,14 +1327,6 @@ $(function () {
         $(deletePrevId).trigger('click');
     });
 
-    $('#saveBtn').click(function (e) {
-        if ($('.fav').length !== 0) {
-            $('#trickImages').prepend($('.fav-input'));
-            $('.image').eq(0).before($('.fav'));
-            refreshImages();
-        }
-    });
-
     if(window.innerWidth < 591) {
         $('#medias_container').hide();
         $('#media_error_container').hide();
@@ -1369,6 +1361,12 @@ $(function () {
     $('#saveBtn').click(function (event) {
         event.preventDefault();
         if (validateForm()) {
+            if ($('.fav').length !== 0) {
+                $('#trickImages').prepend($('.fav-input'));
+                $('.image').eq(0).before($('.fav'));
+                refreshImages();
+            }
+            
             grecaptcha.reset();
             grecaptcha.execute();
         }
