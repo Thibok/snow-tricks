@@ -29,7 +29,7 @@ $(function () {
     const allowedFileExtension = ['jpg', 'jpeg', 'png'];
     const nameMinLength = 2;
     const nameMaxLength = 60;
-    const nameRegex = new RegExp('^[a-zA-Z0-9 ]{2,60}$');
+    const nameRegex = new RegExp('^([a-zA-Z0-9]+ ?[a-zA-Z0-9]+)+$');
     const descriptionMaxLength = 3000;
     const descriptionRegex = new RegExp('[<>]');
 

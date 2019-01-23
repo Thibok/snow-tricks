@@ -51,7 +51,7 @@ class Trick
      *      maxMessage="The name must be at most 60 characters",
      * )
      * @Assert\Regex(
-     *      pattern="/^[a-zA-Z0-9 ]{2,60}$/",
+     *      pattern="/^([a-zA-Z0-9]+ ?[a-zA-Z0-9]+)+$/",
      *      message="The name can contain letters, numbers and spaces"
      * )
      */
@@ -66,7 +66,7 @@ class Trick
      *      maxMessage="The description must be at most 3000 characters"
      * )
      * @Assert\Regex(
-     *      pattern="/^[<>]$/",
+     *      pattern="/[<>]/",
      *      match=false,
      *      message="The description can't contain < or >"
      * )

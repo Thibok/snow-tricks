@@ -56,3 +56,7 @@ services:
     AppBundle\Uploader\ImageUploader:
         arguments:
             $env: '%kernel.environment%'
+    
+    AppBundle\EventListener\TrickListener:
+        tags:
+            - { name: doctrine.event_listener, event: prePersist }
