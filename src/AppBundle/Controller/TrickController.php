@@ -1,5 +1,9 @@
 <?php
 
+/**
+ * Controller of Community package
+ */
+
 namespace AppBundle\Controller;
 
 use AppBundle\Entity\Trick;
@@ -10,6 +14,9 @@ use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
 
+/**
+ * Trick Controller
+ */
 class TrickController extends Controller
 {
     /**
@@ -24,10 +31,10 @@ class TrickController extends Controller
      * Add a trick
      * @access public
      * @param Request $request
+     * @param CaptchaChecker $captchaChecker
      * @Route("/tricks/add", name="st_add_trick")
      * 
-     * @return void
-     * 
+     * @return mixed Response | RedirectResponse
      */
     public function addAction(Request $request, CaptchaChecker $captchaChecker)
     {

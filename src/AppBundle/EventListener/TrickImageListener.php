@@ -1,22 +1,53 @@
 <?php
 
+/**
+ * Trick image listener
+ */
+
 namespace AppBundle\EventListener;
 
 use AppBundle\Entity\TrickImage;
 use AppBundle\Uploader\ImageUploader;
 use Doctrine\Common\Persistence\Event\LifecycleEventArgs;
 
+/**
+ * TrickImageListener
+ */
 class TrickImageListener
 {
+    /**
+     * @var ImageUploader
+     * @access private
+     */
     private $uploader;
+
+    /**
+     * @var string
+     * @access private
+     */
     private $env;
 
+    /**
+     * Constructor
+     * @access public
+     * @param ImageUploader $uploader
+     * @param string $env
+     * 
+     * @return void
+     */
     public function __construct(ImageUploader $uploader, $env)
     {
         $this->uploader = $uploader;
         $this->env = $env;
     }
 
+    /**
+     * Listen prePersist event of TrickImage
+     * @access public
+     * @param LifecycleEventArgs $args
+     * 
+     * @return void
+     */
     public function prePersist(LifecycleEventArgs $args)
     {
         $trickImage = $args->getObject();
@@ -33,6 +64,13 @@ class TrickImageListener
         }
     }
 
+    /**
+     * Listen postPersist event of TrickImage
+     * @access public
+     * @param LifecycleEventArgs $args
+     * 
+     * @return void
+     */
     public function postPersist(LifecycleEventArgs $args)
     {
         $trickImage = $args->getObject();

@@ -27,6 +27,9 @@
                     </li>
                 {% else %}
                     <li class="nav-item">
+                        <a id="addTrick" class="nav-link text-light" href="{{ path('st_add_trick') }}">Add Trick</a>
+                    </li>
+                    <li class="nav-item">
                         <a id="logout" class="nav-link text-light" href="{{ path('st_logout') }}">Logout</a>
                     </li>
                 {% endif %}

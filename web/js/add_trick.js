@@ -97,7 +97,7 @@ $(function () {
         if (imagesLength === 0) {
             previewImgContainer.addClass('fav');
         }
-        var previewImg = $('<img class="border-black media-img" id="trick-img-thumb-' + imagesLength + '"src="'+ previewThumbPath +'" alt="preview_mini"/>');
+        var previewImg = $('<img class="border-black media-img" id="trick-img-thumb-' + imagesLength + '"src="'+ previewThumbPath +'" alt="Thumb image"/>');
 
         var controlsEl = createControlsImage();
 
@@ -110,17 +110,17 @@ $(function () {
     function createControlsImage() {
         let controlsContainer = $('<div class="d-flex justify-content-around mt-2 border-black controls-container"></div>');
 
-        let editImg = $('<img src="' + editIconPath + '"/>').css('height', '16px').css('width', '16px');
-        let deleteImg = $('<img src="' + deleteIconPath + '"/>').css('height', '16px').css('width', '16px');
+        let editImg = $('<img src="' + editIconPath + '" alt="Edit image icon"/>').css('height', '16px').css('width', '16px');
+        let deleteImg = $('<img src="' + deleteIconPath + '" alt="Delete image icon"/>').css('height', '16px').css('width', '16px');
 
         let favImg;
         let favLink;
 
         if (imagesLength === 0) {
-            favImg = $('<img src="' + favIconPath + '"/>').css('height', '16px').css('width', '16px');
+            favImg = $('<img src="' + favIconPath + '" alt="Favorite check image icon"/>').css('height', '16px').css('width', '16px');
             favLink = $('<a id="fav-' + imagesLength + '" class="fav-check star" href="#"></a>');
         } else {
-            favImg = $('<img src="' + notFavIconPath + '"/>').css('height', '16px').css('width', '16px');
+            favImg = $('<img src="' + notFavIconPath + '" alt="Favorite uncheck image icon"/>').css('height', '16px').css('width', '16px');
             favLink = $('<a id="fav-' + imagesLength + '" class="star" href="#"></a>');
         }
 
@@ -155,7 +155,7 @@ $(function () {
             if ($('fav').length === 0) {
                 let newMainImg = $('#img-container-0');
                 let src = newMainImg.children('img').attr('src');
-                $('#fav-0').children('img').attr('src', favIconPath);
+                $('#fav-0').children('img').attr('src', favIconPath).attr('alt', 'Favorite check image icon');
                 $('#fav-0').addClass('fav-check');
                 newMainImg.addClass('fav');
                 let inputFile = document.getElementById('appbundle_trick_images_0_file');
@@ -192,7 +192,7 @@ $(function () {
                 }
 
                 $(this).removeClass('fav-check');
-                $(this).children('img').attr('src', notFavIconPath);
+                $(this).children('img').attr('src', notFavIconPath).attr('alt', 'Favorite uncheck image icon');
                 $('#img-container-' + imgId[1]).removeClass('fav');
                 $('#appbundle_trick_images_' + imgId[1] + '_file').removeClass('fav-input');
                 let imgPreview = $('#img-container-0');
@@ -208,16 +208,16 @@ $(function () {
                 }
 
                 $('#fav-0').addClass('fav-check');
-                $('#fav-0 img').attr('src', favIconPath);
+                $('#fav-0 img').attr('src', favIconPath).attr('alt', 'Favorite check image icon');
                 $('.delete-main-trick-img').attr('id', 'delete-main-0');
                 $('.edit-main-trick-img').attr('id', 'edit-main-0');
 
             } else {
                 $('.fav').removeClass('fav');
-                $('.fav-check').removeClass('fav-check').children('img').attr('src', notFavIconPath);
+                $('.fav-check').removeClass('fav-check').children('img').attr('src', notFavIconPath).attr('alt', 'Favorite uncheck image icon');
                 $('.fav-input').removeClass('fav-input');
                 $(this).addClass('fav-check');
-                $(this).children('img').attr('src', favIconPath);
+                $(this).children('img').attr('src', favIconPath).attr('alt', 'Favorite check image icon');
                 let imgThumb = $('#img-container-' + imgId[1]);
                 let inputFileId = 'appbundle_trick_images_' + imgId[1] + '_file';
                 let inputFile = document.getElementById(inputFileId);
@@ -530,8 +530,8 @@ $(function () {
     function createControlsVideo () {
         let controlsContainer = $('<div class="d-flex flex-row justify-content-around mt-2 border-black controls-container"></div>');
         
-        let editImg = $('<img src="' + editIconPath + '"/>').css('height', '16px').css('width', '16px');
-        let deleteImg = $('<img src="' + deleteIconPath + '"/>').css('height', '16px').css('width', '16px');
+        let editImg = $('<img src="' + editIconPath + '" alt="Edit video icon"/>').css('height', '16px').css('width', '16px');
+        let deleteImg = $('<img src="' + deleteIconPath + '" alt="Delete video icon"/>').css('height', '16px').css('width', '16px');
 
         let editLink = $('<a id="edit-video-' + videosLength + '" class="edit-control-video px-1" href="#"></a>');
         let deleteLink = $('<a id="delete-video-' + videosLength + '" class="delete-control-video px-1" href="#"></a>');
