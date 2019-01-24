@@ -401,6 +401,22 @@ $(function () {
         return;
     }
 
+    function refreshInputsFile() {
+        let inputsFile = containerImages.children(':input');
+        let inputsFileLength = inputsFile.length;
+        let start = 0;
+
+        while (start < inputsFileLength) {
+            let inputId = 'appbundle_trick_images_' + start + '_file';
+            let inputName = 'appbundle_trick[images][' + start + '][file]';
+
+            inputsFile.eq(start).attr('id', inputId).attr('name', inputName);
+            start++;
+        }
+
+        return;
+    }
+
     function deleteTrickImage(imageId) {
         $('#img-container-' + imageId).remove();
         $('#appbundle_trick_images_' + imageId +'_file').remove();
@@ -1172,7 +1188,7 @@ $(function () {
             let videos = $('.video');
 
             videos.each(function () {
-                let videoIdSplit = $(this).attr().split('-');
+                let videoIdSplit = $(this).attr('id').split('-');
                 let videoId = videoIdSplit[2];
 
                 let validVideo = validateUrl($('#appbundle_trick_videos_' + videoId + '_url').val(), videoId);
@@ -1196,6 +1212,21 @@ $(function () {
     }
 
     function formSubmit() {
+        let inputsFile = $('.form-control-file');
+
+        if ($('.fav').length !== 0) {
+            $('#trickImages').prepend($('.fav-input'));
+            refreshInputsFile();
+        }
+
+        if (inputsFile.length !== 0) {
+            inputsFile.each(function () {
+                if ($(this).val().length === 0) {
+                    $(this).remove();
+                }
+            });
+        }
+
         $('#trick_form').submit();
     }
 
@@ -1361,12 +1392,6 @@ $(function () {
     $('#saveBtn').click(function (event) {
         event.preventDefault();
         if (validateForm()) {
-            if ($('.fav').length !== 0) {
-                $('#trickImages').prepend($('.fav-input'));
-                $('.image').eq(0).before($('.fav'));
-                refreshImages();
-            }
-            
             grecaptcha.reset();
             grecaptcha.execute();
         }

@@ -31,6 +31,10 @@ class TrickController extends Controller
      */
     public function addAction(Request $request, CaptchaChecker $captchaChecker)
     {
+        if (!$this->isGranted('IS_AUTHENTICATED_FULLY')) {
+            return $this->redirectToRoute('st_login');
+        }
+
         $trick = new Trick;
         $form = $this->createForm(TrickType::class, $trick);
 
@@ -38,6 +42,7 @@ class TrickController extends Controller
 
         if ($form->isSubmitted() && $captchaChecker->check() && $form->isValid()) {
             $em = $this->getDoctrine()->getManager();
+            $trick->setUser($this->getUser());
             $em->persist($trick);
 
             try {

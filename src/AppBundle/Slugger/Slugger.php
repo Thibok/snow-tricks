@@ -6,8 +6,8 @@ class Slugger
 {
     public function slugify($value)
     {
-        $slug = strtolower($value);
-        $slug = preg_replace('/ /', '-', $value);
+        $valueLower = strtolower($value);
+        $slug = preg_replace('/ /', '-', $valueLower);
 
         return $slug;
     }

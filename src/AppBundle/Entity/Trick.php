@@ -287,6 +287,8 @@ class Trick
     {
         $this->images[] = $image;
 
+        $image->setTrick($this);
+
         return $this;
     }
 
@@ -373,6 +375,7 @@ class Trick
     public function addVideo(Video $video)
     {
         $this->videos[] = $video;
+        $video->setTrick($this);
 
         return $this;
     }

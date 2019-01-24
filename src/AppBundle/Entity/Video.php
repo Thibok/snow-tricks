@@ -32,6 +32,7 @@ class Video
      * @var string
      * @access private
      * @ORM\Column(name="url", type="text")
+     * @Assert\NotBlank(message="Url of the video can not be empty !")
      * @Assert\Url(
      *      protocols={"https"},
      *      message="Please enter a valid url !"

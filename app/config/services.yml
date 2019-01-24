@@ -60,3 +60,10 @@ services:
     AppBundle\EventListener\TrickListener:
         tags:
             - { name: doctrine.event_listener, event: prePersist }
+    
+    AppBundle\EventListener\TrickImageListener:
+        tags:
+            - { name: doctrine.event_listener, event: prePersist }
+            - { name: doctrine.event_listener, event: postPersist }
+        arguments:
+            $env: '%kernel.environment%'
