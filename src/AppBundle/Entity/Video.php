@@ -38,7 +38,7 @@ class Video
      *      message="Please enter a valid url !"
      * )
      * @Assert\Regex(
-     *      pattern="/^(https\:\/\/){1}(www\.youtube\.com\/embed\/[a-zA-Z0-9\?\=\&_-]{1,2053}|www\.dailymotion\.com\/embed\/video\/[a-zA-Z0-9\?\=\&_-]{1,2043}|player\.vimeo\.com\/video\/[a-zA-Z0-9\?\=\#\&_-]{1,2052}|youtu\.be\/[a-zA-Z0-9\?\=\&_-]{1,2066}|www\.youtube\.com\/watch\\?v\=[a-zA-Z0-9\?\=\&_-]{1,2051}|www\.dailymotion\.com\/video\/[a-zA-Z0-9\?\=\&_-]{1,2049}|dai\.ly\/[a-zA-Z0-9\?\=\&_-]{1,2068}|vimeo\.com\/[a-zA-Z0-9\?\=\#\&_-]{1,2065})$/",
+     *      pattern="/^(https\:\/\/){1}(www\.youtube\.com\/embed\/[a-zA-Z0-9\?\=\&_-]{1,2053}|www\.dailymotion\.com\/embed\/video\/[a-zA-Z0-9\?\=\&_-]{1,2043}|player\.vimeo\.com\/video\/[a-zA-Z0-9\?\=\#\&_-]{1,2052}|youtu\.be\/[a-zA-Z0-9\?\=\&_-]{1,2066}|www\.youtube\.com\/watch\?v\=[a-zA-Z0-9\?\=\&_-]{1,2051}|www\.dailymotion\.com\/video\/[a-zA-Z0-9\?\=\&_-]{1,2049}|dai\.ly\/[a-zA-Z0-9\?\=\&_-]{1,2068}|vimeo\.com\/[a-zA-Z0-9\?\=\#\&_-]{1,2065})$/",
      *      message="The video must come from Youtube, Dailymotion or Vimeo"
      * )
      * @Assert\Length(
