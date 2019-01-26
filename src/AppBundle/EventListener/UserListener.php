@@ -112,6 +112,13 @@ class UserListener
         $this->mailer->send($message);
     }
 
+    /**
+     * Listen Post Forgot event of User
+     * @access public
+     * @param LifecycleEventArgs $args
+     * 
+     * @return void
+     */
     public function postForgot(UserPostForgotEvent $event)
     {
         $user = $event->getUser();
