@@ -1,7 +1,7 @@
 $(function () {
     
-    const navLinksText = ['Home', 'Sign in', 'Sign up', 'Logout'];
-    const navLinksIcon = ['../img/home.png', '../img/login.png', '../img/registration.png', '../img/logout.png'];
+    const navLinksText = ['Home', 'Sign in', 'Sign up', 'Add Trick', 'Logout'];
+    const navLinksIcon = ['/img/home.png', '/img/login.png', '/img/registration.png', '/img/add_trick.png', '/img/logout.png'];
     const windowWidthLimit = 590;
 
     function navBarScroll () {
@@ -28,7 +28,8 @@ $(function () {
         $('#home').html('<img src="' + navLinksIcon[0] + '" alt="Home"/>');
         $('#registration').html('<img src="' + navLinksIcon[1] + '" alt="Sign in"/>');
         $('#login').html('<img src="' + navLinksIcon[2] + '" alt="Sign up"/>');
-        $('#logout').html('<img src="' + navLinksIcon[3] + '" alt="Logout"/>');
+        $('#addTrick').html('<img src="' + navLinksIcon[3] + '" alt="Add Trick"/>');
+        $('#logout').html('<img src="' + navLinksIcon[4] + '" alt="Logout"/>');
     }
 
     function setNavBar () {
@@ -37,7 +38,8 @@ $(function () {
         $('#home').text(navLinksText[0]);
         $('#registration').text(navLinksText[1]);
         $('#login').text(navLinksText[2]);
-        $('#logout').text(navLinksText[3]);
+        $('#addTrick').text(navLinksText[3]);
+        $('#logout').text(navLinksText[4]);
     }
 
     $(window).scroll(function () {

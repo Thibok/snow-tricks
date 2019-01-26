@@ -85,7 +85,7 @@ class UserImageListener
         $filename = $this->uploader->upload($userImage->getFile());
         $this->uploader->setTargetDir($targetDir);
         $thumbName = 'user-thumb-'.$userImage->getId();
-        $name = 'user-'.$userImage->getid();
+        $name = 'user-'.$userImage->getId();
 
         $this->uploader->resize($filename, 50, 50, $thumbName);
         $this->uploader->resize($filename, 300, 360, $name);

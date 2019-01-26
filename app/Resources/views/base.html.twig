@@ -6,9 +6,9 @@
         <link href="https://stackpath.bootstrapcdn.com/bootstrap/4.1.3/css/bootstrap.min.css" rel="stylesheet" integrity="sha384-MCw98/SFnGE8fJT3GXwEOngsV7Zt27NXFoaoApmYm81iuXoPkFOJwJ8ERdknLPMO" crossorigin="anonymous" />
         <link href="https://cdn.jsdelivr.net/gh/StephanWagner/jBox@v0.5.1/dist/jBox.all.min.css" rel="stylesheet">
         <link rel="stylesheet" href="https://use.typekit.net/sec3dre.css">
-        <link href="{{ asset('css/style.css') }}" rel="stylesheet" />
-        {% block link %}
+        {% block links %}
         {% endblock %}
+        <link href="{{ asset('css/style.css') }}" rel="stylesheet" />
         <link rel="icon" type="image/x-icon" href="{{ asset('img/favicon.ico') }}" />
     </head>
     <body>
@@ -26,6 +26,9 @@
                         <a id="login" class="nav-link text-light" href="{{ path('st_login') }}">Sign up</a>
                     </li>
                 {% else %}
+                    <li class="nav-item">
+                        <a id="addTrick" class="nav-link text-light" href="{{ path('st_add_trick') }}">Add trick</a>
+                    </li>
                     <li class="nav-item">
                         <a id="logout" class="nav-link text-light" href="{{ path('st_logout') }}">Logout</a>
                     </li>
