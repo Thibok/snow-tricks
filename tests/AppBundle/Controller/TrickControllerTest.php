@@ -1,5 +1,9 @@
 <?php
 
+/**
+ * TrickController Test
+ */
+
 namespace Tests\AppBundle\Controller;
 
 use AppBundle\Entity\User;
@@ -8,6 +12,10 @@ use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
 use Symfony\Component\Security\Core\Authentication\Token\UsernamePasswordToken;
 
+/**
+ * TrickControllerTest
+ * @coversDefaultClass \AppBundle\Controller\TrickController
+ */
 class TrickControllerTest extends WebTestCase
 {
     /**
@@ -24,6 +32,13 @@ class TrickControllerTest extends WebTestCase
         $this->client = self::createClient();
     }
 
+    /**
+     * Test addTrick method of TrickController
+     * @access public
+     * @covers ::addTrickAction
+     *
+     * @return void
+     */
     public function testAddTrick()
     {
         $fileDir = __DIR__.'/../uploads/';
@@ -71,6 +86,142 @@ class TrickControllerTest extends WebTestCase
         $this->assertSame(1, $crawler->filter('div.flash-notice')->count());
     }
 
+    /**
+     * Test addTrick method of TrickController with bad values
+     * @access public
+     * @param string $name
+     * @param string $description
+     * @param UploadedFile $image
+     * @param string $video
+     * @param int $result
+     * @covers ::addTrickAction
+     * @dataProvider valuesAddTrickForm
+     * 
+     * @return void
+     */
+    public function testAddTrickWithBadValues($name, $description, $image, $video, $result)
+    {
+        $this->logIn();
+        $crawler = $this->client->request('GET', '/tricks/add');
+        $form = $crawler->selectButton('Save')->form();
+
+        $form['appbundle_trick[name]'] = $name;
+        $form['appbundle_trick[description]'] = $description;
+        $values = $form->getPhpValues();
+
+        if ($image != '') {
+            $values['appbundle_trick']['images'][0]['file'] = $image;
+        }
+
+        $values['appbundle_trick']['videos'][0]['url'] = $video;
+
+        $crawler = $this->client->request($form->getMethod(), $form->getUri(), $values, $form->getPhpFiles());
+
+        $this->assertSame($result, $crawler->filter('span.form-error-message')->count());
+    }
+
+    /**
+     * Form values
+     * @access public
+     *
+     * @return array
+     */
+    public function valuesAddTrickForm()
+    {
+        return [
+            [
+                '',
+                '',
+                '',
+                '',
+                2
+            ],
+            [
+                'n',
+                '<bad description>',
+                new UploadedFile(
+                    __DIR__.'/../uploads/badFormat.gif',
+                    'badFormat.gif',
+                    'image/gif',
+                    null,
+                    null,
+                    true
+                ),
+                'http://youtu.be/VZ4teZHfpkc',
+                6
+            ],
+            [
+                'a very very very very very very very very long title for a trick name',
+                'baaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaad
+                baaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaad
+                baaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaad
+                baaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaad
+                baaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaad
+                baaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaad
+                baaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaad
+                baaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaad
+                baaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaad
+                baaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaad
+                baaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaad
+                baaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaad
+                baaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaad
+                baaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaad
+                baaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaad
+                baaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaad
+                baaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaad
+                baaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaad
+                baaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaad
+                baaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaad
+                baaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaad
+                baaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaad
+                baaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaad
+                baaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaad
+                baaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaad
+                baaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaad
+                baaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaad
+                baaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaad
+                baaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaad
+                baaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaaa description',
+                new UploadedFile(
+                    __DIR__.'/../uploads/bigFile.jpg',
+                    'bigFile.jpg',
+                    'image/jpg',
+                    null,
+                    null,
+                    true
+                ),
+                'https://youtu.be/VZ4teZHfpkcmcldofjnzhhzhdbsjqkqlzppzdzpdzpdpzdmpzpkgrjigirgirjgrg662233efefeffefefefeeffe
+                VZ4teZHfpkcmcldofjnzhhzhdbsjqkqlzppzdzpdzpdpzdmpzpkgrjigirgirjgrg662233efefeffefefefeeffevmbkbzjefeu
+                VZ4teZHfpkcmcldofjnzhhzhdbsjqkqlzppzdzpdzpdpzdmpzpkgrjigirgirjgrg662233efefeffefefefeeffevmbkbzjefeu
+                VZ4teZHfpkcmcldofjnzhhzhdbsjqkqlzppzdzpdzpdpzdmpzpkgrjigirgirjgrg662233efefeffefefefeeffevmbkbzjefeu
+                VZ4teZHfpkcmcldofjnzhhzhdbsjqkqlzppzdzpdzpdpzdmpzpkgrjigirgirjgrg662233efefeffefefefeeffevmbkbzjefeu
+                VZ4teZHfpkcmcldofjnzhhzhdbsjqkqlzppzdzpdzpdpzdmpzpkgrjigirgirjgrg662233efefeffefefefeeffevmbkbzjefeu
+                VZ4teZHfpkcmcldofjnzhhzhdbsjqkqlzppzdzpdzpdpzdmpzpkgrjigirgirjgrg662233efefeffefefefeeffevmbkbzjefeu
+                VZ4teZHfpkcmcldofjnzhhzhdbsjqkqlzppzdzpdzpdpzdmpzpkgrjigirgirjgrg662233efefeffefefefeeffevmbkbzjefeu
+                VZ4teZHfpkcmcldofjnzhhzhdbsjqkqlzppzdzpdzpdpzdmpzpkgrjigirgirjgrg662233efefeffefefefeeffevmbkbzjefeu
+                VZ4teZHfpkcmcldofjnzhhzhdbsjqkqlzppzdzpdzpdpzdmpzpkgrjigirgirjgrg662233efefeffefefefeeffevmbkbzjefeu
+                VZ4teZHfpkcmcldofjnzhhzhdbsjqkqlzppzdzpdzpdpzdmpzpkgrjigirgirjgrg662233efefeffefefefeeffevmbkbzjefeu
+                VZ4teZHfpkcmcldofjnzhhzhdbsjqkqlzppzdzpdzpdpzdmpzpkgrjigirgirjgrg662233efefeffefefefeeffevmbkbzjefeu
+                VZ4teZHfpkcmcldofjnzhhzhdbsjqkqlzppzdzpdzpdpzdmpzpkgrjigirgirjgrg662233efefeffefefefeeffevmbkbzjefeu
+                VZ4teZHfpkcmcldofjnzhhzhdbsjqkqlzppzdzpdzpdpzdmpzpkgrjigirgirjgrg662233efefeffefefefeeffevmbkbzjefeu
+                VZ4teZHfpkcmcldofjnzhhzhdbsjqkqlzppzdzpdzpdpzdmpzpkgrjigirgirjgrg662233efefeffefefefeeffevmbkbzjefeu
+                VZ4teZHfpkcmcldofjnzhhzhdbsjqkqlzppzdzpdzpdpzdmpzpkgrjigirgirjgrg662233efefeffefefefeeffevmbkbzjefeu
+                VZ4teZHfpkcmcldofjnzhhzhdbsjqkqlzppzdzpdzpdpzdmpzpkgrjigirgirjgrg662233efefeffefefefeeffevmbkbzjefeu
+                VZ4teZHfpkcmcldofjnzhhzhdbsjqkqlzppzdzpdzpdpzdmpzpkgrjigirgirjgrg662233efefeffefefefeeffevmbkbzjefeu
+                VZ4teZHfpkcmcldofjnzhhzhdbsjqkqlzppzdzpdzpdpzdmpzpkgrjigirgirjgrg662233efefeffefefefeeffevmbkbzjefeu
+                VZ4teZHfpkcmcldofjnzhhzhdbsjqkqlzppzdzpdzpdpzdmpzpkgrjigirgirjgrg662233efefeffefefefeeffevmbkbzjefeu
+                VZ4teZHfpkcmcldofjnzhhzhdbsjqkqlzppzdzpdzpdpzdmpzpkgrjigirgirjgrg662233efefeffefefefeeffevmbkbzjefeu',
+                7
+            ]
+        ];
+    }
+
+    /**
+     * Test path to access add trick page
+     * @access public
+     *
+     * @return void
+     */
     public function testPathToAddTrick()
     {
         $this->logIn();
@@ -84,7 +235,12 @@ class TrickControllerTest extends WebTestCase
     }
 
     /**
+     * Test the user can't access url if he's not logged
+     * @access public
+     * @param string $url
      * @dataProvider urlNoAuthUserCantAccess
+     *
+     * @return void
      */
     public function testNoAuthUserCantAccess($url)
     {
@@ -94,6 +250,12 @@ class TrickControllerTest extends WebTestCase
         $this->assertSame('Login', $crawler->filter('h1')->text());
     }
 
+    /**
+     * Url values
+     * @access public
+     *
+     * @return array
+     */
     public function urlNoAuthUserCantAccess()
     {
         return [
