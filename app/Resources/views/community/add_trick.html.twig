@@ -46,16 +46,16 @@
         <div id="manageTrickInfos">
           <div id="manageTrickNameContainer" class="form-group">
             {{ form_label(form.name, "Name", {'label_attr' : {'class': 'control-label'}}) }}    
-            {{ form_widget(form.name, {'attr': {'class': 'form-control'}}) }}
+            {{ form_widget(form.name) }}
             <span class="invalid-feedback d-block" id="name_error"></span>
           </div>
           <div id="manageTrickDescriptionContainer" class="form-group">
             {{ form_label(form.description, "Description", {'label_attr' : {'class': 'control-label'}}) }} 
-            {{ form_widget(form.description, {'attr': {'class': 'form-control'}}) }}
+            {{ form_widget(form.description) }}
             <span class="invalid-feedback d-block" id="description_error"></span>
           </div>
           <div id="manageTrickCategoryContainer" class="form-group">    
-            {{ form_widget(form.category, {'attr': {'class': 'form-control'}}) }}
+            {{ form_widget(form.category) }}
             <span class="invalid-feedback d-block" id="category_error"></span>
           </div>
           {{ formElements.recaptcha("g-recaptcha trick-captcha") }}
