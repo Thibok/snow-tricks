@@ -2,7 +2,7 @@ $(function () {
     
     const navLinksText = ['Home', 'Sign in', 'Sign up', 'Add Trick', 'Logout'];
     const navLinksIcon = ['/img/home.png', '/img/login.png', '/img/registration.png', '/img/add_trick.png', '/img/logout.png'];
-    const windowWidthLimit = 590;
+    const windowWidthLimit = 591;
 
     function navBarScroll () {
         if ($('#mainNav').offset().top > 100) {
@@ -43,13 +43,13 @@ $(function () {
     }
 
     $(window).scroll(function () {
-        if ($(this).width() > windowWidthLimit) {
+        if (this.innerWidth > windowWidthLimit) {
             navBarScroll();
         }
     });
 
     $(window).resize(function () {
-        var width = $(this).width();
+        var width = this.innerWidth;
 
         if (width < windowWidthLimit) {
             unsetCopyrightText();
@@ -91,7 +91,7 @@ $(function () {
         $(this).remove();
     });
 
-    if ($(window).width() < windowWidthLimit) {
+    if (window.innerWidth < windowWidthLimit) {
         setMobileNavBar();
         unsetCopyrightText();
     } else {

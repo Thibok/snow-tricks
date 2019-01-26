@@ -12,9 +12,9 @@ $(function () {
     });
 
     $(window).resize(function () {
-        var width = $(this).width();
+        var width = this.innerWidth;
 
-        if (width < 576) {
+        if (width < 591) {
             $('#register').show();
             $('#buttonSection').after($('#links'));
         } else {
@@ -23,7 +23,7 @@ $(function () {
         }
     });
 
-    if ($(window).width() < 576) {
+    if (window.innerWidth < 591) {
         $('#register').show();
         $('#buttonSection').after($('#links'));
     } else {

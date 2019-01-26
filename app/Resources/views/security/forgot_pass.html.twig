@@ -10,7 +10,7 @@
                 {{ form_start(form, {'attr': {'class': 'form-horizontal px-5 py-5', 'id': 'security_form', 'novalidate': 'novalidate'}}) }}
                     <div class="form-group">
                         {{ form_label(form.username, "Username", {'label_attr' : {'class': 'control-label'}}) }}
-                        {{ form_widget(form.username, {'attr': {'class': 'form-control'}}) }}
+                        {{ form_widget(form.username) }}
                         <span class="invalid-feedback d-block" id="username_error"></span>
                     </div>
                     <div class="d-flex">
