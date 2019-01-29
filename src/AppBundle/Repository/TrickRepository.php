@@ -10,4 +10,26 @@ namespace AppBundle\Repository;
  */
 class TrickRepository extends \Doctrine\ORM\EntityRepository
 {
+    /**
+     * Get a Trick with slug
+     * @access public
+     * @param string $slug
+     * 
+     * @return mixed Trick | null
+     */
+    public function getTrick($slug)
+    {
+        return $this->createQueryBuilder('t')
+            ->where('t.slug = :slug')
+            ->setParameter('slug', $slug)
+            ->innerJoin('t.category', 'cat')
+            ->addSelect('cat')
+            ->leftJoin('t.images', 'img')
+            ->addSelect('img')
+            ->leftJoin('t.videos', 'vid')
+            ->addSelect('vid')
+            ->getQuery()
+            ->getOneOrNullResult()
+        ;
+    }
 }

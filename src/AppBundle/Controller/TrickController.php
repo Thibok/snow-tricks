@@ -64,4 +64,27 @@ class TrickController extends Controller
 
         return $this->render('community/add_trick.html.twig', array('form' => $form->createView()));
     }
+
+    /**
+     * Edit a trick
+     * @access public
+     * @param Request $request
+     * @Route("/tricks/details/{slug}/update", name="st_edit_trick", requirements={"slug"="[a-z0-9-]{2,80}"})
+     * 
+     * @return void
+     */
+    public function editAction(Request $request, $slug)
+    {
+        $em = $this->getDoctrine()->getManager();
+        $trick = $em->getRepository(Trick::class)->getTrick($slug);
+        $form = $this->createForm(TrickType::class, $trick);
+
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            return;
+        }
+
+        return $this->render('community/edit_trick.html.twig', array('form' => $form->createView(), 'trick' => $trick));
+    }
 }
