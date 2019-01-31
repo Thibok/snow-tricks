@@ -158,6 +158,16 @@ class TrickImage implements ImageInterface
         return __DIR__.'/../../../web/'.$this->getUploadTestDir();
     }
 
+    public function getUploadWebThumbPath()
+    {
+        return $this->getUploadDir().'/trick-thumb-'.$this->getId().'.'.$this->getExtension();
+    }
+
+    public function getUploadWebLargePath()
+    {
+        return $this->getUploadDir().'/trick-'.$this->getId().'.'.$this->getExtension();
+    }
+
     /**
      * {@inheritdoc}
      */

@@ -177,6 +177,15 @@ footer {
   justify-content: flex-start;
 }
 
+.star img, .edit-control-img img, .delete-control-img img {
+  width: 16px;
+  height: 16px;
+}
+
+.counter-img {
+  margin-top: 2px;
+}
+
 @media screen and (max-width: 1608px) {
   .media {
     width: 22.5%; 
