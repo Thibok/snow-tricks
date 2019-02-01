@@ -81,9 +81,9 @@
                         <span class="invalid-feedback d-block" id="category_error"></span>
                     </div>
                     {{ formElements.recaptcha("g-recaptcha trick-captcha") }}
-                    <div id="trickButtonSection" class="d-flex justify-content-end mt-4">
-                        <button id="deleteBtn" class="btn btn-danger">Delete</button>
-                        <button id="saveBtn" class="btn btn-primary">Save</button>
+                    <div id="sectionButtonEditTrick" class="mt-4">
+                        <a id="deleteTrickBtn" href="{{ path('st_delete_trick', {'slug': trick.slug}) }}" class="btn btn-danger text-white">Delete</a>
+                        <button id="editTrickBtn" class="btn btn-warning text-white">Edit</button>
                     </div>
                 </div>
                 {{ form_widget(form._token) }}

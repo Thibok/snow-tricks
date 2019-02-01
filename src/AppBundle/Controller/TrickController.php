@@ -87,4 +87,17 @@ class TrickController extends Controller
 
         return $this->render('community/edit_trick.html.twig', array('form' => $form->createView(), 'trick' => $trick));
     }
+
+    /**
+     * Delete a trick
+     * @access public
+     * @param Request $request
+     * @Route("/tricks/details/{slug}/delete", name="st_delete_trick", requirements={"slug"="[a-z0-9-]{2,80}"})
+     * 
+     * @return void
+     */
+    public function deleteAction(Request $request)
+    {
+        return new Response('Ok');
+    }
 }

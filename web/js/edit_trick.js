@@ -1298,13 +1298,18 @@ $(function () {
 
         if (inputsFile.length !== 0) {
             inputsFile.each(function () {
-                if ($(this).val().length === 0) {
+                if ($(this).val().length === 0 && !$(this).hasClass('exist')) {
                     $(this).remove();
                 }
             });
         }
 
         $('#trick_form').submit();
+    }
+
+    function goToDeleteTrickPage() {
+        let url = $('#deleteTrickBtn').attr('href');
+        $(location).attr('href', url);
     }
 
     $('#addTrickImage').click(function (e) {
@@ -1409,6 +1414,13 @@ $(function () {
         confirm: editVideo,
     });
 
+    var deleteTrickModal = new jBox('Confirm', {
+        cancelButton: 'Cancel',
+        confirmButton: 'Delete',
+        content: 'Are you sure you want to do that ?',
+        confirm: goToDeleteTrickPage,
+    });
+
     $('.edit-main-trick-img').click(function (e) {
         e.preventDefault();
 
@@ -1468,11 +1480,16 @@ $(function () {
   
     window.formSubmit = formSubmit;
 
-    $('#saveBtn').click(function (event) {
+    $('#editTrickBtn').click(function (event) {
         event.preventDefault();
         if (validateForm()) {
             grecaptcha.reset();
             grecaptcha.execute();
         }
+    });
+
+    $('#deleteTrickBtn').click(function (e) {
+        e.preventDefault();
+        deleteTrickModal.open();
     });
 });
