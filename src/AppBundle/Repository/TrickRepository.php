@@ -22,6 +22,8 @@ class TrickRepository extends \Doctrine\ORM\EntityRepository
         return $this->createQueryBuilder('t')
             ->where('t.slug = :slug')
             ->setParameter('slug', $slug)
+            ->innerJoin('t.user', 'u')
+            ->addSelect('u')
             ->innerJoin('t.category', 'cat')
             ->addSelect('cat')
             ->leftJoin('t.images', 'img')

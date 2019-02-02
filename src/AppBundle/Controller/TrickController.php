@@ -13,6 +13,8 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 
 /**
  * Trick Controller
@@ -70,19 +72,39 @@ class TrickController extends Controller
      * @access public
      * @param Request $request
      * @Route("/tricks/details/{slug}/update", name="st_edit_trick", requirements={"slug"="[a-z0-9-]{2,80}"})
+     * @ParamConverter("trick")
+     * @Security("has_role('ROLE_MEMBER')")
      * 
      * @return void
      */
-    public function editAction(Request $request, $slug)
+    public function editAction(Request $request, CaptchaChecker $captchaChecker, Trick $trick)
     {
         $em = $this->getDoctrine()->getManager();
-        $trick = $em->getRepository(Trick::class)->getTrick($slug);
-        $form = $this->createForm(TrickType::class, $trick);
 
+        $form = $this->createForm(TrickType::class, $trick);
         $form->handleRequest($request);
 
-        if ($form->isSubmitted() && $form->isValid()) {
-            return;
+        if ($form->isSubmitted() && $captchaChecker->check() && $form->isValid()) {
+            foreach ($trick->getImages() as $image) {
+                if ($image->getId() == null) {
+                    $em->persist($image);
+                }
+            }
+
+            foreach ($trick->getVideos() as $video) {
+                if ($video->getId() == null) {
+                    $em->persist($video);
+                }
+            }
+
+            try {
+                $em->flush();
+                $this->addFlash('notice', 'Success ! Trick was updated !');
+            } catch(ORMException $e) {
+                $this->addFlash('error', 'An error has occurred');
+            }
+
+            return $this->redirectToRoute('st_index');
         }
 
         return $this->render('community/edit_trick.html.twig', array('form' => $form->createView(), 'trick' => $trick));

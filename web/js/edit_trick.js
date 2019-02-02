@@ -463,22 +463,6 @@ $(function () {
         return;
     }
 
-    function refreshInputsFile() {
-        let inputsFile = containerImages.children(':input');
-        let inputsFileLength = inputsFile.length;
-        let start = 0;
-
-        while (start < inputsFileLength) {
-            let inputId = 'appbundle_trick_images_' + start + '_file';
-            let inputName = 'appbundle_trick[images][' + start + '][file]';
-
-            inputsFile.eq(start).attr('id', inputId).attr('name', inputName);
-            start++;
-        }
-
-        return;
-    }
-
     function deleteTrickImage(imageId) {
         let prevImg = $('#img-container-' + imageId);
 
@@ -1293,12 +1277,15 @@ $(function () {
 
         if ($('.fav').length !== 0) {
             $('#trickImages').prepend($('.fav-input'));
-            refreshInputsFile();
+            refreshImages();
         }
 
         if (inputsFile.length !== 0) {
-            inputsFile.each(function () {
-                if ($(this).val().length === 0 && !$(this).hasClass('exist')) {
+            inputsFile.each(function (index) {
+                let idSplit = $(this).attr('id').split('_');
+                let imgPrev = $('#img-container-' + idSplit[3]);
+
+                if ($(this).val().length === 0 && !imgPrev.hasClass('exist')) {
                     $(this).remove();
                 }
             });
