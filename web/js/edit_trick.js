@@ -8,7 +8,6 @@ $(function () {
     const nextDisableddPath = '/img/next_disabled.png';
     const prevDisabledPath = '/img/prev_disabled.png';
     const favIconPath = '/img/fav.png';
-    const notFavIconPath = '/img/not_fav.png';
     const localImgSrcRegex = new RegExp('^\/uploads\/img\/trick\/[a-z0-9.-]+$')
     const youtubeEmbedFormat = 'https://www.youtube.com/embed/';
     const dailymotionEmbedFormat = 'https://www.dailymotion.com/embed/video/';
@@ -114,23 +113,11 @@ $(function () {
         let editImg = $('<img src="' + editIconPath + '" alt="Edit image icon"/>').css('height', '16px').css('width', '16px');
         let deleteImg = $('<img src="' + deleteIconPath + '" alt="Delete image icon"/>').css('height', '16px').css('width', '16px');
 
-        let favImg;
-        let favLink;
-
-        if (imagesLength === 0) {
-            favImg = $('<img src="' + favIconPath + '" alt="Favorite check image icon"/>').css('height', '16px').css('width', '16px');
-            favLink = $('<a id="fav-' + imagesLength + '" class="fav-check star" href="#"></a>');
-        } else {
-            favImg = $('<img src="' + notFavIconPath + '" alt="Favorite uncheck image icon"/>').css('height', '16px').css('width', '16px');
-            favLink = $('<a id="fav-' + imagesLength + '" class="star" href="#"></a>');
-        }
-
         let editLink = $('<a id="edit-img-' + imagesLength + '" class="edit-control-img" href="#"></a>');
         let deleteLink = $('<a id="delete-img-' + imagesLength + '" class="delete-control-img" href="#"></a>');
 
         editLink.append(editImg);
         deleteLink.append(deleteImg);
-        favLink.append(favImg);
         
         let numberOfImg = $('<span class="counter-img" id="img-number-' + imagesLength + '"></span>');
         numberOfImg.css('margin-top', '2px');
@@ -154,11 +141,12 @@ $(function () {
             refreshImages();
             refreshPagination();
 
-            if ($('fav').length === 0) {
+            if ($('.fav').length === 0) {
                 let newMainImg = $('#img-container-0');
                 let src = newMainImg.children('img').attr('src');
-                $('#fav-0').children('img').attr('src', favIconPath).attr('alt', 'Favorite check image icon');
-                $('#fav-0').addClass('fav-check');
+                let favImg = $('<img/>').attr('src', favIconPath).attr('alt', 'Favorite check image icon').addClass('fav-check');
+                favImg.css('width', '16px').css('height', '16px').css('margin-top', '6px');
+                $('#edit-img-0').before(favImg);
                 newMainImg.addClass('fav');
                 let inputFile = document.getElementById('appbundle_trick_images_0_file');
                 if (inputFile !== null) {
@@ -188,73 +176,15 @@ $(function () {
             return false;
         });
 
-        favLink.click(function (e) {
-            e.preventDefault();
-            let imgId = $(this).attr('id').split('-');
-            if ($(this).hasClass('fav-check')) {
-
-                if (Number(imgId[1]) === 0) {
-                    return;
-                }
-
-                $(this).removeClass('fav-check');
-                $(this).children('img').attr('src', notFavIconPath).attr('alt', 'Favorite uncheck image icon');
-                $('#img-container-' + imgId[1]).removeClass('fav');
-                $('#appbundle_trick_images_' + imgId[1] + '_file').removeClass('fav-input');
-                let imgPreview = $('#img-container-0');
-                imgPreview.addClass('fav');
-                let inputFile = document.getElementById('appbundle_trick_images_0_file');
-                inputFile.className +=  " fav-input";
-                let src = imgPreview.children('img').attr('src');
-
-                if (imgPreview.hasClass('exist') && localImgSrcRegex.test(src)) {
-                    let splitSrc = src.split('thumb-');
-                    let newSrc = splitSrc[0] + splitSrc[1];
-                    $('#mainTrickImg').attr('src', newSrc);
-                } else if (src !== previewThumbPath && !localImgSrcRegex.test(src)) {
-                    readMainUrl(inputFile);
-                } else {
-                    $('#mainTrickImg').attr('src', previewLargePath);
-                }
-
-                $('#fav-0').addClass('fav-check');
-                $('#fav-0 img').attr('src', favIconPath).attr('alt', 'Favorite check image icon');
-                $('.delete-main-trick-img').attr('id', 'delete-main-0');
-                $('.edit-main-trick-img').attr('id', 'edit-main-0');
-
-            } else {
-                $('.fav').removeClass('fav');
-                $('.fav-check').removeClass('fav-check').children('img').attr('src', notFavIconPath).attr('alt', 'Favorite uncheck image icon');
-                $('.fav-input').removeClass('fav-input');
-                $(this).addClass('fav-check');
-                $(this).children('img').attr('src', favIconPath).attr('alt', 'Favorite check image icon');
-                let imgThumb = $('#img-container-' + imgId[1]);
-                let inputFileId = 'appbundle_trick_images_' + imgId[1] + '_file';
-                let inputFile = document.getElementById(inputFileId);
-                inputFile.className += " fav-input";
-
-                imgThumb.addClass('fav');
-                let src = imgThumb.children('img').attr('src');
-
-                if (imgThumb.hasClass('exist') && localImgSrcRegex.test(src)) {
-                    let splitSrc = src.split('thumb-');
-                    let newSrc = splitSrc[0] + splitSrc[1];
-                    $('#mainTrickImg').attr('src', newSrc);
-                } else if (src !== previewThumbPath && !localImgSrcRegex.test(src)) {
-                    readMainUrl(inputFile);
-                } else {
-                    $('#mainTrickImg').attr('src', previewLargePath);
-                }
-
-                $('.delete-main-trick-img').attr('id', 'delete-main-' + imgId[1]);
-                $('.edit-main-trick-img').attr('id', 'edit-main-' + imgId[1]);
-            }
-
-            return false;
-        });
-
         controlsContainer.append(numberOfImg);
-        controlsContainer.append(favLink);
+
+        let favImg;
+
+        if (imagesLength === 0) {
+            favImg = $('<img src="' + favIconPath + '" alt="Favorite check image icon"/>').css('height', '16px').css('width', '16px').css('margin-top', '6px');
+            controlsContainer.append(favImg);
+        }
+
         controlsContainer.append(editLink);
         controlsContainer.append(deleteLink);
 
@@ -293,11 +223,6 @@ $(function () {
         containerImages.append(inputFile);
 
         let imagePreview = createImageEl();
-
-        if (actualImageExistLength < imageExistLength) {
-            imagePreview.addClass('exist');
-            actualImageExistLength++;
-        }
 
         if (getNbOfMediaActualPage() < getMediaPerPage()) {
             imagePreview.addClass('reveal-media');
@@ -343,7 +268,6 @@ $(function () {
                 $(this).append(controls);
 
                 $('#appbundle_trick_images_' + id + '_file').change(function () {
-                    console.log('test');
                     if ($(this).val().length !== 0 && validateImage($(this))) {
                         readThumbURL(this);
                         if ($(this).hasClass('fav-input')) {
@@ -445,7 +369,6 @@ $(function () {
             let counterId = 'img-number-' + imagesLength;
             let editControlId = 'edit-img-' + imagesLength;
             let deleteControlId = 'delete-img-' + imagesLength;
-            let favId = 'fav-' + imagesLength;
             let inputId = 'appbundle_trick_images_' + imagesLength + '_file';
             let inputName = 'appbundle_trick[images][' + imagesLength + '][file]';
 
@@ -454,8 +377,7 @@ $(function () {
             $('.counter-img').eq(imagesLength).attr('id', counterId).text(imagesLength + 1);
             $('.edit-control-img').eq(imagesLength).attr('id', editControlId);
             $('.delete-control-img').eq(imagesLength).attr('id', deleteControlId);
-            $('.star').eq(imagesLength).attr('id', favId);
-            inputsFile.eq(imagesLength).attr('id', inputId).attr('name', inputName);
+            inputsFile.eq(imagesLength).attr('id', inputId);
 
             imagesLength++;
         }
@@ -464,22 +386,7 @@ $(function () {
     }
 
     function deleteTrickImage(imageId) {
-        let prevImg = $('#img-container-' + imageId);
-
-        if (prevImg.hasClass('exist')) {
-            actualImageExistLength--;
-
-            $('.image').each(function () {
-                if (!$(this).hasClass('exist')) {
-                    while(actualImageExistLength < imageExistLength) {
-                        $(this).addClass('exist');
-                        actualImageExistLength++;
-                    }
-                }
-            });
-        }
-
-        prevImg.remove();
+        $('#img-container-' + imageId).remove();
         $('#appbundle_trick_images_' + imageId +'_file').remove();
     }
 
@@ -1275,11 +1182,6 @@ $(function () {
     function formSubmit() {
         let inputsFile = $('.form-control-file');
 
-        if ($('.fav').length !== 0) {
-            $('#trickImages').prepend($('.fav-input'));
-            refreshImages();
-        }
-
         if (inputsFile.length !== 0) {
             inputsFile.each(function (index) {
                 let idSplit = $(this).attr('id').split('_');
@@ -1363,8 +1265,6 @@ $(function () {
     var totalMedias = 0;
     var mediaPerPage = getMediaPerPage();
     var totalPages = getTotalPages();
-    var imageExistLength = $('.exist').length;
-    var actualImageExistLength = $('.exist').length;
 
     var containerImages = $('#trickImages');
 

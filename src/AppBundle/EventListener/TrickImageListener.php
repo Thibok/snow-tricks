@@ -98,4 +98,119 @@ class TrickImageListener
             $this->uploader->remove($filename);
         }
     }
+
+    /**
+     * Listen preUpdate event of TrickImage
+     * @access public
+     * @param LifecycleEventArgs $args
+     * 
+     * @return void
+     */
+    public function preUpdate(LifecycleEventArgs $args)
+    {
+        $trickImage = $args->getObject();
+
+        if (!$trickImage instanceof TrickImage) {
+            return;
+        }
+
+        $file = $trickImage->getFile();
+
+        if ($file !== null) {
+            $trickImage->setExtension($file->guessExtension());
+        }
+    }
+
+    /**
+     * Listen postUpdate event of TrickImage
+     * @access public
+     * @param LifecycleEventArgs $args
+     * 
+     * @return void
+     */
+    public function postUpdate(LifecycleEventArgs $args)
+    {
+        $trickImage = $args->getObject();
+
+        if (!$trickImage instanceof TrickImage) {
+            return;
+        }
+
+        $file = $trickImage->getFile();
+
+        if ($file !== null) {
+            if ($this->env == 'test') {
+                $targetDir = $trickImage->getUploadRootTestDir();
+            } else {
+                $targetDir = $trickImage->getUploadRootDir();
+            }
+
+            $this->uploader->setTargetDir($targetDir);
+
+            $oldExtension = $trickImage->getTempFilename();
+            $id = $trickImage->getId();
+            $oldImg = 'trick-'. $trickImage->getTempFilename();
+            $oldImgThumb = 'trick-thumb-'. $trickImage->getTempFilename();
+
+            $this->uploader->remove($oldImg);
+            $this->uploader->remove($oldImgThumb);
+
+            $filename = $this->uploader->upload($file);
+            $thumbName = 'trick-thumb-'. $id;
+            $name = 'trick-'. $id;
+
+            $this->uploader->resize($filename, 200, 100, $thumbName);
+            $this->uploader->resize($filename, 1200, 500, $name);
+            $this->uploader->remove($filename);
+        }
+    }
+
+    /**
+     * Listen preRemove event of TrickImage
+     * @access public
+     * @param LifecycleEventArgs $args
+     * 
+     * @return void
+     */
+    public function preRemove(LifecycleEventArgs $args)
+    {
+        $trickImage = $args->getObject();
+
+        if (!$trickImage instanceof TrickImage) {
+            return;
+        }
+
+        $imgToRemove = $trickImage->getId() . '.' . $trickImage->getExtension();
+        $trickImage->setTempFilename($imgToRemove);
+    }
+
+    /**
+     * Listen postRemove event of TrickImage
+     * @access public
+     * @param LifecycleEventArgs $args
+     * 
+     * @return void
+     */
+    public function postRemove(LifecycleEventArgs $args)
+    {
+        $trickImage = $args->getObject();
+
+        if (!$trickImage instanceof TrickImage) {
+            return;
+        }
+
+        if ($this->env == 'test') {
+            $targetDir = $trickImage->getUploadRootTestDir();
+        } else {
+            $targetDir = $trickImage->getUploadRootDir();
+        }
+
+        $this->uploader->setTargetDir($targetDir);
+
+        $imgToRemove = 'trick-' . $trickImage->getTempFilename();
+        $imgThumbToRemove = 'trick-thumb-' . $trickImage->getTempFilename();
+
+        $this->uploader->remove($imgToRemove);
+        $this->uploader->remove($imgThumbToRemove);
+    }
 }
