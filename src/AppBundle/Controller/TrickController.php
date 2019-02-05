@@ -71,6 +71,8 @@ class TrickController extends Controller
      * Edit a trick
      * @access public
      * @param Request $request
+     * @param CaptchaChecker $captchaChecker
+     * @param Trick $trick
      * @Route("/tricks/details/{slug}/update", name="st_edit_trick", requirements={"slug"="[a-z0-9-]{2,80}"})
      * @ParamConverter("trick")
      * @Security("has_role('ROLE_MEMBER')")
