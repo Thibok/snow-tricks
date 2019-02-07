@@ -19,6 +19,11 @@ use Doctrine\Common\DataFixtures\DependentFixtureInterface;
 class UserFixtures extends Fixture implements DependentFixtureInterface
 {
     /**
+     * @var string
+     */
+    const ENABLED_USER_REFERENCE = 'user-enabled';
+
+    /**
      * Load fixtures
      * @access public
      * @param ObjectManager $manager
@@ -81,6 +86,8 @@ class UserFixtures extends Fixture implements DependentFixtureInterface
         $manager->persist($userResetPass);
         $manager->persist($otherUserResetPass);
         $manager->flush();
+
+        $this->addReference(self::ENABLED_USER_REFERENCE, $userEnabled);
     }
 
     /**

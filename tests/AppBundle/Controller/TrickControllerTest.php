@@ -33,9 +33,9 @@ class TrickControllerTest extends WebTestCase
     }
 
     /**
-     * Test addTrick method of TrickController
+     * Test addAction method of TrickController
      * @access public
-     * @covers ::addTrickAction
+     * @covers ::addAction
      *
      * @return void
      */
@@ -87,15 +87,84 @@ class TrickControllerTest extends WebTestCase
     }
 
     /**
-     * Test addTrick method of TrickController with bad values
+     * Test editAction method of TrickController
+     * @access public
+     * @covers ::editAction
+     *
+     * @return void
+     */
+    public function testUpdateTrick()
+    {
+        $fileDir = __DIR__.'/../uploads/';
+        copy($fileDir.'snow.png', $fileDir.'snow-copy-1.png');
+
+        $this->logIn();
+        $crawler = $this->client->request('GET', '/tricks/details/a-very-good-trick/update');
+
+        $form = $crawler->selectButton('Edit')->form();
+        $form['appbundle_trick[name]'] = 'New name';
+        $form['appbundle_trick[description]'] = 'New description !';
+        $form['appbundle_trick[videos][0][url]'] = 'https://www.youtube.com/watch?v=tHHxTHZwFUw';
+        $form['appbundle_trick[videos][1][url]'] = 'https://www.dailymotion.com/video/xnltrc';
+        $selectOptions = $form['appbundle_trick[category]']->availableOptionValues();
+        $form['appbundle_trick[category]']->select($selectOptions[4]);
+        $form['appbundle_trick[images][0][file]']->upload(
+            new UploadedFile(
+                __DIR__.'/../uploads/trick.jpg',
+                'trick.jpg',
+                'image/jpg',
+                null,
+                null,
+                true
+            )
+        );
+        $values = $form->getPhpValues();
+        unset($values['appbundle_trick']['videos'][2]['url']);
+        unset($values['appbundle_trick']['images'][1]['file']);
+
+        $values['appbundle_trick']['videos'][2]['url'] = 'https://dai.ly/xx0pxj';
+        $values['appbundle_trick']['videos'][3]['url'] = 'https://youtu.be/397Z2HrHn-4';
+        $values['appbundle_trick']['videos'][4]['url'] = 'https://www.youtube.com/embed/K-RKP3BizWM';
+        $values['appbundle_trick']['videos'][5]['url'] = 'https://www.dailymotion.com/embed/video/xx0pxj';
+        $values['appbundle_trick']['videos'][6]['url'] = 'https://vimeo.com/14050350';
+        $values['appbundle_trick']['videos'][7]['url'] = 'https://player.vimeo.com/video/4806901';
+
+        $values['appbundle_trick']['images'][3]['file'] = new UploadedFile(
+            $fileDir.'snow-copy-1.png',
+            'snow-copy-1.png',
+            'image/png',
+            null,
+            null,
+            true
+        );
+
+        $this->client->request($form->getMethod(), $form->getUri(), $values, $form->getPhpFiles());
+        $crawler = $this->client->followRedirect();
+        $this->assertSame(1, $crawler->filter('div.flash-notice')->count());
+
+        $crawler = $this->client->request('GET', '/tricks/details/new-name/update');
+        $form = $crawler->selectButton('Edit')->form();
+        $name = $form->get('appbundle_trick[name]')->getValue();
+        $description = $form->get('appbundle_trick[description]')->getValue();
+        $category = $crawler->filter('option[selected]')->text();
+
+        $this->assertSame(2, $crawler->filter('#trickImages > input')->count());
+        $this->assertSame(8, $crawler->filter('#trickVideos > input')->count());
+        $this->assertSame('New name', $name);
+        $this->assertSame('New description !', $description);
+        $this->assertSame('One foot tricks', $category);
+    }
+
+    /**
+     * Test addAction method of TrickController with bad values
      * @access public
      * @param string $name
      * @param string $description
      * @param UploadedFile $image
      * @param string $video
      * @param int $result
-     * @covers ::addTrickAction
-     * @dataProvider valuesAddTrickForm
+     * @covers ::addAction
+     * @dataProvider valuesTrickForm
      * 
      * @return void
      */
@@ -121,12 +190,46 @@ class TrickControllerTest extends WebTestCase
     }
 
     /**
+     * Test editAction method of TrickController with bad values
+     * @access public
+     * @param string $name
+     * @param string $description
+     * @param UploadedFile $image
+     * @param string $video
+     * @param int $result
+     * @covers ::editAction
+     * @dataProvider valuesTrickForm
+     * 
+     * @return void
+     */
+    public function testUpdateTrickWithBadValues($name, $description, $image, $video, $result)
+    {
+        $this->logIn();
+        $crawler = $this->client->request('GET', '/tricks/details/a-simple-trick/update');
+        $form = $crawler->selectButton('Edit')->form();
+
+        $form['appbundle_trick[name]'] = $name;
+        $form['appbundle_trick[description]'] = $description;
+        $values = $form->getPhpValues();
+
+        if ($image != '') {
+            $values['appbundle_trick']['images'][0]['file'] = $image;
+        }
+
+        $values['appbundle_trick']['videos'][0]['url'] = $video;
+
+        $crawler = $this->client->request($form->getMethod(), $form->getUri(), $values, $form->getPhpFiles());
+
+        $this->assertSame($result, $crawler->filter('span.form-error-message')->count());
+    }
+
+    /**
      * Form values
      * @access public
      *
      * @return array
      */
-    public function valuesAddTrickForm()
+    public function valuesTrickForm()
     {
         return [
             [
@@ -235,6 +338,24 @@ class TrickControllerTest extends WebTestCase
     }
 
     /**
+     * Test path to access edit trick page
+     * @access public
+     *
+     * @return void
+     */
+    public function testPathToEditTrick()
+    {
+        $this->logIn();
+
+        $crawler = $this->client->request('GET', '/');
+
+        $link = $crawler->filter('a[href="/tricks/details/a-simple-trick/update"]')->link();
+        $crawler = $this->client->click($link);
+
+        $this->assertSame(' SnowTricks - Edit A simple trick', $crawler->filter('title')->text());
+    }
+
+    /**
      * Test the user can't access url if he's not logged
      * @access public
      * @param string $url
@@ -261,6 +382,9 @@ class TrickControllerTest extends WebTestCase
         return [
             [
                 '/tricks/add'
+            ],
+            [
+                '/tricks/details/a-simple-trick/update'
             ]
         ];
     }
