@@ -13,6 +13,8 @@ use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 
 /**
  * Trick Controller
@@ -48,12 +50,12 @@ class TrickController extends Controller
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $captchaChecker->check() && $form->isValid()) {
-            $em = $this->getDoctrine()->getManager();
+            $manager = $this->getDoctrine()->getManager();
             $trick->setUser($this->getUser());
-            $em->persist($trick);
+            $manager->persist($trick);
 
             try {
-                $em->flush();
+                $manager->flush();
                 $this->addFlash('notice', 'Success ! Trick was added !');
             } catch(ORMException $e) {
                 $this->addFlash('error', 'An error has occurred');
@@ -63,5 +65,63 @@ class TrickController extends Controller
         }
 
         return $this->render('community/add_trick.html.twig', array('form' => $form->createView()));
+    }
+
+    /**
+     * Edit a trick
+     * @access public
+     * @param Request $request
+     * @param CaptchaChecker $captchaChecker
+     * @param Trick $trick
+     * @Route("/tricks/details/{slug}/update", name="st_edit_trick", requirements={"slug"="[a-z0-9-]{2,80}"})
+     * @ParamConverter("trick")
+     * @Security("has_role('ROLE_MEMBER')")
+     * 
+     * @return void
+     */
+    public function editAction(Request $request, CaptchaChecker $captchaChecker, Trick $trick)
+    {
+        $manager = $this->getDoctrine()->getManager();
+
+        $form = $this->createForm(TrickType::class, $trick);
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $captchaChecker->check() && $form->isValid()) {
+            foreach ($trick->getImages() as $image) {
+                if ($image->getId() == null) {
+                    $manager->persist($image);
+                }
+            }
+
+            foreach ($trick->getVideos() as $video) {
+                if ($video->getId() == null) {
+                    $manager->persist($video);
+                }
+            }
+
+            try {
+                $manager->flush();
+                $this->addFlash('notice', 'Success ! Trick was updated !');
+            } catch(ORMException $e) {
+                $this->addFlash('error', 'An error has occurred');
+            }
+
+            return $this->redirectToRoute('st_index');
+        }
+
+        return $this->render('community/edit_trick.html.twig', array('form' => $form->createView(), 'trick' => $trick));
+    }
+
+    /**
+     * Delete a trick
+     * @access public
+     * @param Request $request
+     * @Route("/tricks/details/{slug}/delete", name="st_delete_trick", requirements={"slug"="[a-z0-9-]{2,80}"})
+     * 
+     * @return void
+     */
+    public function deleteAction(Request $request)
+    {
+        return new Response('Ok');
     }
 }

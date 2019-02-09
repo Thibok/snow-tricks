@@ -52,4 +52,27 @@ class TrickListener
         $slug = $this->slugger->slugify($name);
         $trick->setSlug($slug);
     }
+
+    /**
+     * Listen preUpdate event of Trick
+     * @access public
+     * @param LifecycleEventArgs $args
+     * 
+     * @return void
+     */
+    public function preUpdate(LifecycleEventArgs $args)
+    {
+        $trick = $args->getObject();
+
+        if (!$trick instanceof Trick) {
+            return;
+        }
+
+        $name = $trick->getName();
+        $slug = $this->slugger->slugify($name);
+        $trick->setSlug($slug);
+
+        $updateDate = new \DateTime;
+        $trick->setUpdateAt($updateDate);
+    }
 }

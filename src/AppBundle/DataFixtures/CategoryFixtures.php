@@ -16,6 +16,11 @@ use Doctrine\Common\Persistence\ObjectManager;
 class CategoryFixtures extends Fixture
 {
     /**
+     * @var string
+     */
+    const CATEGORY_FLIP_REFERENCE = 'category-flip';
+
+    /**
      * Load fixtures
      * @access public
      * @param ObjectManager $manager
@@ -49,5 +54,7 @@ class CategoryFixtures extends Fixture
         $manager->persist($oldSchool);
 
         $manager->flush();
+
+        $this->addReference(self::CATEGORY_FLIP_REFERENCE, $flip);
     }
 }

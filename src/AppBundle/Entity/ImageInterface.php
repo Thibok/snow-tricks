@@ -82,4 +82,18 @@ interface ImageInterface
      * @return string
      */
     public function getUploadRootTestDir();
+
+    /**
+     * Get uploadWebThumbPath
+     * @access public
+     * @return string
+     */
+    public function getUploadWebThumbPath();
+
+    /**
+     * Get uploadWebLargePath
+     * @access public
+     * @return string
+     */
+    public function getUploadWebLargePath();
 }
