@@ -50,12 +50,12 @@ class TrickController extends Controller
         $form->handleRequest($request);
 
         if ($form->isSubmitted() && $captchaChecker->check() && $form->isValid()) {
-            $em = $this->getDoctrine()->getManager();
+            $manager = $this->getDoctrine()->getManager();
             $trick->setUser($this->getUser());
-            $em->persist($trick);
+            $manager->persist($trick);
 
             try {
-                $em->flush();
+                $manager->flush();
                 $this->addFlash('notice', 'Success ! Trick was added !');
             } catch(ORMException $e) {
                 $this->addFlash('error', 'An error has occurred');
@@ -81,7 +81,7 @@ class TrickController extends Controller
      */
     public function editAction(Request $request, CaptchaChecker $captchaChecker, Trick $trick)
     {
-        $em = $this->getDoctrine()->getManager();
+        $manager = $this->getDoctrine()->getManager();
 
         $form = $this->createForm(TrickType::class, $trick);
         $form->handleRequest($request);
@@ -89,18 +89,18 @@ class TrickController extends Controller
         if ($form->isSubmitted() && $captchaChecker->check() && $form->isValid()) {
             foreach ($trick->getImages() as $image) {
                 if ($image->getId() == null) {
-                    $em->persist($image);
+                    $manager->persist($image);
                 }
             }
 
             foreach ($trick->getVideos() as $video) {
                 if ($video->getId() == null) {
-                    $em->persist($video);
+                    $manager->persist($video);
                 }
             }
 
             try {
-                $em->flush();
+                $manager->flush();
                 $this->addFlash('notice', 'Success ! Trick was updated !');
             } catch(ORMException $e) {
                 $this->addFlash('error', 'An error has occurred');

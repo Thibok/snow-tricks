@@ -22,18 +22,18 @@ class TrickParamConverter implements ParamConverterInterface
      * @var EntityManagerInterface
      * @access private
     */
-    private $em;
+    private $manager;
 
     /**
      * Constructor
      * @access public
-     * @param EntityManagerInterface $em
+     * @param EntityManagerInterface $manager
      * 
      * @return void
      */
-    public function __construct(EntityManagerInterface $em)
+    public function __construct(EntityManagerInterface $manager)
     {
-        $this->em = $em;
+        $this->manager = $manager;
     }
 
     /**
@@ -51,7 +51,7 @@ class TrickParamConverter implements ParamConverterInterface
      */
     public function apply(Request $request, ParamConverter $configuration)
     {
-        $trick = $this->em->getRepository(Trick::class)->getTrick($request->attributes->get('slug'));
+        $trick = $this->manager->getRepository(Trick::class)->getTrick($request->attributes->get('slug'));
 
         if ($trick == null) {
             throw new NotFoundHttpException();

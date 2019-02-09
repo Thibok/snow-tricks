@@ -52,11 +52,11 @@ class SecurityController extends Controller
             $token->setType('registration');
             $user->setToken($token);
 
-            $em = $this->getDoctrine()->getManager();
-            $em->persist($user);
+            $manager = $this->getDoctrine()->getManager();
+            $manager->persist($user);
                 
             try {
-                $em->flush();
+                $manager->flush();
                 $this->addFlash('notice', 'Registration Success !');    
                 $this->addFlash('notice', 'A confirmation link has been sent to you by email');
             } catch(ORMException $e) {
@@ -84,8 +84,8 @@ class SecurityController extends Controller
             return $this->redirectToRoute('st_index');
         }
 
-        $em = $this->getDoctrine()->getManager();
-        $token = $em->getRepository(Token::class)->getTokenWithUser($tokenCode);
+        $manager = $this->getDoctrine()->getManager();
+        $token = $manager->getRepository(Token::class)->getTokenWithUser($tokenCode);
         $actualDate = new \DateTime;
 
         if ($token == null || $token->getType() != 'registration' || $token->getExpirationDate() <= $actualDate) {
@@ -94,10 +94,10 @@ class SecurityController extends Controller
         
         $user = $token->getUser();
         $user->setIsActive(true);
-        $em->remove($token);
+        $manager->remove($token);
 
         try {
-            $em->flush();
+            $manager->flush();
             $this->addFlash('notice', 'Valid registration !');
         } catch(ORMException $e) {
             $this->addFlash('error', 'An error has occurred');
@@ -160,15 +160,15 @@ class SecurityController extends Controller
         if ($form->isSubmitted() && $captchaChecker->check() && $form->isValid()) {
             $data = $form->getData();
 
-            $em = $this->getDoctrine()->getManager();
-            $user = $em->getRepository(User::class)->findOneByUsername($data['username']);
+            $manager = $this->getDoctrine()->getManager();
+            $user = $manager->getRepository(User::class)->findOneByUsername($data['username']);
             $token = new Token;
             $token->setType('reset-pass');
             $user->setToken($token);
-            $em->persist($token);
+            $manager->persist($token);
 
             try {
-                $em->flush();
+                $manager->flush();
                 $event = new UserPostForgotEvent($user);
                 $dispatcher->dispatch(UserEvents::POST_FORGOT, $event);
                 $this->addFlash('notice', 'A reset password link has been sent to you by email');
@@ -198,8 +198,8 @@ class SecurityController extends Controller
             return $this->redirectToRoute('st_index');
         }
 
-        $em = $this->getDoctrine()->getManager();
-        $token = $em->getRepository(Token::class)->getTokenWithUser($tokenCode);
+        $manager = $this->getDoctrine()->getManager();
+        $token = $manager->getRepository(Token::class)->getTokenWithUser($tokenCode);
         $actualDate = new \DateTime;
 
         if ($token == null || $token->getType() != 'reset-pass' || $token->getExpirationDate() <= $actualDate) {
@@ -212,10 +212,10 @@ class SecurityController extends Controller
         if ($handler->validateForm($form, $request)) {
             
             $handler->handleDataToUser($form, $user);
-            $em->remove($token);
+            $manager->remove($token);
 
             try {
-                $em->flush();
+                $manager->flush();
                 $this->addFlash('notice', 'The password has been updated !');
             } catch(ORMException $e) {
                 $this->addFlash('error', 'An error has occurred');
