@@ -164,7 +164,7 @@ footer {
   width: 60%;
 }
 
-#manageTrickDescriptionContainer, #trickButtonSection {
+#manageTrickDescriptionContainer, #trickButtonSection, #sectionButtonEditTrick {
   width: 80%;
 }
 
@@ -175,6 +175,24 @@ footer {
 .trick-captcha {
   display: flex;
   justify-content: flex-start;
+}
+
+.star img, .edit-control-img img, .delete-control-img img {
+  width: 16px;
+  height: 16px;
+}
+
+.counter-img {
+  margin-top: 2px;
+}
+
+#sectionButtonEditTrick {
+  display: flex;
+  justify-content: flex-end;
+}
+
+#deleteTrickBtn {
+  margin-right: 40px;
 }
 
 @media screen and (max-width: 1608px) {
@@ -233,7 +251,7 @@ footer {
     margin-left: 23%;
   }
 
-  #manageTrickNameContainer, #manageTrickDescriptionContainer, #trickButtonSection {
+  #manageTrickNameContainer, #manageTrickDescriptionContainer, #trickButtonSection, #sectionButtonEditTrick {
     width: 100%;
   }
 
@@ -243,6 +261,10 @@ footer {
 
   .trick-captcha {
     justify-content: center;
+  }
+
+  #sectionButtonEditTrick {
+    justify-content: space-around;
   }
 }
 

@@ -97,7 +97,7 @@ class Trick
     /**
      * @var Collection
      * @access private
-     * @ORM\OneToMany(targetEntity="AppBundle\Entity\TrickImage", mappedBy="trick", cascade={"persist", "remove"})
+     * @ORM\OneToMany(targetEntity="AppBundle\Entity\TrickImage", mappedBy="trick", cascade={"persist", "remove"}, orphanRemoval=true)
      * @Assert\Valid()
      */
     private $images;
@@ -122,7 +122,7 @@ class Trick
     /**
      * @var Collection
      * @access private
-     * @ORM\OneToMany(targetEntity="AppBundle\Entity\Video", mappedBy="trick", cascade={"persist", "remove"})
+     * @ORM\OneToMany(targetEntity="AppBundle\Entity\Video", mappedBy="trick", cascade={"persist", "remove"}, orphanRemoval=true)
      * @Assert\Valid()
      */
     private $videos;

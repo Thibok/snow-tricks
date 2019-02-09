@@ -161,6 +161,22 @@ class UserImage implements ImageInterface
     {
         return 'uploads/img/tests/user';
     }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getUploadWebThumbPath()
+    {
+        return $this->getUploadDir().'/user-thumb-'.$this->getId().'.'.$this->getExtension();
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getUploadWebLargePath()
+    {
+        return $this->getUploadDir().'/user-'.$this->getId().'.'.$this->getExtension();
+    }
 }
 
 

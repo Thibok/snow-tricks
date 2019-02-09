@@ -113,6 +113,11 @@ class TrickImage implements ImageInterface
     {
         $this->file = $file;
 
+        if ($this->extension !== null) {
+            $this->tempFilename = $this->id . '.' . $this->extension;
+            $this->extension = null;
+        }
+
         return $this;
     }
 
@@ -156,6 +161,22 @@ class TrickImage implements ImageInterface
     public function getUploadRootTestDir()
     {
         return __DIR__.'/../../../web/'.$this->getUploadTestDir();
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getUploadWebThumbPath()
+    {
+        return $this->getUploadDir().'/trick-thumb-'.$this->getId().'.'.$this->getExtension();
+    }
+
+    /**
+     * {@inheritdoc}
+     */
+    public function getUploadWebLargePath()
+    {
+        return $this->getUploadDir().'/trick-'.$this->getId().'.'.$this->getExtension();
     }
 
     /**
