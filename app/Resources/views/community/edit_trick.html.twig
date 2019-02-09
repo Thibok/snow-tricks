@@ -1,6 +1,4 @@
 {% extends 'base.html.twig' %}
-{% import "macros/form_elements.html.twig" as formElements %}
-
 {% block title %} {{ parent() }} Edit {{ trick.name }}{% endblock %}
 
 {% block body %}
@@ -52,42 +50,7 @@
                     <a class="ml-1" id="addTrickVideo" href="#"><img src="{{ asset('img/add_video.png') }}" alt="Add video icon"/></a>
                 </div>
             </div>
-            {{ form_start(form, {'attr': {'class': 'form-horizontal px-5 py-5', 'id': 'trick_form', 'novalidate': 'novalidate'}}) }}
-                <div id="trickImages" data-prototype="{{ form_widget(form.images.vars.prototype.file)|e('html_attr') }}">
-                    {% for image in form.images %}
-                        {{ form_widget(image.file) }}
-                        {{ form_errors(image.file) }}
-                    {% endfor %}
-                </div>
-                <div id="trickVideos" data-prototype="{{ form_widget(form.videos.vars.prototype.url)|e('html_attr') }}">
-                    {% for video in form.videos %}
-                        {{ form_widget(video.url) }}
-                        {{ form_errors(video.url) }}
-                    {% endfor %}
-                </div>
-                <div id="manageTrickInfos">
-                    <div id="manageTrickNameContainer" class="form-group">
-                        {{ form_label(form.name, "Name", {'label_attr' : {'class': 'control-label'}}) }}    
-                        {{ form_widget(form.name) }}
-                        <span class="invalid-feedback d-block" id="name_error"></span>
-                    </div>
-                    <div id="manageTrickDescriptionContainer" class="form-group">
-                        {{ form_label(form.description, "Description", {'label_attr' : {'class': 'control-label'}}) }} 
-                        {{ form_widget(form.description) }}
-                        <span class="invalid-feedback d-block" id="description_error"></span>
-                    </div>
-                    <div id="manageTrickCategoryContainer" class="form-group">    
-                        {{ form_widget(form.category) }}
-                        <span class="invalid-feedback d-block" id="category_error"></span>
-                    </div>
-                    {{ formElements.recaptcha("g-recaptcha trick-captcha") }}
-                    <div id="sectionButtonEditTrick" class="mt-4">
-                        <a id="deleteTrickBtn" href="{{ path('st_delete_trick', {'slug': trick.slug}) }}" class="btn btn-danger text-white">Delete</a>
-                        <button id="editTrickBtn" class="btn btn-warning text-white">Edit</button>
-                    </div>
-                </div>
-                {{ form_widget(form._token) }}
-            {{ form_end(form, {'render_rest': false}) }}
+            {% include 'form/trick_form.html.twig' with {'trickPage': 'edit'} %}
         </article>
     </div>
 {% endblock %}
@@ -95,5 +58,5 @@
 {% block javascripts %}
     <script src="https://www.google.com/recaptcha/api.js" async defer></script>
     {{ parent() }}
-    <script src="{{ asset('/js/edit_trick.js') }}"></script>
+    <script src="{{ asset('/js/manage_trick.js') }}"></script>
 {% endblock %}

@@ -35,15 +35,12 @@ class TrickController extends Controller
      * @param Request $request
      * @param CaptchaChecker $captchaChecker
      * @Route("/tricks/add", name="st_add_trick")
+     * @Security("has_role('ROLE_MEMBER')")
      * 
      * @return mixed Response | RedirectResponse
      */
     public function addAction(Request $request, CaptchaChecker $captchaChecker)
     {
-        if (!$this->isGranted('IS_AUTHENTICATED_FULLY')) {
-            return $this->redirectToRoute('st_login');
-        }
-
         $trick = new Trick;
         $form = $this->createForm(TrickType::class, $trick);
 
@@ -64,7 +61,7 @@ class TrickController extends Controller
             return $this->redirectToRoute('st_index');
         }
 
-        return $this->render('community/add_trick.html.twig', array('form' => $form->createView()));
+        return $this->render('community/add_trick.html.twig', array('form' => $form->createView(), 'trick' => $trick));
     }
 
     /**

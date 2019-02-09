@@ -259,6 +259,21 @@ $(function () {
     }
 
     function recreateImages() {
+        if (imagesLength === 0) {
+            $('.edit-main-trick-img').attr('id', 'edit-main-0');
+            $('.delete-main-trick-img').attr('id', 'delete-main-0');
+        }
+
+        var fileInputs = containerImages.children(':input');
+        var fileInputsLength = fileInputs.length;
+
+        if (fileInputsLength === 0) {
+            return;
+        }
+
+        fileInputs.eq(0).addClass('fav-input');
+        fileInputs.hide();
+
         if ($('.exist').length > 0) {
             $('.exist').each(function () {
                 let idSplit = $(this).attr('id').split('-');
@@ -279,9 +294,6 @@ $(function () {
                 });
 
                 if (imagesLength === 0) {
-                    $('.edit-main-trick-img').attr('id', 'edit-main-0');
-                    $('.delete-main-trick-img').attr('id', 'delete-main-0');
-
                     let prevSrc = $(this).children('img').attr('src');
                     let splitSrc = prevSrc.split('thumb-');
                     let newSrc = splitSrc[0] + splitSrc[1];
@@ -299,24 +311,7 @@ $(function () {
                 totalMedias++;
             });     
         }
-
-        var fileInputs = containerImages.children(':input');
-        var fileInputsLength = fileInputs.length;
-
-        if (fileInputsLength === 0) {
-            return;
-        }
-
-        fileInputs.eq(0).addClass('fav-input');
-        fileInputs.hide();
-
         while(imagesLength < fileInputsLength) {
-
-            if (imagesLength === 0) {
-                $('.edit-main-trick-img').attr('id', 'edit-main-0');
-                $('.delete-main-trick-img').attr('id', 'delete-main-0');
-            }
-
             
             let fileInputId = 'appbundle_trick_images_' + imagesLength + '_file';
             let fileInputName = 'appbundle_trick[images][' + imagesLength + '][file]';
@@ -334,17 +329,18 @@ $(function () {
                 }
             });
 
-            let imagePreview = createImageEl();
+            let imgPreview = $('.image').eq(imagesLength);
+
+            let controls = createControlsImage();
+            imgPreview.append(controls);
 
             if (getNbOfMediaActualPage() < getMediaPerPage()) {
-                imagePreview.addClass('reveal-media');
+                imgPreview.addClass('reveal-media');
             } else {
-                imagePreview.removeClass('d-inline-block');
-                imagePreview.hide();
+                imgPreview.removeClass('d-inline-block');
+                imgPreview.hide();
             }        
-
-            $('#medias_container').append(imagePreview);
-        
+                    
             imagesLength++;
             totalMedias++;
         }
@@ -1368,6 +1364,14 @@ $(function () {
     window.formSubmit = formSubmit;
 
     $('#editTrickBtn').click(function (event) {
+        event.preventDefault();
+        if (validateForm()) {
+            grecaptcha.reset();
+            grecaptcha.execute();
+        }
+    });
+
+    $('#saveBtn').click(function (event) {
         event.preventDefault();
         if (validateForm()) {
             grecaptcha.reset();

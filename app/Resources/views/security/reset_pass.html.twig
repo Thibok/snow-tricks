@@ -28,7 +28,7 @@
     </div>
 {% endblock %}
 {% block javascripts %}
-  {{ parent() }}
-  <script src="https://www.google.com/recaptcha/api.js" async defer></script>
-  <script src="{{ asset('/js/reset_pass.js') }}"></script>
+    {{ parent() }}
+    <script src="https://www.google.com/recaptcha/api.js" async defer></script>
+    <script src="{{ asset('/js/reset_pass.js') }}"></script>
 {% endblock %}
