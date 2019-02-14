@@ -1,0 +1,55 @@
+{% extends 'base.html.twig' %}
+{% block title %} {{ parent() }} {{ trick.name }} details{% endblock %}
+
+{% block body %}
+    <div id="main">
+        <article class="col-lg-7" id="trick_block">
+            <div id="mainTrickImgContainer">
+                <img id="mainTrickImg" alt="Preview main trick image" class="border-black img-fluid w-100" src="{{ asset(trick.images[0].uploadWebLargePath ?? 'img/preview_trick.jpg') }}" />
+                <h1 id="trickName">{{ trick.name }}</h1>
+                {% if is_granted('ROLE_MEMBER') %}
+                    <div class="pb-1 d-flex justify-content-around" id="mainTrickImgControls">
+                        <a href="{{ path('st_edit_trick', {'slug': trick.slug}) }}" class='edit-main-trick-img'><img src="{{ asset('img/edit.png') }}" alt="Edit main image icon" /></a>
+                        <a href="{{ path('st_delete_trick', {'slug': trick.slug}) }}" class="delete-main-trick-img"><img src="{{ asset('img/delete.png') }}" alt="Delete main image icon" /></a>
+                    </div>
+                {% endif %}
+            </div> 
+            <div class="py-4" id="medias_container">
+                {% for trickImage in trick.images %}
+                    <div id="img-container-{{ loop.index0 }}" class="mt-1 mb-2 media image d-inline-block">
+                        <img class="border-black media-img" id="trick-img-thumb-{{ loop.index0 }}" src="{{ asset(trickImage.uploadWebThumbPath) }}" alt="Thumb image">
+                    </div>
+                {% endfor %}
+                {% for trickVideo in trick.videos %}
+                    <div id="video-container-{{ loop.index0 }}" class="mt-1 mb-2 media video d-inline-block">
+                        <span>{{ trickVideo.url }}</span>
+                    </div>
+                {% endfor %}
+            </div>
+            <div class="pb-2" id="pagination">
+                <a class="mr-2" id="previous" href="#"><img src="{{ asset('img/prev_disabled.png') }}" alt="Previous media page icon"/></a>
+                <a class="ml-2" id="next" href="#"><img src="{{ asset('img/next_disabled.png') }}" alt="Next media page icon"/></a>
+            </div>
+            <div class="py-4" id="see_media_container">
+                <button id="see_media" class="btn btn-primary">See medias</button>
+            </div>
+            <div class="pt-4 px-5 pb-2" id="trickInfos">
+                <p id="trickDescription">{{ trick.description|nl2br }}</p>
+                <ul class="mt-5" id="trickSubInfos">
+                    <li class="bg-danger">{{ trick.category.name }}</li>
+                    <li class="bg-info">Add : {{ trick.addAt|date('d/m/Y \\a\\t H\\hi')}}</li>
+                    <li class="bg-primary">By : {{ trick.user.firstName }} {{ trick.user.name }}</li>
+                    {% if trick.updateAt is not null %}
+                        <li class="bg-info">Update : {{ trick.updateAt|date('d/m/Y \\a\\t H\\hi')}}</li>
+                    {% endif %}
+                </ul>
+            </div>
+        </article>
+    </div>
+{% endblock %}
+
+{% block javascripts %}
+    <script src="https://www.google.com/recaptcha/api.js" async defer></script>
+    {{ parent() }}
+    <script src="{{ asset('/js/view_trick.js') }}"></script>
+{% endblock %}  

@@ -65,6 +65,21 @@ class TrickController extends Controller
     }
 
     /**
+     * Undocumented function
+     *
+     * @param Request $request
+     * @param Trick $trick
+     * @Route("/tricks/details/{slug}", name="st_view_trick", requirements={"slug"="[a-z0-9-]{2,80}"})
+     * @ParamConverter("trick")
+     * 
+     * @return void
+     */
+    public function viewAction(Request $request, Trick $trick)
+    {
+        return $this->render('community/view_trick.html.twig', array('trick' => $trick));
+    }
+
+    /**
      * Edit a trick
      * @access public
      * @param Request $request

@@ -18,7 +18,7 @@ html {
   min-height: 100%;
 }
 
-h1, nav, #copyright {
+h1, nav, #copyright, #trickSubInfos li {
   font-family: "bebas-neue";
 }
 
@@ -195,9 +195,57 @@ footer {
   margin-right: 40px;
 }
 
+#trickName, #trickDescription {
+  word-wrap: break-word;
+}
+
+#trickName {
+  font-size: 2em;
+  position: absolute;
+  top: 45%;
+  width: 100%;
+  text-shadow: white 1px 0 40px;
+  text-align: center;
+}
+
+#trickInfos {
+  background-color: white;
+  text-align: center;
+}
+
+#trickSubInfos {
+  list-style-type: none;
+  display: flex;
+  justify-content: space-around;
+}
+
+#trickSubInfos li {
+  border-radius: 10px;
+  padding: 5px;
+  margin-right: 5px;
+  margin-left: 5px;
+  font-size: 0.75em;
+}
+
+#trickDescription {
+  font-family: cursive;
+}
+
 @media screen and (max-width: 1608px) {
   .media {
     width: 22.5%; 
+  }
+}
+
+@media screen and (max-width: 1508px) {
+  #trickSubInfos {
+    display: initial;
+  }
+
+  #trickSubInfos li{
+    width: 50%;
+    margin: auto;
+    margin-bottom: 5px;
   }
 }
 
@@ -220,12 +268,34 @@ footer {
     width:23%;
     margin-left: 0.8%;
     margin-right: 0.8%;
-  }  
+  }
+  
+  #trickSubInfos {
+    display: flex;
+  }
+
+  #trickSubInfos li {
+    margin-left: 5px;
+    margin-right: 5px;
+    width: unset;
+  }
 }
 
 @media screen and (max-width: 944px) {
   .media {
     width: 31%;
+  }
+}
+
+@media screen and (max-width: 885px) {
+  #trickSubInfos {
+    display: initial;
+  }
+
+  #trickSubInfos li{
+    width: 50%;
+    margin: auto;
+    margin-bottom: 5px;
   }
 }
 
@@ -265,6 +335,10 @@ footer {
 
   #sectionButtonEditTrick {
     justify-content: space-around;
+  }
+
+  #trickSubInfos li{
+    width: 100%;
   }
 }
 
