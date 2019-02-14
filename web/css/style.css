@@ -231,11 +231,38 @@ footer {
   font-family: cursive;
 }
 
+#commentForm {
+  background-color: white;
+  width: 100%;
+}
+
+#formCommentFieldsPosition {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+}
+
+#commentContentInputContainer {
+  width: 30%;
+}
+
+#leaveCommentBtn {
+  width: 135px;
+  height: 40px;
+  font-size: 0.9em;
+  margin-left: 10px;
+  margin-top: 10px;
+}
+
+.comment-captcha {
+  margin-right: 10px;
+}
+
 @media screen and (max-width: 1608px) {
   .media {
     width: 22.5%; 
   }
-}
+} 
 
 @media screen and (max-width: 1508px) {
   #trickSubInfos {
@@ -263,6 +290,24 @@ footer {
   }
 }
 
+@media screen and (max-width: 1100px) {
+  #formCommentFieldsPosition {
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+  }
+
+  #commentContentInputContainer {
+    margin-top: 10px;
+    width: 80%;
+  }
+
+  #leaveCommentBtn {
+    margin-top: 0px;
+    margin-bottom: 10px;
+  }
+}
+
 @media screen and (max-width: 991px) {
   .media {
     width:23%;
@@ -278,6 +323,19 @@ footer {
     margin-left: 5px;
     margin-right: 5px;
     width: unset;
+  }
+
+  #formCommentFieldsPosition {
+    flex-direction: row;
+  }
+
+  #commentContentInputContainer {
+    margin-top: 10px;
+    width: 30%;
+  }
+
+  .comment-captcha {
+    margin-bottom: 10px;
   }
 }
 
@@ -304,6 +362,16 @@ footer {
     width: 34%;
     margin-left: 7%;
     margin-right: 7%;
+  }
+}
+
+@media screen and (max-width: 680px) {
+  #formCommentFieldsPosition {
+    flex-direction: column;
+  }
+
+  #commentContentInputContainer {
+    width: 80%;
   }
 }
 

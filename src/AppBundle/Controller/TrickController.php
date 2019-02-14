@@ -7,14 +7,16 @@
 namespace AppBundle\Controller;
 
 use AppBundle\Entity\Trick;
+use AppBundle\Entity\Comment;
 use AppBundle\Form\TrickType;
+use AppBundle\Form\CommentType;
 use AppBundle\ParamChecker\CaptchaChecker;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 
 /**
  * Trick Controller
@@ -76,7 +78,10 @@ class TrickController extends Controller
      */
     public function viewAction(Request $request, Trick $trick)
     {
-        return $this->render('community/view_trick.html.twig', array('trick' => $trick));
+        $comment = new Comment;
+        $form = $this->createForm(CommentType::class, $comment);
+
+        return $this->render('community/view_trick.html.twig', array('trick' => $trick, 'form' => $form->createView()));
     }
 
     /**

@@ -1,4 +1,5 @@
 {% extends 'base.html.twig' %}
+{% import "macros/form_elements.html.twig" as formElements %}
 {% block title %} {{ parent() }} {{ trick.name }} details{% endblock %}
 
 {% block body %}
@@ -43,7 +44,19 @@
                         <li class="bg-info">Update : {{ trick.updateAt|date('d/m/Y \\a\\t H\\hi')}}</li>
                     {% endif %}
                 </ul>
+                <hr class="bg-dark"/>
             </div>
+            {{ form_start(form, {'attr': {'id': 'commentForm'}}) }}
+            <div id="formCommentFieldsPosition">
+            {{ formElements.recaptcha("g-recaptcha comment-captcha") }}
+                <div id="commentContentInputContainer" class="form-group">
+                    {{ form_widget(form.content) }}
+                    <span class="invalid-feedback d-block"></span>
+                </div>
+                <button id="leaveCommentBtn" class="btn btn-primary">Leave a comment</button>
+            </div>
+            <hr class="bg-dark mx-5"/>
+            {{ form_end(form) }}
         </article>
     </div>
 {% endblock %}
