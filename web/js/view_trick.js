@@ -12,6 +12,8 @@ $(function () {
     const prevEnabledPath = '/img/prev.png';
     const nextDisableddPath = '/img/next_disabled.png';
     const prevDisabledPath = '/img/prev_disabled.png';
+    const ajaxLoaderImgPath = '/img/ajax-loader.gif';
+    const apiCommentsUrl = '/api/comments/';
 
     function recreateVideos() {
         let videos = $('.video');
@@ -309,6 +311,65 @@ $(function () {
         return iframeVideoEl;
     }
 
+    function createCommentElement (imgSrc, author, content, date) {
+        let commentContainer = $('<div class="comment pb-3"></div>');
+        let commentImg = $('<img class="mr-2 mt-4 comment-user-img" src="/' + imgSrc + '" alt="user image thumbnail">')
+        let commentInfosContainer = $('<div class="comment-infos"></div>');
+        let commentAuthor = $('<span class="comment-user-name text-primary">' + author + '</span>');
+        let commentContent = $('<p class="comment-content mt-2">' + content + '</p>');
+        let commentDate = $('<span class="comment-add-date">Add :' + date + '</span>');
+
+        commentInfosContainer.append(commentAuthor);
+        commentInfosContainer.append(commentContent);
+        commentInfosContainer.append(commentDate);
+
+        commentContainer.append(commentImg);
+        commentContainer.append(commentInfosContainer);
+
+        return commentContainer;
+    }
+
+    function createAjaxLoader () {
+        let loadImg = $('<img id="ajaxLoader" class="mx-auto mb-4 mt-2" src="' + ajaxLoaderImgPath + '" alt="loader"/>');
+        loadImg.css('width', '48px').css('height', '48px');
+
+        return loadImg;
+    }
+
+    function createLoadMoreButton () {
+        let loadMore = $('<button id="loadMoreComment" class="btn btn-primary mx-auto mb-4 mt-2">Load More</button>');
+
+        return loadMore;
+    }
+
+    function loadMoreComment (button, e) {
+        e.preventDefault();
+
+        let trick = $('#trickRef').text();
+        let commentsLength = $('.comment').length;
+        let url = apiCommentsUrl + trick + '/' + commentsLength;
+    
+        button.replaceWith(createAjaxLoader());
+    
+        $.get(url, function (datas) {
+            if (datas.length === 0) {
+                $('#ajaxLoader').remove();
+                return;
+            }
+            $(datas).each(function () {
+                let comment = createCommentElement(this['imgSrc'], this['author'], this['content'], this['date']);
+                $('#ajaxLoader').before(comment);
+            });
+
+            let loadMoreButton = createLoadMoreButton();
+            loadMoreButton.click(function (e) {
+                loadMoreComment($(this), e);
+            });
+    
+            $('#ajaxLoader').replaceWith(loadMoreButton);
+        });
+    }
+
     $('#see_media').click(function (e) {
         e.preventDefault();
         $('#see_media_container').hide();
@@ -389,6 +450,6 @@ $(function () {
     }
 
     $('#loadMoreComment').click(function (e) {
-        e.preventDefault();
+        loadMoreComment($(this), e);
     });
 });

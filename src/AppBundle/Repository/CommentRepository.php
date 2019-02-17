@@ -26,7 +26,7 @@ class CommentRepository extends EntityRepository
             ->addSelect('u')
             ->innerJoin('u.image', 'i')
             ->addSelect('i')
-            ->orderBy('c.addAt', 'DESC')
+            ->orderBy('c.id', 'DESC')
             ->getQuery()
         ;
 
