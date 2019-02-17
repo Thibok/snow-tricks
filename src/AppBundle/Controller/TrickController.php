@@ -81,7 +81,9 @@ class TrickController extends Controller
         $comment = new Comment;
         $form = $this->createForm(CommentType::class, $comment);
 
-        return $this->render('community/view_trick.html.twig', array('trick' => $trick, 'form' => $form->createView()));
+        $comments = $this->getDoctrine()->getManager()->getRepository(Comment::class)->getComments($trick->getId(), 1, Comment::COMMENT_PER_PAGE);
+
+        return $this->render('community/view_trick.html.twig', array('trick' => $trick, 'form' => $form->createView(), 'comments' => $comments));
     }
 
     /**

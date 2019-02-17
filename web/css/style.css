@@ -18,8 +18,8 @@ html {
   min-height: 100%;
 }
 
-h1, nav, #copyright, #trickSubInfos li {
-  font-family: "bebas-neue";
+h1, nav, #copyright, #trickSubInfos li, .comment-user-name, .comment-add-date {
+  font-family: "bebas-neue", Arial;
 }
 
 nav {
@@ -195,7 +195,7 @@ footer {
   margin-right: 40px;
 }
 
-#trickName, #trickDescription {
+#trickName, #trickDescription, .comment-user-name, .comment-content {
   word-wrap: break-word;
 }
 
@@ -227,8 +227,8 @@ footer {
   font-size: 0.75em;
 }
 
-#trickDescription {
-  font-family: cursive;
+#trickDescription, .comment-content {
+  font-family: cursive, sans-serif;
 }
 
 #commentForm {
@@ -256,6 +256,35 @@ footer {
 
 .comment-captcha {
   margin-right: 10px;
+}
+
+#commentsSection {
+  background-color: white;
+  display: flex;
+  flex-direction: column
+}
+
+.comment {
+  display: flex;
+  justify-content: center;
+  width: 100%;
+}
+
+.comment-infos {
+  border: 1px solid black; 
+  width: 50%;
+  padding: 5px;
+  background-color: #b7b8b6;
+}
+
+.comment-user-img {
+  height: 50px;
+  border-radius: 30px;
+  border: 1px solid black;
+}
+
+.comment-content {
+  font-size: 0.85em;
 }
 
 @media screen and (max-width: 1608px) {

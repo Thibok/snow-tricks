@@ -387,4 +387,8 @@ $(function () {
             $('#see_media_container').hide();
         }
     }
+
+    $('#loadMoreComment').click(function (e) {
+        e.preventDefault();
+    });
 });
