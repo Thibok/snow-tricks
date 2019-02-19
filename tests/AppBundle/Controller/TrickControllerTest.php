@@ -390,48 +390,6 @@ class TrickControllerTest extends WebTestCase
     }
 
     /**
-     * Test if user can't access comment form if is not logged
-     * @access public
-     *
-     * @return void
-     */
-    public function testUserCantAccessCommentFormIfHeIsNotAuth()
-    {
-        $crawler = $this->client->request('GET', '/tricks/details/a-simple-trick');
-        $this->assertSame(0, $crawler->filter('form')->count());
-    }
-
-    /**
-     * Test if user can access comment form if is logged
-     * @access public
-     *
-     * @return void
-     */
-    public function testUserCanAccessCommentFormIfHeIsAuth()
-    {
-        $this->logIn();
-
-        $crawler = $this->client->request('GET', '/tricks/details/a-simple-trick');
-        $this->assertSame(1, $crawler->filter('form')->count());
-    }
-
-    /**
-     * Test the path to trick details (Home - A simple trick details)
-     * @access public
-     *
-     * @return void
-     */
-    public function testPathToViewTrick()
-    {
-        $crawler = $this->client->request('GET', '/');
-
-        $link = $crawler->filter('a[href="/tricks/details/a-simple-trick"]')->link();
-        $crawler = $this->client->click($link);
-
-        $this->assertSame(' SnowTricks - A simple trick details', $crawler->filter('title')->text());
-    }
-
-    /**
      * Log user
      * @access private
      *

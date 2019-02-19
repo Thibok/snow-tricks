@@ -41,4 +41,6 @@ class TrickImageType extends AbstractType
     {
         return 'appbundle_trickimage';
     }
+
+
 }
