@@ -1,5 +1,9 @@
 <?php
 
+/**
+ * Comment Fixtures
+ */
+
 namespace AppBundle\DataFixtures;
 
 use AppBundle\Entity\Comment;
@@ -9,8 +13,17 @@ use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Common\Persistence\ObjectManager;
 use Doctrine\Common\DataFixtures\DependentFixtureInterface;
 
+/**
+ * CommentFixtures
+ */
 class CommentFixtures extends Fixture implements DependentFixtureInterface
 {
+    /**
+     * Load fixtures
+     * @access public
+     * @param ObjectManager $manager
+     * @return void
+     */
     public function load(ObjectManager $manager)
     {
         $firstComment = new Comment;

@@ -9,7 +9,7 @@
                 <img id="mainTrickImg" alt="Preview main trick image" class="border-black img-fluid w-100" src="{{ asset(trick.images[0].uploadWebLargePath ?? 'img/preview_trick.jpg') }}" />
                 <h1 id="trickName">{{ trick.name }}</h1>
                 <span id="trickRef" hidden>{{ trick.id }}</span>
-                {% if is_granted('ROLE_MEMBER') %}
+                {% if is_granted('IS_AUTHENTICATED_FULLY') %}
                     <div class="pb-1 d-flex justify-content-around" id="mainTrickImgControls">
                         <a href="{{ path('st_edit_trick', {'slug': trick.slug}) }}" class='edit-main-trick-img'><img src="{{ asset('img/edit.png') }}" alt="Edit main image icon" /></a>
                         <a href="{{ path('st_delete_trick', {'slug': trick.slug}) }}" class="delete-main-trick-img"><img src="{{ asset('img/delete.png') }}" alt="Delete main image icon" /></a>
@@ -47,18 +47,20 @@
                 </ul>
                 <hr class="bg-dark"/>
             </div>
-            {{ form_start(form, {'attr': {'id': 'commentForm'}}) }}
-            <div id="formCommentFieldsPosition">
-            {{ formElements.recaptcha("g-recaptcha comment-captcha") }}
-                <div id="commentContentInputContainer" class="form-group">
-                    {{ form_widget(form.content) }}
-                    <span class="invalid-feedback d-block"></span>
-                </div>
-                <button id="leaveCommentBtn" class="btn btn-primary">Leave a comment</button>
-            </div>
-            <hr class="bg-dark mx-5 mb-0"/>
-            {{ form_end(form) }}
-            <div class="pt-5" id="commentsSection">
+            {% if is_granted('IS_AUTHENTICATED_FULLY') %}
+                {{ form_start(form, {'attr': {'id': 'commentForm'}}) }}
+                    <div id="formCommentFieldsPosition">
+                        {{ formElements.recaptcha("g-recaptcha comment-captcha") }}
+                        <div id="commentContentInputContainer" class="form-group">
+                            {{ form_widget(form.content) }}
+                            <span class="invalid-feedback d-block"></span>
+                        </div>
+                        <button id="leaveCommentBtn" class="btn btn-primary">Leave a comment</button>
+                    </div>
+                    <hr class="bg-dark mx-5 mb-0"/>
+                {{ form_end(form) }}
+            {% endif %}
+            <div class="pt-4" id="commentsSection">
                 {% for comment in comments %}
                     <div class="comment pb-3">
                         <img class="mr-2 mt-4 comment-user-img" src="{{ asset(comment.user.image.uploadWebThumbPath) }}" alt="user image thumbnail"/>

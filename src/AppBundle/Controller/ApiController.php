@@ -22,6 +22,8 @@ class ApiController extends Controller
      * Get comments with Ajax
      * @access public
      * @param Request $request
+     * @param int $trickId
+     * @param int $nbComments
      * @Route(
      *     "/api/comments/{trickId}/{nbComments}",
      *     name="st_api_comments",
@@ -37,7 +39,11 @@ class ApiController extends Controller
         }
 
         $page = ceil($nbComments / Comment::COMMENT_PER_PAGE + 1);
-        $comments = $this->getDoctrine()->getManager()->getRepository(Comment::class)->getComments($trickId, $page, Comment::COMMENT_PER_PAGE);
+        $comments = $this
+            ->getDoctrine()
+            ->getManager()
+            ->getRepository(Comment::class)
+            ->getComments($trickId, $page, Comment::COMMENT_PER_PAGE);
 
         $datas = [];
 

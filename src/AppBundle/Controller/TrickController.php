@@ -67,8 +67,8 @@ class TrickController extends Controller
     }
 
     /**
-     * Undocumented function
-     *
+     * View a Trick with comments
+     * @access public
      * @param Request $request
      * @param Trick $trick
      * @Route("/tricks/details/{slug}", name="st_view_trick", requirements={"slug"="[a-z0-9-]{2,80}"})
@@ -81,9 +81,16 @@ class TrickController extends Controller
         $comment = new Comment;
         $form = $this->createForm(CommentType::class, $comment);
 
-        $comments = $this->getDoctrine()->getManager()->getRepository(Comment::class)->getComments($trick->getId(), 1, Comment::COMMENT_PER_PAGE);
+        $comments = $this
+            ->getDoctrine()
+            ->getManager()
+            ->getRepository(Comment::class)
+            ->getComments($trick->getId(), 1, Comment::COMMENT_PER_PAGE);
 
-        return $this->render('community/view_trick.html.twig', array('trick' => $trick, 'form' => $form->createView(), 'comments' => $comments));
+        return $this->render(
+            'community/view_trick.html.twig',
+            array('trick' => $trick, 'form' => $form->createView(), 'comments' => $comments)
+        );
     }
 
     /**
