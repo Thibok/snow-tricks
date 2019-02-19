@@ -3,7 +3,7 @@
  * Copyright 2013-2018 Start Bootstrap
  * Licensed under MIT (https://github.com/BlackrockDigital/startbootstrap-creative/blob/master/LICENSE)
  */
-* {
+ * {
   margin: 0;
   padding: 0;
 }
@@ -18,8 +18,8 @@ html {
   min-height: 100%;
 }
 
-h1, nav, #copyright {
-  font-family: "bebas-neue";
+h1, nav, #copyright, #trickSubInfos li, .comment-user-name, .comment-add-date, #noComments {
+  font-family: "bebas-neue", Arial;
 }
 
 nav {
@@ -195,9 +195,119 @@ footer {
   margin-right: 40px;
 }
 
+#trickName, #trickDescription, .comment-user-name, .comment-content {
+  word-wrap: break-word;
+}
+
+#trickName {
+  font-size: 2em;
+  position: absolute;
+  top: 45%;
+  width: 100%;
+  text-shadow: white 1px 0 40px;
+  text-align: center;
+}
+
+#trickInfos {
+  background-color: white;
+  text-align: center;
+}
+
+#trickSubInfos {
+  list-style-type: none;
+  display: flex;
+  justify-content: space-around;
+}
+
+#trickSubInfos li {
+  border-radius: 10px;
+  padding: 5px;
+  margin-right: 5px;
+  margin-left: 5px;
+  font-size: 0.75em;
+}
+
+#trickDescription, .comment-content {
+  font-family: cursive, sans-serif;
+}
+
+#commentForm {
+  background-color: white;
+  width: 100%;
+}
+
+#formCommentFieldsPosition {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+}
+
+#commentContentInputContainer {
+  width: 30%;
+}
+
+#leaveCommentBtn {
+  width: 135px;
+  height: 40px;
+  font-size: 0.9em;
+  margin-left: 10px;
+  margin-top: 10px;
+}
+
+.comment-captcha {
+  margin-right: 10px;
+}
+
+#commentsSection {
+  background-color: white;
+  display: flex;
+  flex-direction: column
+}
+
+.comment {
+  display: flex;
+  justify-content: center;
+  width: 100%;
+}
+
+.comment-infos {
+  border: 1px solid black; 
+  width: 50%;
+  padding: 5px;
+  background-color: #b7b8b6;
+}
+
+.comment-user-img {
+  height: 50px;
+  border-radius: 30px;
+  border: 1px solid black;
+}
+
+.comment-content {
+  font-size: 0.85em;
+}
+
+#noComments {
+  color: grey;
+  text-align: center;
+  padding-bottom: 50px;
+}
+
 @media screen and (max-width: 1608px) {
   .media {
     width: 22.5%; 
+  }
+} 
+
+@media screen and (max-width: 1508px) {
+  #trickSubInfos {
+    display: initial;
+  }
+
+  #trickSubInfos li{
+    width: 50%;
+    margin: auto;
+    margin-bottom: 5px;
   }
 }
 
@@ -215,12 +325,53 @@ footer {
   }
 }
 
+@media screen and (max-width: 1100px) {
+  #formCommentFieldsPosition {
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+  }
+
+  #commentContentInputContainer {
+    margin-top: 10px;
+    width: 80%;
+  }
+
+  #leaveCommentBtn {
+    margin-top: 0px;
+    margin-bottom: 10px;
+  }
+}
+
 @media screen and (max-width: 991px) {
   .media {
     width:23%;
     margin-left: 0.8%;
     margin-right: 0.8%;
-  }  
+  }
+  
+  #trickSubInfos {
+    display: flex;
+  }
+
+  #trickSubInfos li {
+    margin-left: 5px;
+    margin-right: 5px;
+    width: unset;
+  }
+
+  #formCommentFieldsPosition {
+    flex-direction: row;
+  }
+
+  #commentContentInputContainer {
+    margin-top: 10px;
+    width: 30%;
+  }
+
+  .comment-captcha {
+    margin-bottom: 10px;
+  }
 }
 
 @media screen and (max-width: 944px) {
@@ -229,11 +380,33 @@ footer {
   }
 }
 
+@media screen and (max-width: 885px) {
+  #trickSubInfos {
+    display: initial;
+  }
+
+  #trickSubInfos li{
+    width: 50%;
+    margin: auto;
+    margin-bottom: 5px;
+  }
+}
+
 @media screen and (max-width: 815px) {
   .media {
     width: 34%;
     margin-left: 7%;
     margin-right: 7%;
+  }
+}
+
+@media screen and (max-width: 680px) {
+  #formCommentFieldsPosition {
+    flex-direction: column;
+  }
+
+  #commentContentInputContainer {
+    width: 80%;
   }
 }
 
@@ -265,6 +438,14 @@ footer {
 
   #sectionButtonEditTrick {
     justify-content: space-around;
+  }
+
+  #trickSubInfos li{
+    width: 100%;
+  }
+
+  #trickName {
+    font-size: 1.5em;
   }
 }
 
