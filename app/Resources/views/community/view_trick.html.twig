@@ -6,7 +6,11 @@
     <div id="main">
         <article class="col-lg-7" id="trick_block">
             <div id="mainTrickImgContainer">
-                <img id="mainTrickImg" alt="Preview main trick image" class="border-black img-fluid w-100" src="{{ asset(trick.images[0].uploadWebLargePath ?? 'img/preview_trick.jpg') }}" />
+                {% if app.environment == 'test' %}
+                    <img id="mainTrickImg" alt="Preview main trick image" class="border-black img-fluid w-100" src="{{ asset(trick.images[0].uploadWebTestLargePath ?? 'img/preview_trick.jpg') }}" />
+                {% else %}
+                    <img id="mainTrickImg" alt="Preview main trick image" class="border-black img-fluid w-100" src="{{ asset(trick.images[0].uploadWebLargePath ?? 'img/preview_trick.jpg') }}" />
+                {% endif %}
                 <h1 id="trickName">{{ trick.name }}</h1>
                 <span id="trickRef" hidden>{{ trick.id }}</span>
                 {% if is_granted('IS_AUTHENTICATED_FULLY') %}
@@ -19,7 +23,11 @@
             <div class="py-4" id="medias_container">
                 {% for trickImage in trick.images %}
                     <div id="img-container-{{ loop.index0 }}" class="mt-1 mb-2 media image d-inline-block">
-                        <img class="border-black media-img" id="trick-img-thumb-{{ loop.index0 }}" src="{{ asset(trickImage.uploadWebThumbPath) }}" alt="Thumb image">
+                        {% if app.environment == 'test' %}
+                            <img class="border-black media-img" id="trick-img-thumb-{{ loop.index0 }}" src="{{ asset(trickImage.uploadWebTestThumbPath) }}" alt="Thumb image">
+                        {% else %}
+                            <img class="border-black media-img" id="trick-img-thumb-{{ loop.index0 }}" src="{{ asset(trickImage.uploadWebThumbPath) }}" alt="Thumb image">
+                        {% endif %}
                     </div>
                 {% endfor %}
                 {% for trickVideo in trick.videos %}
@@ -64,7 +72,11 @@
                 {% if comments is not empty %}
                     {% for comment in comments %}
                         <div class="comment pb-3">
-                            <img class="mr-2 mt-4 comment-user-img" src="{{ asset(comment.user.image.uploadWebThumbPath) }}" alt="user image thumbnail"/>
+                            {% if app.environment == 'test' %}
+                                <img class="mr-2 mt-4 comment-user-img" src="{{ asset(comment.user.image.uploadWebTestThumbPath) }}" alt="user image thumbnail"/>
+                            {% else %}
+                                <img class="mr-2 mt-4 comment-user-img" src="{{ asset(comment.user.image.uploadWebThumbPath) }}" alt="user image thumbnail"/>
+                            {% endif %}
                             <div class="comment-infos">
                                 <span class="comment-user-name text-primary">{{ comment.user.firstName }} {{ comment.user.name }}</span>
                                 <p class="comment-content mt-2">{{ comment.content }}</p>

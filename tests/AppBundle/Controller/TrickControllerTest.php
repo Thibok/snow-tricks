@@ -431,6 +431,51 @@ class TrickControllerTest extends WebTestCase
         $this->assertSame(' SnowTricks - A simple trick details', $crawler->filter('title')->text());
     }
 
+    public function testViewTrick()
+    { 
+        $commentDateRegex = '#^Add :([0-9]{2}-){2}[0-9]{4} at [0-9]{2}h[0-9]{2}min [0-9]{2}s$#';
+        $trickDateRegex = '#^(Add|Update)+ : ([0-9]{2}-){2}[0-9]{4} at [0-9]{2}h[0-9]{2}$#';
+        $absolutePath = __DIR__.'/../../../web';
+        $crawler = $this->client->request('GET', '/tricks/details/a-simple-trick');
+
+
+        $mainTrickImg = $absolutePath . $crawler->filter('#mainTrickImg')->attr('src');
+        $firstPrevImg = $absolutePath . $crawler->filter('#trick-img-thumb-0')->attr('src');
+        $firstVideo = $crawler->filter('#video-container-0 > span')->text();
+
+        $trickName = $crawler->filter('#trickName')->text();
+        $trickDescription = $crawler->filter('#trickDescription')->text();
+        $subInfos = $crawler->filter('#trickSubInfos > li');
+        $category = $subInfos->eq(0)->text();
+        $trickAddAt = $subInfos->eq(1)->text();
+        $trickAuthor = $subInfos->eq(2)->text();
+        $trickUpdateAt = $subInfos->eq(3)->text();
+
+        $comments = $crawler->filter('.comment');
+        $firstComment = $comments->eq(0);
+        $firstCommentImg = $absolutePath . $firstComment->children('img')->attr('src');
+        $firstCommentUser = $crawler->filter('.comment-user-name')->eq(0)->text();
+        $firstCommentContent = $crawler->filter('.comment-content')->eq(0)->text();
+        $firstCommentAddAt = $crawler->filter('.comment-add-date')->eq(0)->text();
+        
+        $this->assertTrue(file_exists($mainTrickImg));
+        $this->assertTrue(file_exists($firstPrevImg));
+        $this->assertSame('https://www.youtube.com/watch?v=dSZ7_TXcEdM', $firstVideo);
+
+        $this->assertSame('A simple trick', $trickName);
+        $this->assertSame('Simple', $trickDescription);
+        $this->assertSame('Flips', $category);
+        $this->assertSame(1, preg_match($trickDateRegex, $trickAddAt));
+        $this->assertSame('By : BryanEnabled TestEnabled', $trickAuthor);
+        $this->assertSame(1, preg_match($trickDateRegex, $trickUpdateAt));
+
+        $this->assertSame(10, $comments->count());
+        $this->assertTrue(file_exists($firstCommentImg));
+        $this->assertSame('BryanEnabled TestEnabled', $firstCommentUser);
+        $this->assertSame('Twelfth', $firstCommentContent);
+        $this->assertSame(1, preg_match($commentDateRegex, $firstCommentAddAt));
+    }
+
     /**
      * Log user
      * @access private

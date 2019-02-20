@@ -49,8 +49,15 @@ class ApiController extends Controller
 
         foreach ($comments as $comment) {
             $user = $comment->getUser();
+
+            if ($this->getParameter('kernel.environment') == 'test') {
+                $imgSrc = $user->getImage()->getUploadWebTestThumbPath();
+            } else {
+                $imgSrc = $user->getImage()->getUploadWebThumbPath();
+            }
+            
             $data = [
-                'imgSrc' => $user->getImage()->getUploadWebThumbPath(),
+                'imgSrc' => $imgSrc,
                 'author' => $user->getFirstName() .' '. $user->getName(),
                 'content' => $comment->getContent(),
                 'date' => $comment->getAddAt()->format('d-m-Y \a\t H\hi\m\i\n s\s')

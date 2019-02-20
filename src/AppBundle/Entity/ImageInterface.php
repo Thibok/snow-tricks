@@ -96,4 +96,18 @@ interface ImageInterface
      * @return string
      */
     public function getUploadWebLargePath();
+
+    /**
+     * Get uploadWebTestThumbPath
+     * @access public
+     * @return string
+     */
+    public function getUploadWebTestThumbPath();
+
+    /**
+     * Get uploadWebTestLargePath
+     * @access public
+     * @return string
+     */
+    public function getUploadWebTestLargePath();
 }
