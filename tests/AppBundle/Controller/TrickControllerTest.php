@@ -431,6 +431,13 @@ class TrickControllerTest extends WebTestCase
         $this->assertSame(' SnowTricks - A simple trick details', $crawler->filter('title')->text());
     }
 
+    /**
+     * Test viewTrick method of TrickController
+     * @access public
+     * @covers ::viewAction
+     * 
+     * @return void
+     */
     public function testViewTrick()
     { 
         $commentDateRegex = '#^Add :([0-9]{2}-){2}[0-9]{4} at [0-9]{2}h[0-9]{2}min [0-9]{2}s$#';
@@ -474,6 +481,72 @@ class TrickControllerTest extends WebTestCase
         $this->assertSame('BryanEnabled TestEnabled', $firstCommentUser);
         $this->assertSame('Twelfth', $firstCommentContent);
         $this->assertSame(1, preg_match($commentDateRegex, $firstCommentAddAt));
+        $this->assertSame(1, $crawler->filter('#loadMoreComment')->count());
+    }
+
+    /**
+     * Test if the user can't access of the control panel (Edit-delete) on trick details page
+     * if he is not logged
+     * @access private
+     *
+     * @return void
+     */
+    public function testUserCantAccesEditOrDeleteTrickLinkIfHeIsNotLogged()
+    {
+        $crawler = $this->client->request('GET', '/tricks/details/a-simple-trick');
+
+        $this->assertSame(0, $crawler->filter('#mainTrickImgControls')->count());
+    }
+
+    /**
+     * Test if the user can access of the control panel (Edit-delete) on trick details page
+     * if he is logged
+     * @access private
+     *
+     * @return void
+     */
+    public function testUserCanAccesEditOrDeleteTrickLinkIfHeIsLogged()
+    {
+        $this->logIn();
+
+        $crawler = $this->client->request('GET', '/tricks/details/a-simple-trick');
+
+        $this->assertSame(1, $crawler->filter('#mainTrickImgControls')->count());
+    }
+
+    /**
+     * Test path Trick details - Edit Trick
+     * @access private
+     *
+     * @return void
+     */
+    public function testPathViewTrickToEditTrick()
+    {
+        $this->logIn();
+
+        $crawler = $this->client->request('GET', '/tricks/details/a-simple-trick');
+        $editLink = $crawler->filter('#editTrick')->link();
+        $crawler = $this->client->click($editLink);
+
+        $this->assertSame(' SnowTricks - Edit A simple trick', $crawler->filter('title')->text());
+    }
+
+    /**
+     * Test path Trick details - Delete Trick
+     * @access private
+     *
+     * @return void
+     */
+    public function testPathViewTrickToDeleteTrick()
+    {
+        $this->logIn();
+
+        $crawler = $this->client->request('GET', '/tricks/details/a-simple-trick');
+        $editLink = $crawler->filter('#deleteTrick')->link();
+        $this->client->click($editLink);
+        $crawler = $this->client->followRedirect();
+
+        $this->assertSame(1, $crawler->filter('div.flash-notice')->count());
     }
 
     /**

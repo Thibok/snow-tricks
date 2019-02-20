@@ -148,6 +148,7 @@ class TrickController extends Controller
      */
     public function deleteAction(Request $request)
     {
-        return new Response('Ok');
+        $this->addFlash('notice', 'Trick was deleted !');
+        return $this->redirectToRoute('st_index');
     }
 }
