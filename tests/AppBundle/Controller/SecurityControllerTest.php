@@ -304,6 +304,24 @@ class SecurityControllerTest extends WebTestCase
     }
 
     /**
+     * Test path Home - Logout
+     * @access public
+     *
+     * @return void
+     */
+    public function testPathToLogout()
+    {
+        $this->logIn();
+        $crawler = $this->client->request('GET', '/');
+        $link = $crawler->filter('#logout')->link();
+
+        $this->client->click($link);
+        $crawler = $this->client->followRedirect();
+
+        $this->assertSame(0, $crawler->filter('a:contains("Logout")')->count());
+    }
+
+    /**
      * Log user
      * @access private
      *
