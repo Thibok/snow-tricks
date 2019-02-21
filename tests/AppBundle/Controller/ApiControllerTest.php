@@ -88,7 +88,7 @@ class ApiControllerTest extends WebTestCase
      *
      * @return void
      */
-    public function testGetCommentsWithBadrequest()
+    public function testGetCommentsWithBadRequest()
     {
         $trick = $this->client
             ->getContainer()
