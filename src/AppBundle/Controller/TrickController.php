@@ -10,6 +10,7 @@ use AppBundle\Entity\Trick;
 use AppBundle\Entity\Comment;
 use AppBundle\Form\TrickType;
 use AppBundle\Form\CommentType;
+use AppBundle\Handler\CommentHandler;
 use AppBundle\ParamChecker\CaptchaChecker;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
@@ -67,25 +68,38 @@ class TrickController extends Controller
     }
 
     /**
-     * View a Trick with comments
+     * View a Trick with comments or add a comment
      * @access public
      * @param Request $request
      * @param Trick $trick
+     * @param CommentHandler $commentHandler
      * @Route("/tricks/details/{slug}", name="st_view_trick", requirements={"slug"="[a-z0-9-]{2,80}"})
      * @ParamConverter("trick")
      * 
      * @return void
      */
-    public function viewAction(Request $request, Trick $trick)
+    public function viewAction(Request $request, Trick $trick, CommentHandler $commentHandler)
     {
         $comment = new Comment;
         $form = $this->createForm(CommentType::class, $comment);
+        $manager = $this->getDoctrine()->getManager();
 
-        $comments = $this
-            ->getDoctrine()
-            ->getManager()
+        $comments = $manager
             ->getRepository(Comment::class)
-            ->getComments($trick->getId(), 1, Comment::COMMENT_PER_PAGE);
+            ->getComments($trick->getId(), 1, Comment::COMMENT_PER_PAGE)
+        ;
+
+        if ($this->isGranted('IS_AUTHENTICATED_FULLY') && $commentHandler->validateForm($form, $request)) {
+            $comment->setTrick($trick)->setUser($this->getUser());
+            $manager->persist($comment);
+
+            try {
+                $manager->flush();
+                $this->addFlash('notice', 'Success ! Comment was added !');
+            } catch(ORMException $e) {
+                $this->addFlash('error', 'An error has occurred');
+            }
+        }
 
         return $this->render(
             'community/view_trick.html.twig',
