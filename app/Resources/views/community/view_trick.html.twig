@@ -56,12 +56,13 @@
                 <hr class="bg-dark"/>
             </div>
             {% if is_granted('IS_AUTHENTICATED_FULLY') %}
-                {{ form_start(form, {'attr': {'id': 'commentForm'}}) }}
+                {{ form_start(form, {'attr': {'id': 'commentForm', 'novalidate': 'novalidate'}}) }}
                     <div id="formCommentFieldsPosition">
                         {{ formElements.recaptcha("g-recaptcha comment-captcha") }}
                         <div id="commentContentInputContainer" class="form-group">
                             {{ form_widget(form.content) }}
-                            <span class="invalid-feedback d-block"></span>
+                            {{ form_errors(form.content) }}
+                            <span class="invalid-feedback d-block" id="comment_error"></span>
                         </div>
                         <button id="leaveCommentBtn" class="btn btn-primary">Leave a comment</button>
                     </div>
@@ -69,25 +70,21 @@
                 {{ form_end(form) }}
             {% endif %}
             <div class="pt-4" id="commentsSection">
-                {% if comments is not empty %}
-                    {% for comment in comments %}
-                        <div class="comment pb-3">
-                            {% if app.environment == 'test' %}
-                                <img class="mr-2 mt-4 comment-user-img" src="{{ asset(comment.user.image.uploadWebTestThumbPath) }}" alt="user image thumbnail"/>
-                            {% else %}
-                                <img class="mr-2 mt-4 comment-user-img" src="{{ asset(comment.user.image.uploadWebThumbPath) }}" alt="user image thumbnail"/>
-                            {% endif %}
-                            <div class="comment-infos">
-                                <span class="comment-user-name text-primary">{{ comment.user.firstName }} {{ comment.user.name }}</span>
-                                <p class="comment-content mt-2">{{ comment.content }}</p>
-                                <span class="comment-add-date">Add :{{ comment.addAt|date('d-m-Y \\a\\t H\\hi\\m\\i\\n s\\s') }}</span>
-                            </div>
+                {% for comment in comments %}
+                    <div class="comment pb-3">
+                        {% if app.environment == 'test' %}
+                            <img class="mr-2 mt-4 comment-user-img" src="{{ asset(comment.user.image.uploadWebTestThumbPath) }}" alt="user image thumbnail"/>
+                        {% else %}
+                            <img class="mr-2 mt-4 comment-user-img" src="{{ asset(comment.user.image.uploadWebThumbPath) }}" alt="user image thumbnail"/>
+                        {% endif %}
+                        <div class="comment-infos">
+                            <span class="comment-user-name text-primary">{{ comment.user.firstName }} {{ comment.user.name }}</span>
+                            <p class="comment-content mt-2">{{ comment.content }}</p>
+                            <span class="comment-add-date">Add :{{ comment.addAt|date('d-m-Y \\a\\t H\\hi\\m\\i\\n s\\s') }}</span>
                         </div>
-                    {% endfor %}
-                    <button id="loadMoreComment" class="btn btn-primary mx-auto mb-4 mt-2">Load More</button>
-                {% else %}
-                    <span id="noComments">No Comments</span>
-                {% endif %}
+                    </div>
+                {% endfor %}
+                <button id="loadMoreComment" class="btn btn-primary mx-auto mb-4 mt-2">Load More</button>                 
             </div>
         </article>
     </div>
@@ -97,4 +94,4 @@
     <script src="https://www.google.com/recaptcha/api.js" async defer></script>
     {{ parent() }}
     <script src="{{ asset('/js/view_trick.js') }}"></script>
-{% endblock %}  
+{% endblock %}
