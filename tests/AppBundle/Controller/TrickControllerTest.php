@@ -559,14 +559,13 @@ class TrickControllerTest extends WebTestCase
     public function testAddComment()
     {
         $absolutePath = __DIR__.'/../../../web';
+        $commentDateRegex = '#^Add :([0-9]{2}-){2}[0-9]{4} at [0-9]{2}h[0-9]{2}min [0-9]{2}s$#';
         $this->logIn();
 
         $crawler = $this->client->request('GET', '/tricks/details/a-simple-trick');
         $form = $crawler->selectButton('Leave a comment')->form();
         $form['appbundle_comment[content]'] = 'Love this trick !';
         $crawler = $this->client->submit($form);
-        $actualDate = new \DateTime;
-        $actualDate = 'Add :' .$actualDate->format('d-m-Y \a\t H\hi\m\i\n s\s');
 
         $this->assertSame(1, $crawler->filter('div.flash-notice')->count());
 
@@ -577,7 +576,7 @@ class TrickControllerTest extends WebTestCase
 
         $this->assertSame('BryanEnabled TestEnabled', $commentAuthor);
         $this->assertSame('Love this trick !', $commentContent);
-        $this->assertSame($actualDate, $commentAddAt);
+        $this->assertSame(1, preg_match($commentDateRegex, $commentAddAt));
         $this->assertTrue(file_exists($commentImgSrc));
     }
 
