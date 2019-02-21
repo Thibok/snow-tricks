@@ -1,7 +1,7 @@
 <?php
 
 /**
- * Definition of Form TrickImageType
+ * Comment Type
  */
 
 namespace AppBundle\Form;
@@ -9,19 +9,19 @@ namespace AppBundle\Form;
 use Symfony\Component\Form\AbstractType;
 use Symfony\Component\Form\FormBuilderInterface;
 use Symfony\Component\OptionsResolver\OptionsResolver;
-use Symfony\Component\Form\Extension\Core\Type\FileType;
+use Symfony\Component\Form\Extension\Core\Type\TextareaType;
 
 /**
- * TrickImageType
+ * CommentType
  */
-class TrickImageType extends AbstractType
+class CommentType extends AbstractType
 {
     /**
      * {@inheritdoc}
      */
     public function buildForm(FormBuilderInterface $builder, array $options)
     {
-        $builder->add('file', FileType::class);
+        $builder->add('content', TextareaType::class);
     }
     
     /**
@@ -30,7 +30,7 @@ class TrickImageType extends AbstractType
     public function configureOptions(OptionsResolver $resolver)
     {
         $resolver->setDefaults(array(
-            'data_class' => 'AppBundle\Entity\TrickImage'
+            'data_class' => 'AppBundle\Entity\Comment'
         ));
     }
 
@@ -39,6 +39,6 @@ class TrickImageType extends AbstractType
      */
     public function getBlockPrefix()
     {
-        return 'appbundle_trickimage';
+        return 'appbundle_comment';
     }
 }

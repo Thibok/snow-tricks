@@ -7,14 +7,16 @@
 namespace AppBundle\Controller;
 
 use AppBundle\Entity\Trick;
+use AppBundle\Entity\Comment;
 use AppBundle\Form\TrickType;
+use AppBundle\Form\CommentType;
 use AppBundle\ParamChecker\CaptchaChecker;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
-use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 
 /**
  * Trick Controller
@@ -62,6 +64,33 @@ class TrickController extends Controller
         }
 
         return $this->render('community/add_trick.html.twig', array('form' => $form->createView(), 'trick' => $trick));
+    }
+
+    /**
+     * View a Trick with comments
+     * @access public
+     * @param Request $request
+     * @param Trick $trick
+     * @Route("/tricks/details/{slug}", name="st_view_trick", requirements={"slug"="[a-z0-9-]{2,80}"})
+     * @ParamConverter("trick")
+     * 
+     * @return void
+     */
+    public function viewAction(Request $request, Trick $trick)
+    {
+        $comment = new Comment;
+        $form = $this->createForm(CommentType::class, $comment);
+
+        $comments = $this
+            ->getDoctrine()
+            ->getManager()
+            ->getRepository(Comment::class)
+            ->getComments($trick->getId(), 1, Comment::COMMENT_PER_PAGE);
+
+        return $this->render(
+            'community/view_trick.html.twig',
+            array('trick' => $trick, 'form' => $form->createView(), 'comments' => $comments)
+        );
     }
 
     /**
@@ -119,6 +148,7 @@ class TrickController extends Controller
      */
     public function deleteAction(Request $request)
     {
-        return new Response('Ok');
+        $this->addFlash('notice', 'Trick was deleted !');
+        return $this->redirectToRoute('st_index');
     }
 }

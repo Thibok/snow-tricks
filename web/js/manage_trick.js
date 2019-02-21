@@ -273,45 +273,16 @@ $(function () {
 
         fileInputs.eq(0).addClass('fav-input');
         fileInputs.hide();
+        let firstPrevImg = $('#img-container-0');
 
-        if ($('.exist').length > 0) {
-            $('.exist').each(function () {
-                let idSplit = $(this).attr('id').split('-');
-                let id = idSplit[2];
-
-                let controls = createControlsImage();
-                $(this).append(controls);
-
-                $('#appbundle_trick_images_' + id + '_file').change(function () {
-                    if ($(this).val().length !== 0 && validateImage($(this))) {
-                        readThumbURL(this);
-                        if ($(this).hasClass('fav-input')) {
-                            readMainUrl(this)
-                        }
-                    } else {
-                        loadDefaultThumbImgPreview($(this));
-                    }
-                });
-
-                if (imagesLength === 0) {
-                    let prevSrc = $(this).children('img').attr('src');
-                    let splitSrc = prevSrc.split('thumb-');
-                    let newSrc = splitSrc[0] + splitSrc[1];
-                    $('#mainTrickImg').attr('src', newSrc);
-                }
-
-                if (getNbOfMediaActualPage() < getMediaPerPage()) {
-                    $(this).addClass('reveal-media');
-                } else {
-                    $(this).removeClass('d-inline-block');
-                    $(this).hide();
-                }    
-
-                imagesLength++;
-                totalMedias++;
-            });     
-        }
         while(imagesLength < fileInputsLength) {
+            
+            if (imagesLength === 0 && firstPrevImg.hasClass('exist')) {
+                let prevSrc = firstPrevImg.children('img').attr('src');
+                let splitSrc = prevSrc.split('thumb-');
+                let newSrc = splitSrc[0] + splitSrc[1];
+                $('#mainTrickImg').attr('src', newSrc);
+            }
             
             let fileInputId = 'appbundle_trick_images_' + imagesLength + '_file';
             let fileInputName = 'appbundle_trick[images][' + imagesLength + '][file]';
@@ -328,6 +299,14 @@ $(function () {
                     loadDefaultThumbImgPreview($(this));
                 }
             });
+
+            let spanServerError = fileInput.next('span');
+            let errorMsg = spanServerError.find('.form-error-message').text();
+            if (errorMsg.length !== 0) {
+                errorMsg = 'Image ' + (imagesLength + 1) + ' : ' + errorMsg;
+                $('#media_error').text(errorMsg);
+                spanServerError.remove();
+            }
 
             let imgPreview = $('.image').eq(imagesLength);
 
@@ -418,7 +397,7 @@ $(function () {
     }
 
     function createVideoIframe (videoSrc) {
-        let iframeVideoEl = '<iframe class="align-middle" width=100% height=100% ' + videoSrc + ' frameborder="0" allow="fullscreen"></iframe>';
+        let iframeVideoEl = '<iframe class="align-middle" width=100% height=100% ' + videoSrc + ' frameborder="0"></iframe>';
 
         return iframeVideoEl;
     }
@@ -758,6 +737,14 @@ $(function () {
             }
 
             let srcVideo = 'src="' + videoUrl + '"';
+
+            let spanServerError = videoInput.next('span');
+            let errorMsg = spanServerError.find('.form-error-message').text();
+            if (errorMsg.length !== 0) {
+                errorMsg = 'Video ' + (videosLength + 1) + ' : ' + errorMsg;
+                $('#media_error').text(errorMsg);
+                spanServerError.remove();
+            }
 
             let videoEl = createVideoEl(srcVideo);
 

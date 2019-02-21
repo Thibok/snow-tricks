@@ -390,6 +390,166 @@ class TrickControllerTest extends WebTestCase
     }
 
     /**
+     * Test if user can't access comment form if is not logged
+     * @access public
+     *
+     * @return void
+     */
+    public function testUserCantAccessCommentFormIfHeIsNotAuth()
+    {
+        $crawler = $this->client->request('GET', '/tricks/details/a-simple-trick');
+        $this->assertSame(0, $crawler->filter('form')->count());
+    }
+
+    /**
+     * Test if user can access comment form if is logged
+     * @access public
+     *
+     * @return void
+     */
+    public function testUserCanAccessCommentFormIfHeIsAuth()
+    {
+        $this->logIn();
+
+        $crawler = $this->client->request('GET', '/tricks/details/a-simple-trick');
+        $this->assertSame(1, $crawler->filter('form')->count());
+    }
+
+    /**
+     * Test the path to trick details (Home - A simple trick details)
+     * @access public
+     *
+     * @return void
+     */
+    public function testPathToViewTrick()
+    {
+        $crawler = $this->client->request('GET', '/');
+
+        $link = $crawler->filter('a[href="/tricks/details/a-simple-trick"]')->link();
+        $crawler = $this->client->click($link);
+
+        $this->assertSame(' SnowTricks - A simple trick details', $crawler->filter('title')->text());
+    }
+
+    /**
+     * Test viewTrick method of TrickController
+     * @access public
+     * @covers ::viewAction
+     * 
+     * @return void
+     */
+    public function testViewTrick()
+    { 
+        $commentDateRegex = '#^Add :([0-9]{2}-){2}[0-9]{4} at [0-9]{2}h[0-9]{2}min [0-9]{2}s$#';
+        $trickDateRegex = '#^(Add|Update)+ : ([0-9]{2}-){2}[0-9]{4} at [0-9]{2}h[0-9]{2}$#';
+        $absolutePath = __DIR__.'/../../../web';
+        $crawler = $this->client->request('GET', '/tricks/details/a-simple-trick');
+
+
+        $mainTrickImg = $absolutePath . $crawler->filter('#mainTrickImg')->attr('src');
+        $firstPrevImg = $absolutePath . $crawler->filter('#trick-img-thumb-0')->attr('src');
+        $firstVideo = $crawler->filter('#video-container-0 > span')->text();
+
+        $trickName = $crawler->filter('#trickName')->text();
+        $trickDescription = $crawler->filter('#trickDescription')->text();
+        $subInfos = $crawler->filter('#trickSubInfos > li');
+        $category = $subInfos->eq(0)->text();
+        $trickAddAt = $subInfos->eq(1)->text();
+        $trickAuthor = $subInfos->eq(2)->text();
+        $trickUpdateAt = $subInfos->eq(3)->text();
+
+        $comments = $crawler->filter('.comment');
+        $firstComment = $comments->eq(0);
+        $firstCommentImg = $absolutePath . $firstComment->children('img')->attr('src');
+        $firstCommentUser = $crawler->filter('.comment-user-name')->eq(0)->text();
+        $firstCommentContent = $crawler->filter('.comment-content')->eq(0)->text();
+        $firstCommentAddAt = $crawler->filter('.comment-add-date')->eq(0)->text();
+        
+        $this->assertTrue(file_exists($mainTrickImg));
+        $this->assertTrue(file_exists($firstPrevImg));
+        $this->assertSame('https://www.youtube.com/watch?v=dSZ7_TXcEdM', $firstVideo);
+
+        $this->assertSame('A simple trick', $trickName);
+        $this->assertSame('Simple', $trickDescription);
+        $this->assertSame('Flips', $category);
+        $this->assertSame(1, preg_match($trickDateRegex, $trickAddAt));
+        $this->assertSame('By : BryanEnabled TestEnabled', $trickAuthor);
+        $this->assertSame(1, preg_match($trickDateRegex, $trickUpdateAt));
+
+        $this->assertSame(10, $comments->count());
+        $this->assertTrue(file_exists($firstCommentImg));
+        $this->assertSame('BryanEnabled TestEnabled', $firstCommentUser);
+        $this->assertSame('Twelfth', $firstCommentContent);
+        $this->assertSame(1, preg_match($commentDateRegex, $firstCommentAddAt));
+        $this->assertSame(1, $crawler->filter('#loadMoreComment')->count());
+    }
+
+    /**
+     * Test if the user can't access of the control panel (Edit-delete) on trick details page
+     * if he is not logged
+     * @access private
+     *
+     * @return void
+     */
+    public function testUserCantAccesEditOrDeleteTrickLinkIfHeIsNotLogged()
+    {
+        $crawler = $this->client->request('GET', '/tricks/details/a-simple-trick');
+
+        $this->assertSame(0, $crawler->filter('#mainTrickImgControls')->count());
+    }
+
+    /**
+     * Test if the user can access of the control panel (Edit-delete) on trick details page
+     * if he is logged
+     * @access private
+     *
+     * @return void
+     */
+    public function testUserCanAccesEditOrDeleteTrickLinkIfHeIsLogged()
+    {
+        $this->logIn();
+
+        $crawler = $this->client->request('GET', '/tricks/details/a-simple-trick');
+
+        $this->assertSame(1, $crawler->filter('#mainTrickImgControls')->count());
+    }
+
+    /**
+     * Test path Trick details - Edit Trick
+     * @access private
+     *
+     * @return void
+     */
+    public function testPathViewTrickToEditTrick()
+    {
+        $this->logIn();
+
+        $crawler = $this->client->request('GET', '/tricks/details/a-simple-trick');
+        $editLink = $crawler->filter('#editTrick')->link();
+        $crawler = $this->client->click($editLink);
+
+        $this->assertSame(' SnowTricks - Edit A simple trick', $crawler->filter('title')->text());
+    }
+
+    /**
+     * Test path Trick details - Delete Trick
+     * @access private
+     *
+     * @return void
+     */
+    public function testPathViewTrickToDeleteTrick()
+    {
+        $this->logIn();
+
+        $crawler = $this->client->request('GET', '/tricks/details/a-simple-trick');
+        $editLink = $crawler->filter('#deleteTrick')->link();
+        $this->client->click($editLink);
+        $crawler = $this->client->followRedirect();
+
+        $this->assertSame(1, $crawler->filter('div.flash-notice')->count());
+    }
+
+    /**
      * Log user
      * @access private
      *

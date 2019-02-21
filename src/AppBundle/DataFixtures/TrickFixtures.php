@@ -14,27 +14,34 @@ class TrickFixtures extends Fixture implements DependentFixtureInterface
     /**
      * @var string
      */
-    const TRICK_REFERENCE = 'trick-for-update';
+    const TRICK_UPDATE_REFERENCE = 'trick-for-update';
+
+    /**
+     * @var string
+     */
+    const TRICK_VIEW_REFERENCE = 'trick-for-view';
 
     public function load(ObjectManager $manager)
     {
-        $trick = new Trick;
-        $trick->setName('A very good Trick');
-        $trick->setDescription('This trick is very hard !');
-        $trick->setUser($this->getReference(UserFixtures::ENABLED_USER_REFERENCE));
-        $trick->setCategory($this->getReference(CategoryFixtures::CATEGORY_FLIP_REFERENCE));
+        $trickForUpdate = new Trick;
+        $trickForUpdate->setName('A very good Trick');
+        $trickForUpdate->setDescription('This trick is very hard !');
+        $trickForUpdate->setUser($this->getReference(UserFixtures::ENABLED_USER_REFERENCE));
+        $trickForUpdate->setCategory($this->getReference(CategoryFixtures::CATEGORY_FLIP_REFERENCE));
 
-        $otherTrick = new Trick;
-        $otherTrick->setName('A simple trick');
-        $otherTrick->setDescription('Simple');
-        $otherTrick->setUser($this->getReference(UserFixtures::ENABLED_USER_REFERENCE));
-        $otherTrick->setCategory($this->getReference(CategoryFixtures::CATEGORY_FLIP_REFERENCE));
+        $trickForView = new Trick;
+        $trickForView->setName('A simple trick');
+        $trickForView->setDescription('Simple');
+        $trickForView->setUpdateAt(new \DateTime);
+        $trickForView->setUser($this->getReference(UserFixtures::ENABLED_USER_REFERENCE));
+        $trickForView->setCategory($this->getReference(CategoryFixtures::CATEGORY_FLIP_REFERENCE));
 
-        $manager->persist($trick);
-        $manager->persist($otherTrick);
+        $manager->persist($trickForUpdate);
+        $manager->persist($trickForView);
         $manager->flush();
 
-        $this->addReference(self::TRICK_REFERENCE, $trick);
+        $this->addReference(self::TRICK_UPDATE_REFERENCE, $trickForUpdate);
+        $this->addReference(self::TRICK_VIEW_REFERENCE, $trickForView);
     }
 
     /**

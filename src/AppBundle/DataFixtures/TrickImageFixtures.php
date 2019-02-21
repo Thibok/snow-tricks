@@ -17,12 +17,14 @@ class TrickImageFixtures extends Fixture implements DependentFixtureInterface
         $fileDir = __DIR__.'/../../../tests/AppBundle/uploads/';
 
         copy($fileDir.'goodTrickImg.jpg', $fileDir.'goodTrickImg-copy.jpg');
+        copy($fileDir.'goodTrickImg.jpg', $fileDir.'goodTrickImg-copy-1.jpg');
         copy($fileDir.'otherGoodTrickImg.jpeg', $fileDir.'otherGoodTrickImg-copy.jpeg');
 
-        $trickImg = new TrickImage;
-        $otherTrickImg = new TrickImage;
+        $firstTrickImgTrickUpdate = new TrickImage;
+        $secondTrickImgTrickUpdate = new TrickImage;
+        $trickImgTrickView = new TrickImage;
 
-        $file = new UploadedFile(
+        $firstFileTrickUpdate = new UploadedFile(
             $fileDir.'goodTrickImg-copy.jpg',
             'goodTrickImg-copy.jpg',
             'image/jpeg',
@@ -31,7 +33,7 @@ class TrickImageFixtures extends Fixture implements DependentFixtureInterface
             true
         );
 
-        $otherFile = new UploadedFile(
+        $secondFileTrickUpdate = new UploadedFile(
             $fileDir.'otherGoodTrickImg-copy.jpeg',
             'otherGoodTrickImg-copy.jpeg',
             'image/jpeg',
@@ -40,13 +42,25 @@ class TrickImageFixtures extends Fixture implements DependentFixtureInterface
             true
         );
 
-        $trickImg->setFile($file);
-        $otherTrickImg->setFile($otherFile);
-        $trickImg->setTrick($this->getReference(TrickFixtures::TRICK_REFERENCE));
-        $otherTrickImg->setTrick($this->getReference(TrickFixtures::TRICK_REFERENCE));
+        $fileTrickView = new UploadedFile(
+            $fileDir.'goodTrickImg-copy-1.jpg',
+            'goodTrickImg-copy-1.jpg',
+            'image/jpeg',
+            null,
+            null,
+            true
+        );
 
-        $manager->persist($trickImg);
-        $manager->persist($otherTrickImg);
+        $firstTrickImgTrickUpdate->setFile($firstFileTrickUpdate);
+        $secondTrickImgTrickUpdate->setFile($secondFileTrickUpdate);
+        $trickImgTrickView->setFile($fileTrickView);
+        $firstTrickImgTrickUpdate->setTrick($this->getReference(TrickFixtures::TRICK_UPDATE_REFERENCE));
+        $secondTrickImgTrickUpdate->setTrick($this->getReference(TrickFixtures::TRICK_UPDATE_REFERENCE));
+        $trickImgTrickView->setTrick($this->getReference(TrickFixtures::TRICK_VIEW_REFERENCE));
+
+        $manager->persist($firstTrickImgTrickUpdate);
+        $manager->persist($secondTrickImgTrickUpdate);
+        $manager->persist($trickImgTrickView);
 
         $manager->flush();
     }
