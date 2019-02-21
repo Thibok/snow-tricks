@@ -47,7 +47,8 @@ class ApiControllerTest extends WebTestCase
             ->get('doctrine')
             ->getManager()
             ->getRepository(Trick::class)
-            ->getTrick('a-simple-trick');
+            ->getTrick('a-simple-trick')
+        ;
 
         $url = '/api/comments/' .$trick->getId(). '/0';
         $this->client->request(
@@ -78,6 +79,28 @@ class ApiControllerTest extends WebTestCase
         $this->assertSame('Third', $lastComment['content']);  
         $this->assertTrue(file_exists($lastAbsoluteImgSrc));
         $this->assertSame(1, preg_match($dateRegex, $lastComment['date']));
+    }
+
+    /**
+     * Test getComments with bad request
+     * @access public
+     * @covers ::getComments
+     *
+     * @return void
+     */
+    public function testGetCommentsWithBadrequest()
+    {
+        $trick = $this->client
+            ->getContainer()
+            ->get('doctrine')
+            ->getManager()
+            ->getRepository(Trick::class)
+            ->getTrick('a-simple-trick')
+        ;
+
+        $this->client->request('GET', '/api/comments/' .$trick->getId(). '/0');
+
+        $this->assertSame(404, $this->client->getResponse()->getStatusCode());
     }
 
     /**

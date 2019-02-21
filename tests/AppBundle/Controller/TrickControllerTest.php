@@ -487,7 +487,7 @@ class TrickControllerTest extends WebTestCase
     /**
      * Test if the user can't access of the control panel (Edit-delete) on trick details page
      * if he is not logged
-     * @access private
+     * @access public
      *
      * @return void
      */
@@ -501,7 +501,7 @@ class TrickControllerTest extends WebTestCase
     /**
      * Test if the user can access of the control panel (Edit-delete) on trick details page
      * if he is logged
-     * @access private
+     * @access public
      *
      * @return void
      */
@@ -516,7 +516,7 @@ class TrickControllerTest extends WebTestCase
 
     /**
      * Test path Trick details - Edit Trick
-     * @access private
+     * @access public
      *
      * @return void
      */
@@ -533,7 +533,7 @@ class TrickControllerTest extends WebTestCase
 
     /**
      * Test path Trick details - Delete Trick
-     * @access private
+     * @access public
      *
      * @return void
      */
@@ -547,6 +547,88 @@ class TrickControllerTest extends WebTestCase
         $crawler = $this->client->followRedirect();
 
         $this->assertSame(1, $crawler->filter('div.flash-notice')->count());
+    }
+
+    /**
+     * Test addComment in viewAction in TrickController
+     * @access public
+     * @covers ::viewAction
+     * 
+     * @return void
+     */
+    public function testAddComment()
+    {
+        $absolutePath = __DIR__.'/../../../web';
+        $this->logIn();
+
+        $crawler = $this->client->request('GET', '/tricks/details/a-simple-trick');
+        $form = $crawler->selectButton('Leave a comment')->form();
+        $form['appbundle_comment[content]'] = 'Love this trick !';
+        $crawler = $this->client->submit($form);
+        $actualDate = new \DateTime;
+        $actualDate = 'Add :' .$actualDate->format('d-m-Y \a\t H\hi\m\i\n s\s');
+
+        $this->assertSame(1, $crawler->filter('div.flash-notice')->count());
+
+        $commentAuthor = $crawler->filter('.comment-user-name')->eq(0)->text();
+        $commentContent = $crawler->filter('.comment-content')->eq(0)->text();
+        $commentAddAt = $crawler->filter('.comment-add-date')->eq(0)->text();
+        $commentImgSrc = $absolutePath . $crawler->filter('.comment-user-img')->eq(0)->attr('src');
+
+        $this->assertSame('BryanEnabled TestEnabled', $commentAuthor);
+        $this->assertSame('Love this trick !', $commentContent);
+        $this->assertSame($actualDate, $commentAddAt);
+        $this->assertTrue(file_exists($commentImgSrc));
+    }
+
+    /**
+     * Test addComment in viewAction in TrickController with bad values
+     * @access public
+     * @param string $comment
+     * @covers ::viewAction
+     * @dataProvider commentFormValues
+     * 
+     * @return void
+     */
+    public function testAddCommentWithBadValues($comment)
+    {
+        $this->logIn();
+
+        $crawler = $this->client->request('GET', '/tricks/details/a-simple-trick');
+        $form = $crawler->selectButton('Leave a comment')->form();
+        $form['appbundle_comment[content]'] = $comment;
+
+        $crawler = $this->client->submit($form);
+
+        $this->assertSame(1, $crawler->filter('span.form-error-message')->count());
+    }
+
+    /**
+     * Bad values for testComment
+     * @access public
+     *
+     * @return array
+     */
+    public function commentFormValues()
+    {
+        return [
+            [
+                ''
+            ],
+            [
+                'v'
+            ],
+            [
+                '<Not <a> go>o<d fo>rmat fo>r </a> comment>'
+            ],
+            [
+                'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Curabitur volutpat consectetur pharetra.Morbi eleifend,
+                eros sed iaculis fermentum, nisl diam ultrices metus,ut mollis dui justo id urna. Aliquam erat volutpat.
+                Proin lacus lacus, tristidque non turpis eget,fringilla consequat mi. Vestibulum in dui sodales, lacinia odio
+                sit amet,hendrerit tortor. Morbi at venenactis felis, a eleifend dui. In hachdemu habitassey plateaze dictumsitdt.
+                Mauris velit lacus, blandit nec fringilla vvel, sagittis eu nullam.'
+            ]
+        ];
     }
 
     /**

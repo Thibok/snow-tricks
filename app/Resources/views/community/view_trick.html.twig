@@ -56,11 +56,12 @@
                 <hr class="bg-dark"/>
             </div>
             {% if is_granted('IS_AUTHENTICATED_FULLY') %}
-                {{ form_start(form, {'attr': {'id': 'commentForm'}}) }}
+                {{ form_start(form, {'attr': {'id': 'commentForm', 'novalidate': 'novalidate'}}) }}
                     <div id="formCommentFieldsPosition">
                         {{ formElements.recaptcha("g-recaptcha comment-captcha") }}
                         <div id="commentContentInputContainer" class="form-group">
                             {{ form_widget(form.content) }}
+                            {{ form_errors(form.content) }}
                             <span class="invalid-feedback d-block" id="comment_error"></span>
                         </div>
                         <button id="leaveCommentBtn" class="btn btn-primary">Leave a comment</button>
