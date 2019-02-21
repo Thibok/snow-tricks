@@ -32,7 +32,7 @@ class ApiController extends Controller
      * 
      * @return void
      */
-    public function getComments(Request $request, $trickId, $nbComments)
+    public function getCommentsAction(Request $request, $trickId, $nbComments)
     {
         if (!$request->isXmlHttpRequest()) {
             throw $this->createNotFoundException();
