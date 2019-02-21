@@ -102,7 +102,7 @@ class ResetPassHandler
     }
 
     /**
-     * Valid form and set new password for user
+     * Validate form
      * @access public
      * @param FormInterface $form
      * @param Request $request

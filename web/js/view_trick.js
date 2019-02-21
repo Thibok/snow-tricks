@@ -14,6 +14,11 @@ $(function () {
     const prevDisabledPath = '/img/prev_disabled.png';
     const ajaxLoaderImgPath = '/img/ajax-loader.gif';
     const apiCommentsUrl = '/api/comments/';
+    const commentMinLength = 2;
+    const commentMaxLength = 500;
+    const minLengthMessage = "must be at least";
+    const maxLengthMessage = "must be at most";
+    const commentRegex = new RegExp('[<>]');
 
     function recreateVideos() {
         let videos = $('.video');
@@ -370,6 +375,39 @@ $(function () {
         });
     }
 
+    function validateComment (comment) {
+        if (comment.length < commentMinLength) {
+            $('#comment_error').text('Comment ' + minLengthMessage + ' ' + commentMinLength + ' characters !');
+            return false;
+        }
+
+        if (comment.length > commentMaxLength) {
+            $('#comment_error').text('Comment ' + maxLengthMessage + ' ' + commentMaxLength + ' characters !');
+            return false;
+        }
+
+        if (commentRegex.test(comment)) {
+            $('#comment_error').text('Comment can\'t contain < or >');
+            return false;
+        }
+
+        $('#comment_error').text('');
+        return true;
+    }
+
+    function validateForm() {
+        
+        if (!validateComment(commentField.val())) {
+            return false;
+        }
+     
+        return true;
+    }
+
+    function formSubmit() {
+        $('#commentForm').submit();
+    }
+
     $('#see_media').click(function (e) {
         e.preventDefault();
         $('#see_media_container').hide();
@@ -452,4 +490,25 @@ $(function () {
     $('#loadMoreComment').click(function (e) {
         loadMoreComment($(this), e);
     });
+
+    window.formSubmit = formSubmit;
+
+    var commentField = $('#appbundle_comment_content');
+
+    commentField.on('keyup blur', function () {
+        validateComment($(this).val());
+    });
+
+    $('#leaveCommentBtn').click(function (event) {
+        event.preventDefault();
+        if (validateForm()) {
+            grecaptcha.reset();
+            grecaptcha.execute();
+        }
+    });
+
+    if ($('.comment').length === 0) {
+        let noComments = $('<span id="noComments">No Comments</span>');
+        $('#loadMoreComment').replaceWith(noComments);
+    }
 });
