@@ -26,70 +26,86 @@ class CommentFixtures extends Fixture implements DependentFixtureInterface
      */
     public function load(ObjectManager $manager)
     {
-        $firstComment = new Comment;
-        $secondComment = new Comment;
-        $thirdComment = new Comment;
-        $fourthComment = new Comment;
-        $fifthComment = new Comment;
-        $sixthComment = new Comment;
-        $seventhComment = new Comment;
-        $eighthComment = new Comment;
-        $ninthComment = new Comment;
-        $tenthComment = new Comment;
-        $eleventhComment = new Comment;
-        $twelfthComment = new Comment;
+        $firstCommentTrickView = new Comment;
+        $secondCommentTrickView = new Comment;
+        $thirdCommentTrickView = new Comment;
+        $fourthCommentTrickView = new Comment;
+        $fifthCommentTrickView = new Comment;
+        $sixthCommentTrickView = new Comment;
+        $seventhCommentTrickView = new Comment;
+        $eighthCommentTrickView = new Comment;
+        $ninthCommentTrickView = new Comment;
+        $tenthCommentTrickView = new Comment;
+        $eleventhCommentTrickView = new Comment;
+        $twelfthCommentTrickView = new Comment;
 
-        $firstComment->setContent('First');
-        $secondComment->setContent('Second');
-        $thirdComment->setContent('Third');
-        $fourthComment->setContent('Fourth');
-        $fifthComment->setContent('Fifth');
-        $sixthComment->setContent('Sixth');
-        $seventhComment->setContent('Seventh');
-        $eighthComment->setContent('Eighth');
-        $ninthComment->setContent('Ninth');
-        $tenthComment->setContent('Tenth');
-        $eleventhComment->setContent('Eleventh');
-        $twelfthComment->setContent('Twelfth');
+        $firstCommentTrickDelete = new Comment;
+        $secondCommentTrickDelete = new Comment;
 
-        $firstComment->setUser($this->getReference(UserFixtures::ENABLED_USER_REFERENCE));
-        $secondComment->setUser($this->getReference(UserFixtures::ENABLED_USER_REFERENCE));
-        $thirdComment->setUser($this->getReference(UserFixtures::ENABLED_USER_REFERENCE));
-        $fourthComment->setUser($this->getReference(UserFixtures::ENABLED_USER_REFERENCE));
-        $fifthComment->setUser($this->getReference(UserFixtures::ENABLED_USER_REFERENCE));
-        $sixthComment->setUser($this->getReference(UserFixtures::ENABLED_USER_REFERENCE));
-        $seventhComment->setUser($this->getReference(UserFixtures::ENABLED_USER_REFERENCE));
-        $eighthComment->setUser($this->getReference(UserFixtures::ENABLED_USER_REFERENCE));
-        $ninthComment->setUser($this->getReference(UserFixtures::ENABLED_USER_REFERENCE));
-        $tenthComment->setUser($this->getReference(UserFixtures::ENABLED_USER_REFERENCE));
-        $eleventhComment->setUser($this->getReference(UserFixtures::ENABLED_USER_REFERENCE));
-        $twelfthComment->setUser($this->getReference(UserFixtures::ENABLED_USER_REFERENCE));
+        $firstCommentTrickView->setContent('First');
+        $secondCommentTrickView->setContent('Second');
+        $thirdCommentTrickView->setContent('Third');
+        $fourthCommentTrickView->setContent('Fourth');
+        $fifthCommentTrickView->setContent('Fifth');
+        $sixthCommentTrickView->setContent('Sixth');
+        $seventhCommentTrickView->setContent('Seventh');
+        $eighthCommentTrickView->setContent('Eighth');
+        $ninthCommentTrickView->setContent('Ninth');
+        $tenthCommentTrickView->setContent('Tenth');
+        $eleventhCommentTrickView->setContent('Eleventh');
+        $twelfthCommentTrickView->setContent('Twelfth');
 
-        $firstComment->setTrick($this->getReference(TrickFixtures::TRICK_VIEW_REFERENCE));
-        $secondComment->setTrick($this->getReference(TrickFixtures::TRICK_VIEW_REFERENCE));
-        $thirdComment->setTrick($this->getReference(TrickFixtures::TRICK_VIEW_REFERENCE));
-        $fourthComment->setTrick($this->getReference(TrickFixtures::TRICK_VIEW_REFERENCE));
-        $fifthComment->setTrick($this->getReference(TrickFixtures::TRICK_VIEW_REFERENCE));
-        $sixthComment->setTrick($this->getReference(TrickFixtures::TRICK_VIEW_REFERENCE));
-        $seventhComment->setTrick($this->getReference(TrickFixtures::TRICK_VIEW_REFERENCE));
-        $eighthComment->setTrick($this->getReference(TrickFixtures::TRICK_VIEW_REFERENCE));
-        $ninthComment->setTrick($this->getReference(TrickFixtures::TRICK_VIEW_REFERENCE));
-        $tenthComment->setTrick($this->getReference(TrickFixtures::TRICK_VIEW_REFERENCE));
-        $eleventhComment->setTrick($this->getReference(TrickFixtures::TRICK_VIEW_REFERENCE));
-        $twelfthComment->setTrick($this->getReference(TrickFixtures::TRICK_VIEW_REFERENCE));
+        $firstCommentTrickDelete->setContent('Top comment !');
+        $secondCommentTrickDelete->setContent('Me too !');
+        
 
-        $manager->persist($firstComment);
-        $manager->persist($secondComment);
-        $manager->persist($thirdComment);
-        $manager->persist($fourthComment);
-        $manager->persist($fifthComment);
-        $manager->persist($sixthComment);
-        $manager->persist($seventhComment);
-        $manager->persist($eighthComment);
-        $manager->persist($ninthComment);
-        $manager->persist($tenthComment);
-        $manager->persist($eleventhComment);
-        $manager->persist($twelfthComment);
+        $firstCommentTrickView->setUser($this->getReference(UserFixtures::ENABLED_USER_REFERENCE));
+        $secondCommentTrickView->setUser($this->getReference(UserFixtures::ENABLED_USER_REFERENCE));
+        $thirdCommentTrickView->setUser($this->getReference(UserFixtures::ENABLED_USER_REFERENCE));
+        $fourthCommentTrickView->setUser($this->getReference(UserFixtures::ENABLED_USER_REFERENCE));
+        $fifthCommentTrickView->setUser($this->getReference(UserFixtures::ENABLED_USER_REFERENCE));
+        $sixthCommentTrickView->setUser($this->getReference(UserFixtures::ENABLED_USER_REFERENCE));
+        $seventhCommentTrickView->setUser($this->getReference(UserFixtures::ENABLED_USER_REFERENCE));
+        $eighthCommentTrickView->setUser($this->getReference(UserFixtures::ENABLED_USER_REFERENCE));
+        $ninthCommentTrickView->setUser($this->getReference(UserFixtures::ENABLED_USER_REFERENCE));
+        $tenthCommentTrickView->setUser($this->getReference(UserFixtures::ENABLED_USER_REFERENCE));
+        $eleventhCommentTrickView->setUser($this->getReference(UserFixtures::ENABLED_USER_REFERENCE));
+        $twelfthCommentTrickView->setUser($this->getReference(UserFixtures::ENABLED_USER_REFERENCE));
+
+        $firstCommentTrickDelete->setUser($this->getReference(UserFixtures::ENABLED_USER_REFERENCE));
+        $secondCommentTrickDelete->setUser($this->getReference(UserFixtures::ENABLED_USER_REFERENCE));
+
+        $firstCommentTrickView->setTrick($this->getReference(TrickFixtures::TRICK_VIEW_REFERENCE));
+        $secondCommentTrickView->setTrick($this->getReference(TrickFixtures::TRICK_VIEW_REFERENCE));
+        $thirdCommentTrickView->setTrick($this->getReference(TrickFixtures::TRICK_VIEW_REFERENCE));
+        $fourthCommentTrickView->setTrick($this->getReference(TrickFixtures::TRICK_VIEW_REFERENCE));
+        $fifthCommentTrickView->setTrick($this->getReference(TrickFixtures::TRICK_VIEW_REFERENCE));
+        $sixthCommentTrickView->setTrick($this->getReference(TrickFixtures::TRICK_VIEW_REFERENCE));
+        $seventhCommentTrickView->setTrick($this->getReference(TrickFixtures::TRICK_VIEW_REFERENCE));
+        $eighthCommentTrickView->setTrick($this->getReference(TrickFixtures::TRICK_VIEW_REFERENCE));
+        $ninthCommentTrickView->setTrick($this->getReference(TrickFixtures::TRICK_VIEW_REFERENCE));
+        $tenthCommentTrickView->setTrick($this->getReference(TrickFixtures::TRICK_VIEW_REFERENCE));
+        $eleventhCommentTrickView->setTrick($this->getReference(TrickFixtures::TRICK_VIEW_REFERENCE));
+        $twelfthCommentTrickView->setTrick($this->getReference(TrickFixtures::TRICK_VIEW_REFERENCE));
+
+        $firstCommentTrickDelete->setTrick($this->getReference(TrickFixtures::TRICK_DELETE_REFERENCE));
+        $secondCommentTrickDelete->setTrick($this->getReference(TrickFixtures::TRICK_DELETE_REFERENCE));
+
+        $manager->persist($firstCommentTrickView);
+        $manager->persist($secondCommentTrickView);
+        $manager->persist($thirdCommentTrickView);
+        $manager->persist($fourthCommentTrickView);
+        $manager->persist($fifthCommentTrickView);
+        $manager->persist($sixthCommentTrickView);
+        $manager->persist($seventhCommentTrickView);
+        $manager->persist($eighthCommentTrickView);
+        $manager->persist($ninthCommentTrickView);
+        $manager->persist($tenthCommentTrickView);
+        $manager->persist($eleventhCommentTrickView);
+        $manager->persist($twelfthCommentTrickView);
+
+        $manager->persist($firstCommentTrickDelete);
+        $manager->persist($secondCommentTrickDelete);
 
         $manager->flush();
     }
