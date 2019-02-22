@@ -71,7 +71,7 @@ class Comment
      * @var Trick
      * @access private
      * @ORM\ManyToOne(targetEntity="AppBundle\Entity\Trick")
-     * @ORM\JoinColumn(nullable=false)
+     * @ORM\JoinColumn(nullable=false, onDelete="cascade")
      */
     private $trick;
 

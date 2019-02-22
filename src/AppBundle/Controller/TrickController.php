@@ -155,14 +155,26 @@ class TrickController extends Controller
     /**
      * Delete a trick
      * @access public
-     * @param Request $request
+     * @param Trick $trick
      * @Route("/tricks/details/{slug}/delete", name="st_delete_trick", requirements={"slug"="[a-z0-9-]{2,80}"})
+     * @ParamConverter("trick")
+     * @Security("has_role('ROLE_MEMBER')")
      * 
      * @return void
      */
-    public function deleteAction(Request $request)
+    public function deleteAction(Trick $trick)
     {
-        $this->addFlash('notice', 'Trick was deleted !');
+        $manager = $this->getDoctrine()->getManager();
+
+        $manager->remove($trick);
+
+        try {
+            $manager->flush();
+            $this->addFlash('notice', 'Success ! Trick was deleted !');
+        } catch(ORMException $e) {
+            $this->addFlash('error', 'An error has occurred');
+        }
+
         return $this->redirectToRoute('st_index');
     }
 }
