@@ -76,7 +76,7 @@ class TrickController extends Controller
      * @Route("/tricks/details/{slug}", name="st_view_trick", requirements={"slug"="[a-z0-9-]{2,80}"})
      * @ParamConverter("trick")
      * 
-     * @return void
+     * @return Response
      */
     public function viewAction(Request $request, Trick $trick, CommentHandler $commentHandler)
     {
@@ -117,7 +117,7 @@ class TrickController extends Controller
      * @ParamConverter("trick")
      * @Security("has_role('ROLE_MEMBER')")
      * 
-     * @return void
+     * @return mixed Response | RedirectResponse
      */
     public function editAction(Request $request, CaptchaChecker $captchaChecker, Trick $trick)
     {
@@ -160,7 +160,7 @@ class TrickController extends Controller
      * @ParamConverter("trick")
      * @Security("has_role('ROLE_MEMBER')")
      * 
-     * @return void
+     * @return RedirectResponse
      */
     public function deleteAction(Trick $trick)
     {
