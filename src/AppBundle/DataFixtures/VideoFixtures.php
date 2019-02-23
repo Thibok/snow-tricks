@@ -21,6 +21,9 @@ class VideoFixtures extends Fixture implements DependentFixtureInterface
         $firstVideoTrickDelete = new Video;
         $secondVideoTrickDelete = new Video;
 
+        $firstVideoTrickDeleteAjax = new Video;
+        $secondVideoTrickDeleteAjax = new Video;
+
         $firstVideoTrickUpdate->setUrl('https://www.youtube.com/watch?v=SQyTWk7OxSI');
         $secondVideoTrickUpdate->setUrl('https://www.youtube.com/watch?v=8CtWgw9xYRE');
         $thirdVideoTrickUpdate->setUrl('https://www.youtube.com/watch?v=dSZ7_TXcEdM');
@@ -29,6 +32,9 @@ class VideoFixtures extends Fixture implements DependentFixtureInterface
 
         $firstVideoTrickDelete->setUrl('https://www.youtube.com/watch?v=-27nqjI844I');
         $secondVideoTrickDelete->setUrl('https://www.youtube.com/watch?v=FaVnYAQ8BXM');
+
+        $firstVideoTrickDeleteAjax->setUrl('https://www.youtube.com/watch?v=FaVnYAQ8BXM');
+        $secondVideoTrickDeleteAjax->setUrl('https://www.youtube.com/watch?v=FaVnYAQ8BXM');
 
         $firstVideoTrickUpdate->setTrick($this->getReference(TrickFixtures::TRICK_UPDATE_REFERENCE));
         $secondVideoTrickUpdate->setTrick($this->getReference(TrickFixtures::TRICK_UPDATE_REFERENCE));
@@ -39,6 +45,9 @@ class VideoFixtures extends Fixture implements DependentFixtureInterface
         $firstVideoTrickDelete->setTrick($this->getReference(TrickFixtures::TRICK_DELETE_REFERENCE));
         $secondVideoTrickDelete->setTrick($this->getReference(TrickFixtures::TRICK_DELETE_REFERENCE));
 
+        $firstVideoTrickDeleteAjax->setTrick($this->getReference(TrickFixtures::TRICK_DELETE_AJAX_REFERENCE));
+        $secondVideoTrickDeleteAjax->setTrick($this->getReference(TrickFixtures::TRICK_DELETE_AJAX_REFERENCE));
+
         $manager->persist($firstVideoTrickUpdate);
         $manager->persist($secondVideoTrickUpdate);
         $manager->persist($thirdVideoTrickUpdate);
@@ -47,6 +56,9 @@ class VideoFixtures extends Fixture implements DependentFixtureInterface
 
         $manager->persist($firstVideoTrickDelete);
         $manager->persist($secondVideoTrickDelete);
+
+        $manager->persist($firstVideoTrickDeleteAjax);
+        $manager->persist($secondVideoTrickDeleteAjax);
 
         $manager->flush();
     }

@@ -42,6 +42,9 @@ class CommentFixtures extends Fixture implements DependentFixtureInterface
         $firstCommentTrickDelete = new Comment;
         $secondCommentTrickDelete = new Comment;
 
+        $firstCommentTrickDeleteAjax = new Comment;
+        $secondCommentTrickDeleteAjax = new Comment;
+
         $firstCommentTrickView->setContent('First');
         $secondCommentTrickView->setContent('Second');
         $thirdCommentTrickView->setContent('Third');
@@ -57,6 +60,9 @@ class CommentFixtures extends Fixture implements DependentFixtureInterface
 
         $firstCommentTrickDelete->setContent('Top comment !');
         $secondCommentTrickDelete->setContent('Me too !');
+
+        $firstCommentTrickDeleteAjax->setContent('Delete me');
+        $secondCommentTrickDeleteAjax->setContent('Clean me with Ajax');
         
 
         $firstCommentTrickView->setUser($this->getReference(UserFixtures::ENABLED_USER_REFERENCE));
@@ -75,6 +81,9 @@ class CommentFixtures extends Fixture implements DependentFixtureInterface
         $firstCommentTrickDelete->setUser($this->getReference(UserFixtures::ENABLED_USER_REFERENCE));
         $secondCommentTrickDelete->setUser($this->getReference(UserFixtures::ENABLED_USER_REFERENCE));
 
+        $firstCommentTrickDeleteAjax->setUser($this->getReference(UserFixtures::ENABLED_USER_REFERENCE));
+        $secondCommentTrickDeleteAjax->setUser($this->getReference(UserFixtures::ENABLED_USER_REFERENCE));
+
         $firstCommentTrickView->setTrick($this->getReference(TrickFixtures::TRICK_VIEW_REFERENCE));
         $secondCommentTrickView->setTrick($this->getReference(TrickFixtures::TRICK_VIEW_REFERENCE));
         $thirdCommentTrickView->setTrick($this->getReference(TrickFixtures::TRICK_VIEW_REFERENCE));
@@ -91,6 +100,9 @@ class CommentFixtures extends Fixture implements DependentFixtureInterface
         $firstCommentTrickDelete->setTrick($this->getReference(TrickFixtures::TRICK_DELETE_REFERENCE));
         $secondCommentTrickDelete->setTrick($this->getReference(TrickFixtures::TRICK_DELETE_REFERENCE));
 
+        $firstCommentTrickDeleteAjax->setTrick($this->getReference(TrickFixtures::TRICK_DELETE_AJAX_REFERENCE));
+        $secondCommentTrickDeleteAjax->setTrick($this->getReference(TrickFixtures::TRICK_DELETE_AJAX_REFERENCE));
+
         $manager->persist($firstCommentTrickView);
         $manager->persist($secondCommentTrickView);
         $manager->persist($thirdCommentTrickView);
@@ -106,6 +118,9 @@ class CommentFixtures extends Fixture implements DependentFixtureInterface
 
         $manager->persist($firstCommentTrickDelete);
         $manager->persist($secondCommentTrickDelete);
+
+        $manager->persist($firstCommentTrickDeleteAjax);
+        $manager->persist($secondCommentTrickDeleteAjax);
 
         $manager->flush();
     }

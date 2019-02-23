@@ -65,7 +65,7 @@ class SecurityControllerTest extends WebTestCase
         $this->client->submit($form);
         $crawler = $this->client->followRedirect();
         
-        $this->assertSame(2, $crawler->filter('div.flash-notice')->count());
+        $this->assertEquals(2, $crawler->filter('div.flash-notice')->count());
     }
 
     /**
@@ -113,7 +113,7 @@ class SecurityControllerTest extends WebTestCase
 
         $crawler = $this->client->submit($form);
 
-        $this->assertSame($result, $crawler->filter('span.form-error-message')->count());     
+        $this->assertEquals($result, $crawler->filter('span.form-error-message')->count());     
     }
 
     /**
@@ -185,7 +185,7 @@ class SecurityControllerTest extends WebTestCase
 
         $crawler = $this->client->followRedirect();
 
-        $this->assertSame(1, $crawler->filter('div.flash-notice')->count());
+        $this->assertEquals(1, $crawler->filter('div.flash-notice')->count());
     }
 
     /**
@@ -199,7 +199,7 @@ class SecurityControllerTest extends WebTestCase
     {
         $this->client->request('GET', '/registration/validation/rdfpdfpfd58978512');
 
-        $this->assertSame(404, $this->client->getResponse()->getStatusCode());
+        $this->assertTrue($this->client->getResponse()->isNotFound());
     }
 
     /**
@@ -236,7 +236,7 @@ class SecurityControllerTest extends WebTestCase
         $this->client->submit($form);
         $crawler = $this->client->followRedirect();
         
-        $this->assertSame(1, $crawler->filter('div.flash-notice')->count());
+        $this->assertEquals(1, $crawler->filter('div.flash-notice')->count());
     }
 
     /**
@@ -260,7 +260,7 @@ class SecurityControllerTest extends WebTestCase
         $this->client->submit($form);
         $crawler = $this->client->followRedirect();
         
-        $this->assertSame(1, $crawler->filter('div[class="alert alert-danger"]')->count());    
+        $this->assertEquals(1, $crawler->filter('div[class="alert alert-danger"]')->count());    
     }
 
     /**
@@ -300,7 +300,7 @@ class SecurityControllerTest extends WebTestCase
         $this->client->request('GET', '/logout');
         $crawler = $this->client->followRedirect();
 
-        $this->assertSame(0, $crawler->filter('a:contains("Logout")')->count());
+        $this->assertEquals(0, $crawler->filter('a:contains("Logout")')->count());
     }
 
     /**
@@ -318,7 +318,7 @@ class SecurityControllerTest extends WebTestCase
         $this->client->click($link);
         $crawler = $this->client->followRedirect();
 
-        $this->assertSame(0, $crawler->filter('a:contains("Logout")')->count());
+        $this->assertEquals(0, $crawler->filter('a:contains("Logout")')->count());
     }
 
     /**
@@ -404,7 +404,7 @@ class SecurityControllerTest extends WebTestCase
         $this->client->submit($form);
         $crawler = $this->client->followRedirect();
 
-        $this->assertSame(1, $crawler->filter('div.flash-notice')->count());
+        $this->assertEquals(1, $crawler->filter('div.flash-notice')->count());
     }
 
     /**
@@ -425,7 +425,7 @@ class SecurityControllerTest extends WebTestCase
 
         $crawler = $this->client->submit($form);
 
-        $this->assertSame(1, $crawler->filter('span.form-error-message')->count());
+        $this->assertEquals(1, $crawler->filter('span.form-error-message')->count());
     }
 
     /**
@@ -488,7 +488,7 @@ class SecurityControllerTest extends WebTestCase
         $this->client->submit($form);
         $crawler = $this->client->followRedirect();
         
-        $this->assertSame(1, $crawler->filter('div.flash-notice')->count());
+        $this->assertEquals(1, $crawler->filter('div.flash-notice')->count());
     }
 
     /**
@@ -502,7 +502,7 @@ class SecurityControllerTest extends WebTestCase
     {
         $this->client->request('GET', '/reset_password/rdfpdfpfd58978512');
 
-        $this->assertSame(404, $this->client->getResponse()->getStatusCode());
+        $this->assertTrue($this->client->getResponse()->isNotFound());
     }
 
     /**
@@ -529,7 +529,7 @@ class SecurityControllerTest extends WebTestCase
 
         $crawler = $this->client->submit($form);
         
-        $this->assertSame($result, $crawler->filter('span.form-error-message')->count());     
+        $this->assertEquals($result, $crawler->filter('span.form-error-message')->count());     
     }
 
     /**

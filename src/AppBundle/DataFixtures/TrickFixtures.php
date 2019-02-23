@@ -26,6 +26,11 @@ class TrickFixtures extends Fixture implements DependentFixtureInterface
      */
     const TRICK_DELETE_REFERENCE = 'trick-for-delete';
 
+    /**
+     * 
+     */
+    const TRICK_DELETE_AJAX_REFERENCE = 'trick-for-delete-ajax';
+
     public function load(ObjectManager $manager)
     {
         $trickForUpdate = new Trick;
@@ -48,15 +53,24 @@ class TrickFixtures extends Fixture implements DependentFixtureInterface
         $trickForDelete->setUser($this->getReference(UserFixtures::ENABLED_USER_REFERENCE));
         $trickForDelete->setCategory($this->getReference(CategoryFixtures::CATEGORY_FLIP_REFERENCE));
 
+        $trickForDeleteAjax = new Trick;
+        $trickForDeleteAjax->setName('A very bad bad bad trick');
+        $trickForDeleteAjax->setDescription('This trick need to remove with ajax !');
+        $trickForDeleteAjax->setUpdateAt(new \DateTime);
+        $trickForDeleteAjax->setUser($this->getReference(UserFixtures::ENABLED_USER_REFERENCE));
+        $trickForDeleteAjax->setCategory($this->getReference(CategoryFixtures::CATEGORY_FLIP_REFERENCE));
+
         $manager->persist($trickForUpdate);
         $manager->persist($trickForView);
         $manager->persist($trickForDelete);
+        $manager->persist($trickForDeleteAjax);
         
         $manager->flush();
 
         $this->addReference(self::TRICK_UPDATE_REFERENCE, $trickForUpdate);
         $this->addReference(self::TRICK_VIEW_REFERENCE, $trickForView);
         $this->addReference(self::TRICK_DELETE_REFERENCE, $trickForDelete);
+        $this->addReference(self::TRICK_DELETE_AJAX_REFERENCE, $trickForDeleteAjax);
     }
 
     /**

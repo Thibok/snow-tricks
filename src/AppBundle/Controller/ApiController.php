@@ -29,7 +29,8 @@ class ApiController extends Controller
      * @Route(
      *     "/api/comments/{trickId}/{nbComments}",
      *     name="st_api_comments",
-     *     requirements={"trickId"="\d+", "nbComments"="\d+"}
+     *     requirements={"trickId"="\d+", "nbComments"="\d+"},
+     *     methods={"GET"}
      * )
      * 
      * @return JsonResponse
