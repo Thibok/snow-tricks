@@ -46,6 +46,7 @@ class TrickParamConverter implements ParamConverterInterface
         }
     }
 
+    
     /**
      * {@inheritdoc}
      */

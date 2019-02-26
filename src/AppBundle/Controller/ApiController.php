@@ -95,7 +95,7 @@ class ApiController extends Controller
         if (!$this->isGranted('IS_AUTHENTICATED_FULLY')) {
             $response = [
                 'result' => false,
-                'message' => 'You are not authenticating !'
+                'message' => 'You are not authenticated !'
             ];
             return new JsonResponse($response);
         }
