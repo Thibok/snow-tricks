@@ -430,6 +430,11 @@ $(function () {
         return false;
     });
 
+    function goToDeleteTrickPage() {
+        let url = $('#deleteTrick').attr('href');
+        $(location).attr('href', url);
+    }
+
     $('#previous').click(function (e) {
         e.preventDefault();
 
@@ -507,8 +512,20 @@ $(function () {
         }
     });
 
+    var deleteTrickModal = new jBox('Confirm', {
+        cancelButton: 'Cancel',
+        confirmButton: 'Delete',
+        content: 'Are you sure you want to do that ?',
+        confirm: goToDeleteTrickPage,
+    });
+
     if ($('.comment').length === 0) {
         let noComments = $('<span id="noComments">No Comments</span>');
         $('#loadMoreComment').replaceWith(noComments);
     }
+
+    $('#deleteTrick').click(function (e) {
+        e.preventDefault();
+        deleteTrickModal.open();
+    });
 });

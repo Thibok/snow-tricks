@@ -6,12 +6,14 @@
 
 namespace AppBundle\Controller;
 
+use AppBundle\Entity\Trick;
 use AppBundle\Entity\Comment;
 use Symfony\Component\HttpFoundation\Request;
 use Symfony\Component\HttpFoundation\Response;
 use Symfony\Component\Routing\Annotation\Route;
 use Symfony\Component\HttpFoundation\JsonResponse;
 use Symfony\Bundle\FrameworkBundle\Controller\Controller;
+use Sensio\Bundle\FrameworkExtraBundle\Configuration\Security;
 
 /**
  * ApiController
@@ -27,10 +29,11 @@ class ApiController extends Controller
      * @Route(
      *     "/api/comments/{trickId}/{nbComments}",
      *     name="st_api_comments",
-     *     requirements={"trickId"="\d+", "nbComments"="\d+"}
+     *     requirements={"trickId"="\d+", "nbComments"="\d+"},
+     *     methods={"GET"}
      * )
      * 
-     * @return void
+     * @return JsonResponse
      */
     public function getCommentsAction(Request $request, $trickId, $nbComments)
     {
@@ -67,5 +70,52 @@ class ApiController extends Controller
         }
 
         return new JsonResponse($datas);
+    }
+
+    /**
+     * Delete a Trick with Ajax
+     * @access public
+     * @param Request $request
+     * @param string $slug
+     * @Route(
+     *     "/api/trick/{slug}/delete",
+     *     name="st_api_trick_delete",
+     *     requirements={"slug"="[a-z0-9-]{2,80}"},
+     *     methods={"DELETE"}
+     * )
+     * 
+     * @return JsonResponse
+     */
+    public function deleteTrickAction(Request $request, $slug)
+    {
+        if (!$request->isXmlHttpRequest()) {
+            throw $this->createNotFoundException();
+        }
+
+        if (!$this->isGranted('IS_AUTHENTICATED_FULLY')) {
+            $response = [
+                'result' => false,
+                'message' => 'You are not authenticated !'
+            ];
+            return new JsonResponse($response);
+        }
+
+        $manager = $this->getDoctrine()->getManager();
+
+        $trick = $manager->getRepository(Trick::class)->getTrick($slug);
+
+        if ($trick == null) {
+            throw $this->createNotFoundException();
+        }
+
+        $manager->remove($trick);
+        $manager->flush();
+
+        $response = [
+            'result' => true,
+            'message' => 'Success ! Trick was deleted !'
+        ];
+
+        return new JsonResponse($response);
     }
 }

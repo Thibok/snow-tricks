@@ -7,6 +7,10 @@
 namespace Tests\AppBundle\Controller;
 
 use AppBundle\Entity\User;
+use AppBundle\Entity\Trick;
+use AppBundle\Entity\Video;
+use AppBundle\Entity\Comment;
+use AppBundle\Entity\TrickImage;
 use Symfony\Component\BrowserKit\Cookie;
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
 use Symfony\Component\HttpFoundation\File\UploadedFile;
@@ -83,7 +87,7 @@ class TrickControllerTest extends WebTestCase
         $this->client->request($form->getMethod(), $form->getUri(), $values, $form->getPhpFiles());
         $crawler = $this->client->followRedirect();
 
-        $this->assertSame(1, $crawler->filter('div.flash-notice')->count());
+        $this->assertEquals(1, $crawler->filter('div.flash-notice')->count());
     }
 
     /**
@@ -140,7 +144,7 @@ class TrickControllerTest extends WebTestCase
 
         $this->client->request($form->getMethod(), $form->getUri(), $values, $form->getPhpFiles());
         $crawler = $this->client->followRedirect();
-        $this->assertSame(1, $crawler->filter('div.flash-notice')->count());
+        $this->assertEquals(1, $crawler->filter('div.flash-notice')->count());
 
         $crawler = $this->client->request('GET', '/tricks/details/new-name/update');
         $form = $crawler->selectButton('Edit')->form();
@@ -148,8 +152,8 @@ class TrickControllerTest extends WebTestCase
         $description = $form->get('appbundle_trick[description]')->getValue();
         $category = $crawler->filter('option[selected]')->text();
 
-        $this->assertSame(2, $crawler->filter('#trickImages > input')->count());
-        $this->assertSame(8, $crawler->filter('#trickVideos > input')->count());
+        $this->assertEquals(2, $crawler->filter('#trickImages > input')->count());
+        $this->assertEquals(8, $crawler->filter('#trickVideos > input')->count());
         $this->assertSame('New name', $name);
         $this->assertSame('New description !', $description);
         $this->assertSame('One foot tricks', $category);
@@ -186,7 +190,7 @@ class TrickControllerTest extends WebTestCase
 
         $crawler = $this->client->request($form->getMethod(), $form->getUri(), $values, $form->getPhpFiles());
 
-        $this->assertSame($result, $crawler->filter('span.form-error-message')->count());
+        $this->assertEquals($result, $crawler->filter('span.form-error-message')->count());
     }
 
     /**
@@ -220,7 +224,7 @@ class TrickControllerTest extends WebTestCase
 
         $crawler = $this->client->request($form->getMethod(), $form->getUri(), $values, $form->getPhpFiles());
 
-        $this->assertSame($result, $crawler->filter('span.form-error-message')->count());
+        $this->assertEquals($result, $crawler->filter('span.form-error-message')->count());
     }
 
     /**
@@ -398,7 +402,7 @@ class TrickControllerTest extends WebTestCase
     public function testUserCantAccessCommentFormIfHeIsNotAuth()
     {
         $crawler = $this->client->request('GET', '/tricks/details/a-simple-trick');
-        $this->assertSame(0, $crawler->filter('form')->count());
+        $this->assertEquals(0, $crawler->filter('form')->count());
     }
 
     /**
@@ -412,7 +416,7 @@ class TrickControllerTest extends WebTestCase
         $this->logIn();
 
         $crawler = $this->client->request('GET', '/tricks/details/a-simple-trick');
-        $this->assertSame(1, $crawler->filter('form')->count());
+        $this->assertEquals(1, $crawler->filter('form')->count());
     }
 
     /**
@@ -472,16 +476,16 @@ class TrickControllerTest extends WebTestCase
         $this->assertSame('A simple trick', $trickName);
         $this->assertSame('Simple', $trickDescription);
         $this->assertSame('Flips', $category);
-        $this->assertSame(1, preg_match($trickDateRegex, $trickAddAt));
+        $this->assertEquals(1, preg_match($trickDateRegex, $trickAddAt));
         $this->assertSame('By : BryanEnabled TestEnabled', $trickAuthor);
-        $this->assertSame(1, preg_match($trickDateRegex, $trickUpdateAt));
+        $this->assertEquals(1, preg_match($trickDateRegex, $trickUpdateAt));
 
-        $this->assertSame(10, $comments->count());
+        $this->assertEquals(10, $comments->count());
         $this->assertTrue(file_exists($firstCommentImg));
         $this->assertSame('BryanEnabled TestEnabled', $firstCommentUser);
         $this->assertSame('Twelfth', $firstCommentContent);
-        $this->assertSame(1, preg_match($commentDateRegex, $firstCommentAddAt));
-        $this->assertSame(1, $crawler->filter('#loadMoreComment')->count());
+        $this->assertEquals(1, preg_match($commentDateRegex, $firstCommentAddAt));
+        $this->assertEquals(1, $crawler->filter('#loadMoreComment')->count());
     }
 
     /**
@@ -495,7 +499,7 @@ class TrickControllerTest extends WebTestCase
     {
         $crawler = $this->client->request('GET', '/tricks/details/a-simple-trick');
 
-        $this->assertSame(0, $crawler->filter('#mainTrickImgControls')->count());
+        $this->assertEquals(0, $crawler->filter('#mainTrickImgControls')->count());
     }
 
     /**
@@ -511,7 +515,7 @@ class TrickControllerTest extends WebTestCase
 
         $crawler = $this->client->request('GET', '/tricks/details/a-simple-trick');
 
-        $this->assertSame(1, $crawler->filter('#mainTrickImgControls')->count());
+        $this->assertEquals(1, $crawler->filter('#mainTrickImgControls')->count());
     }
 
     /**
@@ -541,12 +545,12 @@ class TrickControllerTest extends WebTestCase
     {
         $this->logIn();
 
-        $crawler = $this->client->request('GET', '/tricks/details/a-simple-trick');
-        $editLink = $crawler->filter('#deleteTrick')->link();
-        $this->client->click($editLink);
+        $crawler = $this->client->request('GET', '/tricks/details/test-path-view-to-delete');
+        $deleteLink = $crawler->filter('#deleteTrick')->link();
+        $this->client->click($deleteLink);
         $crawler = $this->client->followRedirect();
-
-        $this->assertSame(1, $crawler->filter('div.flash-notice')->count());
+        
+        $this->assertSame(' SnowTricks - Home', $crawler->filter('title')->text());
     }
 
     /**
@@ -567,7 +571,7 @@ class TrickControllerTest extends WebTestCase
         $form['appbundle_comment[content]'] = 'Love this trick !';
         $crawler = $this->client->submit($form);
 
-        $this->assertSame(1, $crawler->filter('div.flash-notice')->count());
+        $this->assertEquals(1, $crawler->filter('div.flash-notice')->count());
 
         $commentAuthor = $crawler->filter('.comment-user-name')->eq(0)->text();
         $commentContent = $crawler->filter('.comment-content')->eq(0)->text();
@@ -576,7 +580,7 @@ class TrickControllerTest extends WebTestCase
 
         $this->assertSame('BryanEnabled TestEnabled', $commentAuthor);
         $this->assertSame('Love this trick !', $commentContent);
-        $this->assertSame(1, preg_match($commentDateRegex, $commentAddAt));
+        $this->assertEquals(1, preg_match($commentDateRegex, $commentAddAt));
         $this->assertTrue(file_exists($commentImgSrc));
     }
 
@@ -599,7 +603,7 @@ class TrickControllerTest extends WebTestCase
 
         $crawler = $this->client->submit($form);
 
-        $this->assertSame(1, $crawler->filter('span.form-error-message')->count());
+        $this->assertEquals(1, $crawler->filter('span.form-error-message')->count());
     }
 
     /**
@@ -628,6 +632,82 @@ class TrickControllerTest extends WebTestCase
                 Mauris velit lacus, blandit nec fringilla vvel, sagittis eu nullam.'
             ]
         ];
+    }
+
+    /**
+     * Test deleteTrickAction
+     * @access public
+     * @covers ::deleteAction
+     *
+     * @return void
+     */
+    public function testDeleteTrick()
+    {
+        $this->logIn();
+
+        $manager = $this->client->getContainer()->get('doctrine')->getManager();
+        $trick = $manager->getRepository(Trick::class)->getTrick('a-very-bad-trick');
+        $trickId = $trick->getId();
+        $comment = $manager->getRepository(Comment::class)->findOneBy(array('content' => 'Top comment !'));
+        $firstCommentId = $comment->getId();
+        $firstVideoId = $trick->getVideos()[0]->getId();
+        $firstImg = $trick->getImages()[0];
+        $firstImgId = $firstImg->getId();
+        $firstImgThumbPath = __DIR__.'/../../../web/' .$firstImg->getUploadWebTestThumbPath(); 
+        $firstImgLargePath = __DIR__.'/../../../web/' .$firstImg->getUploadWebTestLargePath();
+
+        $this->client->request('GET', '/tricks/details/a-very-bad-trick/delete');
+        $crawler = $this->client->followRedirect();
+        
+        $this->assertEquals(1, $crawler->filter('div.flash-notice')->count());
+
+        $deletedTrick = $manager->getRepository(Trick::class)->find($trickId);
+        $deletedImg = $manager->getRepository(TrickImage::class)->find($firstImgId);
+        $deletedVideo = $manager->getRepository(Video::class)->find($firstVideoId);
+        $deletedComment = $manager->getRepository(Comment::class)->find($firstCommentId);
+        $thumbImgExist = file_exists($firstImgThumbPath);
+        $largeImgExist = file_exists($firstImgLargePath);
+
+        $this->assertNull($deletedTrick);
+        $this->assertNull($deletedImg);
+        $this->assertNull($deletedVideo);
+        $this->assertNull($deletedComment);
+        $this->assertFalse($thumbImgExist);
+        $this->assertFalse($largeImgExist);
+    }
+
+
+    /**
+     * Test path Edit trick - Delete Trick
+     * @access public
+     *
+     * @return void
+     */
+    public function testPathEdiTrickToDeleteTrick()
+    {
+        $this->logIn();
+
+        $crawler = $this->client->request('GET', '/tricks/details/test-path-edit-to-delete/update');
+        $deleteLink = $crawler->filter('#deleteTrickBtn')->link();
+        $this->client->click($deleteLink);
+        $crawler = $this->client->followRedirect();
+
+        $this->assertSame(' SnowTricks - Home', $crawler->filter('title')->text());
+    }
+
+    /**
+     * Test user can't access delete trick page if he's not authenticated
+     * @access public
+     *
+     * @return void
+     */
+    public function testUserCantAccessDeleteTrickPageIfHeIsNotAuth()
+    {
+        $this->client->request('GET', '/tricks/details/a-simple-trick/delete');
+        $crawler = $this->client->followRedirect();
+        $loginTitle = $crawler->filter('h1')->text();
+
+        $this->assertSame('Login', $loginTitle);
     }
 
     /**

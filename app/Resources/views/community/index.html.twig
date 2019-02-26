@@ -1,6 +1,7 @@
 {% extends 'base.html.twig' %}
 {% block title %} {{ parent() }} Home{% endblock %}
 {% block body %}
-<a href="{{ path('st_edit_trick', {'slug': 'a-simple-trick'}) }}"></a>
-<a href="{{ path('st_view_trick', {'slug': 'a-simple-trick'}) }}"></a>
+    <a href="{{ path('st_edit_trick', {'slug': 'a-simple-trick'}) }}"></a>
+    <a href="{{ path('st_view_trick', {'slug': 'a-simple-trick'}) }}"></a>
+    <a id="deleteTrickTestLink" href="{{ path('st_api_trick_delete', {'slug': 'a-very-bad-bad-bad-trick'}) }}"></a>
 {% endblock %}
