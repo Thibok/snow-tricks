@@ -220,7 +220,7 @@ class ApiControllerTest extends WebTestCase
         $response = json_decode($this->client->getResponse()->getContent(), true);
 
         $this->assertFalse($response['result']);
-        $this->assertSame($response['message'], 'You are not authenticating !');
+        $this->assertSame($response['message'], 'You are not authenticated !');
     }
 
     /**
