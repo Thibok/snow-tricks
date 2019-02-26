@@ -48,6 +48,8 @@ class TrickControllerTest extends WebTestCase
         $fileDir = __DIR__.'/../uploads/';
         copy($fileDir.'trick.jpg', $fileDir.'trick-copy.jpg');
         copy($fileDir.'snow.png', $fileDir.'snow-copy.png');
+        $trickDateRegex = '#^([0-9]{2}-){2}[0-9]{4} at [0-9]{2}h[0-9]{2}$#';
+        $absolutePath = __DIR__.'/../../../web/';
 
         $this->logIn();
         $crawler = $this->client->request('GET', '/tricks/add');
@@ -88,6 +90,47 @@ class TrickControllerTest extends WebTestCase
         $crawler = $this->client->followRedirect();
 
         $this->assertEquals(1, $crawler->filter('div.flash-notice')->count());
+
+        $manager = $this->client->getContainer()->get('doctrine')->getManager();
+        $trick = $manager->getRepository(Trick::class)->getTrick('trick-test');
+
+        $trickName = $trick->getName();
+        $trickSlug = $trick->getSlug();
+        $trickDescription = $trick->getDescription();
+        $trickAddAt = $trick->getAddAt()->format('d-m-Y \a\t H\hi');
+        $trickUpdateAt = $trick->getUpdateAt();
+        $trickFirstThumbImg = $absolutePath . $trick->getImages()[0]->getUploadWebTestThumbPath();
+        $trickSecondThumbImg = $absolutePath . $trick->getImages()[1]->getUploadWebTestThumbPath();
+        $trickFirstLargeImg = $absolutePath . $trick->getImages()[0]->getUploadWebTestLargePath();
+        $trickSecondLargeImg = $absolutePath . $trick->getImages()[1]->getUploadWebTestLargePath();
+        $trickFirstVideo = $trick->getVideos()[0]->getUrl();
+        $trickSecondVideo = $trick->getVideos()[1]->getUrl();
+        $trickThirdVideo = $trick->getVideos()[2]->getUrl();
+        $trickFourthVideo = $trick->getVideos()[3]->getUrl();
+        $trickFifthVideo = $trick->getVideos()[4]->getUrl();
+        $trickSixthVideo = $trick->getVideos()[5]->getUrl();
+        $trickSeventhVideo = $trick->getVideos()[6]->getUrl();
+        $trickEighthVideo = $trick->getVideos()[7]->getUrl();
+        $trickCategory = $trick->getCategory()->getName();
+
+        $this->assertSame('Trick test', $trickName);
+        $this->assertSame('trick-test', $trickSlug);
+        $this->assertSame('A short description !', $trickDescription);
+        $this->assertEquals(1, preg_match($trickDateRegex, $trickAddAt));
+        $this->assertNull($trickUpdateAt);
+        $this->assertTrue(file_exists($trickFirstThumbImg));
+        $this->assertTrue(file_exists($trickFirstLargeImg));
+        $this->assertTrue(file_exists($trickSecondLargeImg));
+        $this->assertTrue(file_exists($trickSecondLargeImg));
+        $this->assertSame('https://youtu.be/VZ4teZHfpkc', $trickFirstVideo);
+        $this->assertSame('https://www.youtube.com/watch?v=VZ4teZHfpkc', $trickSecondVideo);
+        $this->assertSame('https://www.youtube.com/embed/VZ4teZHfpkc', $trickThirdVideo);
+        $this->assertSame('https://www.dailymotion.com/video/x14wofv', $trickFourthVideo);
+        $this->assertSame('https://dai.ly/x14wofv', $trickFifthVideo);
+        $this->assertSame('https://www.dailymotion.com/embed/video/x14wofv', $trickSixthVideo);
+        $this->assertSame('https://vimeo.com/9636197', $trickSeventhVideo);
+        $this->assertSame('https://player.vimeo.com/video/9636197', $trickEighthVideo);
+        $this->assertSame('Grabs', $trickCategory);
     }
 
     /**
@@ -389,6 +432,9 @@ class TrickControllerTest extends WebTestCase
             ],
             [
                 '/tricks/details/a-simple-trick/update'
+            ],
+            [
+                '/tricks/details/a-simple-trick/delete'
             ]
         ];
     }
@@ -693,21 +739,6 @@ class TrickControllerTest extends WebTestCase
         $crawler = $this->client->followRedirect();
 
         $this->assertSame(' SnowTricks - Home', $crawler->filter('title')->text());
-    }
-
-    /**
-     * Test user can't access delete trick page if he's not authenticated
-     * @access public
-     *
-     * @return void
-     */
-    public function testUserCantAccessDeleteTrickPageIfHeIsNotAuth()
-    {
-        $this->client->request('GET', '/tricks/details/a-simple-trick/delete');
-        $crawler = $this->client->followRedirect();
-        $loginTitle = $crawler->filter('h1')->text();
-
-        $this->assertSame('Login', $loginTitle);
     }
 
     /**
