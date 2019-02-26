@@ -60,10 +60,27 @@ class TrickFixtures extends Fixture implements DependentFixtureInterface
         $trickForDeleteAjax->setUser($this->getReference(UserFixtures::ENABLED_USER_REFERENCE));
         $trickForDeleteAjax->setCategory($this->getReference(CategoryFixtures::CATEGORY_FLIP_REFERENCE));
 
+        $trickPathEditDelete = new Trick;
+        $trickPathEditDelete->setName('Test path edit to delete');
+        $trickPathEditDelete->setDescription('Go here !');
+        $trickPathEditDelete->setUpdateAt(new \DateTime);
+        $trickPathEditDelete->setUser($this->getReference(UserFixtures::ENABLED_USER_REFERENCE));
+        $trickPathEditDelete->setCategory($this->getReference(CategoryFixtures::CATEGORY_FLIP_REFERENCE));
+
+        $trickPathViewDelete = new Trick;
+        $trickPathViewDelete->setName('Test path view to delete');
+        $trickPathViewDelete->setDescription('Go here');
+        $trickPathViewDelete->setUpdateAt(new \DateTime);
+        $trickPathViewDelete->setUser($this->getReference(UserFixtures::ENABLED_USER_REFERENCE));
+        $trickPathViewDelete->setCategory($this->getReference(CategoryFixtures::CATEGORY_FLIP_REFERENCE));
+
+
         $manager->persist($trickForUpdate);
         $manager->persist($trickForView);
         $manager->persist($trickForDelete);
         $manager->persist($trickForDeleteAjax);
+        $manager->persist($trickPathEditDelete);
+        $manager->persist($trickPathViewDelete);
         
         $manager->flush();
 

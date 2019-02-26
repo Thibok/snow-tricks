@@ -181,7 +181,10 @@ class ApiControllerTest extends WebTestCase
             array('HTTP_X-Requested-With' => 'XMLHttpRequest')
         );
 
-        $this->assertTrue(json_decode($this->client->getResponse()->getContent()));
+        $response = json_decode($this->client->getResponse()->getContent(), true);
+
+        $this->assertTrue($response['result']);
+        $this->assertSame($response['message'], 'Success ! Trick was deleted !');
 
         $deletedTrick = $manager->getRepository(Trick::class)->find($trickId);
         $deletedImg = $manager->getRepository(TrickImage::class)->find($firstImgId);
@@ -214,7 +217,10 @@ class ApiControllerTest extends WebTestCase
             array('HTTP_X-Requested-With' => 'XMLHttpRequest')
         );
 
-        $this->assertFalse(json_decode($this->client->getResponse()->getContent()));
+        $response = json_decode($this->client->getResponse()->getContent(), true);
+
+        $this->assertFalse($response['result']);
+        $this->assertSame($response['message'], 'You are not authenticating !');
     }
 
     /**

@@ -93,7 +93,11 @@ class ApiController extends Controller
         }
 
         if (!$this->isGranted('IS_AUTHENTICATED_FULLY')) {
-            return new JsonResponse(false);
+            $response = [
+                'result' => false,
+                'message' => 'You are not authenticating !'
+            ];
+            return new JsonResponse($response);
         }
 
         $manager = $this->getDoctrine()->getManager();
@@ -107,6 +111,11 @@ class ApiController extends Controller
         $manager->remove($trick);
         $manager->flush();
 
-        return new JsonResponse(true);
+        $response = [
+            'result' => true,
+            'message' => 'Success ! Trick was deleted !'
+        ];
+
+        return new JsonResponse($response);
     }
 }

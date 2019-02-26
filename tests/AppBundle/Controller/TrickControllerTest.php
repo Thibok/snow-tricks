@@ -545,10 +545,12 @@ class TrickControllerTest extends WebTestCase
     {
         $this->logIn();
 
-        $crawler = $this->client->request('GET', '/tricks/details/a-simple-trick');
-        $deleteLink = $crawler->filter('#deleteTrick')->attr('href');
+        $crawler = $this->client->request('GET', '/tricks/details/test-path-view-to-delete');
+        $deleteLink = $crawler->filter('#deleteTrick')->link();
+        $this->client->click($deleteLink);
+        $crawler = $this->client->followRedirect();
         
-        $this->assertSame('/tricks/details/a-simple-trick/delete', $deleteLink);
+        $this->assertSame(' SnowTricks - Home', $crawler->filter('title')->text());
     }
 
     /**
@@ -685,10 +687,12 @@ class TrickControllerTest extends WebTestCase
     {
         $this->logIn();
 
-        $crawler = $this->client->request('GET', '/tricks/details/a-simple-trick/update');
-        $deleteLink = $crawler->filter('#deleteTrickBtn')->attr('href');
+        $crawler = $this->client->request('GET', '/tricks/details/test-path-edit-to-delete/update');
+        $deleteLink = $crawler->filter('#deleteTrickBtn')->link();
+        $this->client->click($deleteLink);
+        $crawler = $this->client->followRedirect();
 
-        $this->assertSame('/tricks/details/a-simple-trick/delete', $deleteLink);
+        $this->assertSame(' SnowTricks - Home', $crawler->filter('title')->text());
     }
 
     /**
