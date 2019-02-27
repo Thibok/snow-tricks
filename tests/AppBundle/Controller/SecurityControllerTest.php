@@ -7,6 +7,8 @@
 namespace Tests\AppBundle\Controller;
 
 use AppBundle\Entity\User;
+use AppBundle\Entity\Token;
+use AppBundle\Entity\UserImage;
 use Symfony\Component\BrowserKit\Cookie;
 use Symfony\Bundle\FrameworkBundle\Client;
 use Symfony\Bundle\FrameworkBundle\Test\WebTestCase;
@@ -66,6 +68,18 @@ class SecurityControllerTest extends WebTestCase
         $crawler = $this->client->followRedirect();
         
         $this->assertEquals(2, $crawler->filter('div.flash-notice')->count());
+
+        $manager = $this->client->getContainer()->get('doctrine')->getManager();
+        $encoder = $this->client->getContainer()->get('security.password_encoder');
+
+        $user = $manager->getRepository(User::class)->findOneByUsername('Zebulon');
+
+        $this->assertSame('Zebulon', $user->getUsername());
+        $this->assertSame('zebulontest@yahoo.fr', $user->getEmail());
+        $this->assertSame('Example', $user->getName());
+        $this->assertSame('Jean', $user->getFirstName());
+        $this->assertEquals(0, $user->getIsActive());
+        $this->assertTrue($encoder->isPasswordValid($user, 'averygreatepassword45'));
     }
 
     /**
@@ -186,6 +200,33 @@ class SecurityControllerTest extends WebTestCase
         $crawler = $this->client->followRedirect();
 
         $this->assertEquals(1, $crawler->filter('div.flash-notice')->count());
+
+        $manager = $this->client->getContainer()->get('doctrine')->getManager();
+        $token = $manager
+            ->getRepository(Token::class)
+            ->getTokenWithUser('c15b26a3d01aa113ed235d570ca43d621a552be7c9821aab8238a40f40b53e686689559629535112')
+        ;
+
+        $user = $manager->getRepository(User::class)->findOneByUsername('GoodUser');
+
+        $this->assertNull($token);
+        $this->assertEquals(1, $user->getIsActive());
+    }
+
+    /**
+     * Test valid registration with expired token
+     * @access public
+     *
+     * @return void
+     */
+    public function testValidRegistrationWithExpiredToken()
+    {
+        $this->client->request(
+            'GET',
+            '/registration/validation/w1fb48a3d01aa113ed2fcd5e52a43d621a552be7c9821aab8238a40f40b53868668v5596h95351lo'
+        );
+
+        $this->assertTrue($this->client->getResponse()->isNotFound());
     }
 
     /**
@@ -489,6 +530,19 @@ class SecurityControllerTest extends WebTestCase
         $crawler = $this->client->followRedirect();
         
         $this->assertEquals(1, $crawler->filter('div.flash-notice')->count());
+
+        $manager = $this->client->getContainer()->get('doctrine')->getManager();
+        $token = $manager
+            ->getRepository(Token::class)
+            ->getTokenWithUser('k15b26a3d01aaoo2ed2f8efe52a43d621a552be7c9821aab8238a4dc40b53e600689559629535115')
+        ;
+
+        $encoder = $this->client->getContainer()->get('security.password_encoder');
+
+        $user = $manager->getRepository(User::class)->findOneByUsername('ResetPassUser');
+        
+        $this->assertTrue($encoder->isPasswordValid($user, 'anewsimplypass45'));
+        $this->assertNull($token);
     }
 
     /**
@@ -557,6 +611,22 @@ class SecurityControllerTest extends WebTestCase
                 2
             ],
         ];
+    }
+
+    /**
+     * Test reset pass with an expired token
+     * @access public
+     *
+     * @return array
+     */
+    public function testResetPassWithExpiredToken()
+    {
+        $this->client->request(
+            'GET',
+            '/reset_password/u15b26a3d01aaoo2ed2f8efkzfa42d621a554be8c9821aab8238a4dc4et53e6006c9482629535115'
+        );
+
+        $this->assertTrue($this->client->getResponse()->isNotFound());
     }
 
     /**

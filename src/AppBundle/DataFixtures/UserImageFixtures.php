@@ -19,7 +19,7 @@ class UserImageFixtures extends Fixture
     /**
      * @var string
      */
-    const USERIMAGE_REFERENCE = 'userimage';
+    const VALID_REGISTRATION_USERIMAGE_REFERENCE = 'userimage-valid-registration';
 
     /**
      * @var string
@@ -39,7 +39,17 @@ class UserImageFixtures extends Fixture
     /**
      * @var string
      */
-    const USERIMAGE_RESET_PASS_OTHER_USER_REFERENCE = 'userimage-reset-pass-other-user';
+    const USERIMAGE_RESET_PASS_BAD_REFERENCE = 'userimage-reset-pass-bad-user';
+
+    /**
+     * @var string
+     */
+    const USERIMAGE_RESET_PASS_EXPIRED_REFERENCE = 'userimage-reset-pass-expired';
+
+    /**
+     * @var string
+     */
+    const USERIMAGE_VALID_REGISTRATION_EXPIRED_REFERENCE = 'userimage-valid-registration-expired';
 
     /**
      * Load fixtures
@@ -52,37 +62,58 @@ class UserImageFixtures extends Fixture
     {
         $fileDir = __DIR__.'/../../../tests/AppBundle/uploads/';
 
-        copy($fileDir.'userimage.png', $fileDir.'userimage-copy.png');
-        copy($fileDir.'userimage.png', $fileDir.'userimage-copy1.png');
-        copy($fileDir.'userimage.png', $fileDir.'userimage-copy2.png');
-        copy($fileDir.'userimage.png', $fileDir.'userimage-copy3.png');
-        copy($fileDir.'userimage.png', $fileDir.'userimage-copy4.png');
+        copy($fileDir.'userimage.png', $fileDir.'img-valid-registration.png');
+        copy($fileDir.'userimage.png', $fileDir.'img-valid-registration-expired.png');
 
-        $userImage = new UserImage;
-        $userImageEnabledUser = new UserImage;
-        $userImageInactiveUser = new UserImage;
-        $userImageResetPassUser = new UserImage;
-        $userImageResetPassOtherUser = new UserImage;
+        copy($fileDir.'userimage.png', $fileDir.'img-enabled-user.png');
 
-        $file = new UploadedFile(
-            __DIR__.'/../../../tests/AppBundle/uploads/userimage-copy.png',
-            'userimage.png',
+        copy($fileDir.'userimage.png', $fileDir.'img-inactive-user.png');
+
+        copy($fileDir.'userimage.png', $fileDir.'img-reset-pass-user.png');
+        copy($fileDir.'userimage.png', $fileDir.'img-bad-reset-pass-user.png');
+        copy($fileDir.'userimage.png', $fileDir.'img-expired-reset-pass-user');
+
+        $userImgValidRegistration = new UserImage;
+        $userImgValidRegistrationExpired = new UserImage;
+
+        $userImgEnabledUser = new UserImage;
+
+        $userImgInactiveUser = new UserImage;
+
+        $userImgResetPassUser = new UserImage;
+        $userImgResetPassBadUser = new UserImage;
+        $userImgResetPassExpired = new UserImage;
+
+        $fileValidRegistration = new UploadedFile(
+            __DIR__.'/../../../tests/AppBundle/uploads/img-valid-registration.png',
+            'img-valid-registration.png',
             'image/png',
             null,
             null,
             true
         );
+
+        $fileValidRegistrationExpired = new UploadedFile(
+            __DIR__.'/../../../tests/AppBundle/uploads/img-valid-registration-expired.png',
+            'img-valid-registration-expired.png',
+            'image/png',
+            null,
+            null,
+            true
+        );
+
         $fileEnabledUser = new UploadedFile(
-            __DIR__.'/../../../tests/AppBundle/uploads/userimage-copy1.png',
-            'userimage.png',
+            __DIR__.'/../../../tests/AppBundle/uploads/img-enabled-user.png',
+            'img-enabled-user.png',
             'image/png',
             null,
             null,
             true
         );
+
         $fileInactiveUser = new UploadedFile(
-            __DIR__.'/../../../tests/AppBundle/uploads/userimage-copy2.png',
-            'userimage.png',
+            __DIR__.'/../../../tests/AppBundle/uploads/img-inactive-user.png',
+            'img-inactive-user.png',
             'image/png',
             null,
             null,
@@ -90,40 +121,65 @@ class UserImageFixtures extends Fixture
         );
 
         $fileResetPassUser = new UploadedFile(
-            __DIR__.'/../../../tests/AppBundle/uploads/userimage-copy3.png',
-            'userimage.png',
+            __DIR__.'/../../../tests/AppBundle/uploads/img-reset-pass-user.png',
+            'img-reset-pass-user.png',
             'image/png',
             null,
             null,
             true
         );
 
-        $fileResetPassOtherUser = new UploadedFile(
-            __DIR__.'/../../../tests/AppBundle/uploads/userimage-copy4.png',
-            'userimage.png',
+        $fileResetPassBadUser = new UploadedFile(
+            __DIR__.'/../../../tests/AppBundle/uploads/img-bad-reset-pass-user.png',
+            'img-bad-reset-pass-user.png',
             'image/png',
             null,
             null,
             true
         );
 
-        $userImage->setFile($file);
-        $userImageEnabledUser->setFile($fileEnabledUser);
-        $userImageInactiveUser->setFile($fileInactiveUser);
-        $userImageResetPassUser->setFile($fileResetPassUser);
-        $userImageResetPassOtherUser->setFile($fileResetPassOtherUser);
+        $fileResetPassExpired = new UploadedFile(
+            __DIR__.'/../../../tests/AppBundle/uploads/img-expired-reset-pass-user',
+            'img-expired-reset-pass-user',
+            'image/png',
+            null,
+            null,
+            true
+        );
 
-        $manager->persist($userImage);
-        $manager->persist($userImageEnabledUser);
-        $manager->persist($userImageInactiveUser);
-        $manager->persist($userImageResetPassUser);
-        $manager->persist($userImageResetPassOtherUser);
+        $userImgValidRegistration->setFile($fileValidRegistration);
+        $userImgValidRegistrationExpired->setFile($fileValidRegistrationExpired);
+
+        $userImgEnabledUser->setFile($fileEnabledUser);
+
+        $userImgInactiveUser->setFile($fileInactiveUser);
+
+        $userImgResetPassUser->setFile($fileResetPassUser);
+        $userImgResetPassBadUser->setFile($fileResetPassBadUser);
+        $userImgResetPassExpired->setFile($fileResetPassExpired);
+
+        $manager->persist($userImgValidRegistration);
+        $manager->persist($userImgValidRegistrationExpired);
+
+        $manager->persist($userImgEnabledUser);
+
+        $manager->persist($userImgInactiveUser);
+
+        $manager->persist($userImgResetPassUser);
+        $manager->persist($userImgResetPassBadUser);
+        $manager->persist($userImgResetPassExpired);
+
         $manager->flush();
 
-        $this->addReference(self::USERIMAGE_REFERENCE, $userImage);
-        $this->addReference(self::USERIMAGE_ENABLED_USER_REFERENCE, $userImageEnabledUser);
-        $this->addReference(self::USERIMAGE_INACTIVE_USER_REFERENCE, $userImageInactiveUser);
-        $this->addReference(self::USERIMAGE_RESET_PASS_USER_REFERENCE, $userImageResetPassUser);
-        $this->addReference(self::USERIMAGE_RESET_PASS_OTHER_USER_REFERENCE, $userImageResetPassOtherUser);
+        $this->addReference(self::VALID_REGISTRATION_USERIMAGE_REFERENCE, $userImgValidRegistration);
+        $this->addReference(self::USERIMAGE_VALID_REGISTRATION_EXPIRED_REFERENCE, $userImgValidRegistrationExpired);
+
+        $this->addReference(self::USERIMAGE_ENABLED_USER_REFERENCE, $userImgEnabledUser);
+
+        $this->addReference(self::USERIMAGE_INACTIVE_USER_REFERENCE, $userImgInactiveUser);
+
+        $this->addReference(self::USERIMAGE_RESET_PASS_USER_REFERENCE, $userImgResetPassUser);
+        $this->addReference(self::USERIMAGE_RESET_PASS_BAD_REFERENCE, $userImgResetPassBadUser);
+        $this->addReference(self::USERIMAGE_RESET_PASS_EXPIRED_REFERENCE, $userImgResetPassExpired);
     }
 }

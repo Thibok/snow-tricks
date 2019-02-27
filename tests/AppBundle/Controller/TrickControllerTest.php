@@ -112,15 +112,17 @@ class TrickControllerTest extends WebTestCase
         $trickSeventhVideo = $trick->getVideos()[6]->getUrl();
         $trickEighthVideo = $trick->getVideos()[7]->getUrl();
         $trickCategory = $trick->getCategory()->getName();
+        $trickAuthor = $trick->getUser()->getFirstName() . ' ' . $trick->getUser()->getName();
 
         $this->assertSame('Trick test', $trickName);
         $this->assertSame('trick-test', $trickSlug);
+        $this->assertSame('BryanEnabled TestEnabled', $trickAuthor);
         $this->assertSame('A short description !', $trickDescription);
         $this->assertEquals(1, preg_match($trickDateRegex, $trickAddAt));
         $this->assertNull($trickUpdateAt);
         $this->assertTrue(file_exists($trickFirstThumbImg));
+        $this->assertTrue(file_exists($trickSecondThumbImg));
         $this->assertTrue(file_exists($trickFirstLargeImg));
-        $this->assertTrue(file_exists($trickSecondLargeImg));
         $this->assertTrue(file_exists($trickSecondLargeImg));
         $this->assertSame('https://youtu.be/VZ4teZHfpkc', $trickFirstVideo);
         $this->assertSame('https://www.youtube.com/watch?v=VZ4teZHfpkc', $trickSecondVideo);
@@ -144,7 +146,12 @@ class TrickControllerTest extends WebTestCase
     {
         $fileDir = __DIR__.'/../uploads/';
         copy($fileDir.'snow.png', $fileDir.'snow-copy-1.png');
+        $trickDateRegex = '#^([0-9]{2}-){2}[0-9]{4} at [0-9]{2}h[0-9]{2}$#';
+        $absolutePath = __DIR__.'/../../../web/';
 
+        $manager = $this->client->getContainer()->get('doctrine')->getManager();
+        $trick = $manager->getRepository(Trick::class)->getTrick('a-very-good-trick');
+        
         $this->logIn();
         $crawler = $this->client->request('GET', '/tricks/details/a-very-good-trick/update');
 
@@ -187,19 +194,44 @@ class TrickControllerTest extends WebTestCase
 
         $this->client->request($form->getMethod(), $form->getUri(), $values, $form->getPhpFiles());
         $crawler = $this->client->followRedirect();
+
         $this->assertEquals(1, $crawler->filter('div.flash-notice')->count());
 
-        $crawler = $this->client->request('GET', '/tricks/details/new-name/update');
-        $form = $crawler->selectButton('Edit')->form();
-        $name = $form->get('appbundle_trick[name]')->getValue();
-        $description = $form->get('appbundle_trick[description]')->getValue();
-        $category = $crawler->filter('option[selected]')->text();
+        $trickUpdated = $manager->getRepository(Trick::class)->getTrick('new-name');
 
-        $this->assertEquals(2, $crawler->filter('#trickImages > input')->count());
-        $this->assertEquals(8, $crawler->filter('#trickVideos > input')->count());
-        $this->assertSame('New name', $name);
-        $this->assertSame('New description !', $description);
-        $this->assertSame('One foot tricks', $category);
+        $trickAddAt = $trickUpdated->getAddAt()->format('d-m-Y \a\t H\hi');
+        $trickUpdateAt = $trickUpdated->getUpdateAt()->format('d-m-Y \a\t H\hi');
+
+        $this->assertSame('New name', $trickUpdated->getName());
+        $this->assertSame('new-name', $trickUpdated->getSlug());
+        $this->assertSame('New description !', $trickUpdated->getDescription());
+        $this->assertSame('One foot tricks', $trickUpdated->getCategory()->getName());
+        $this->assertEquals(1, preg_match($trickDateRegex, $trickAddAt));
+        $this->assertEquals(1, preg_match($trickDateRegex, $trickUpdateAt));
+        
+        $this->assertSame('https://www.youtube.com/watch?v=tHHxTHZwFUw', $trickUpdated->getVideos()[0]->getUrl());
+        $this->assertSame('https://www.dailymotion.com/video/xnltrc', $trickUpdated->getVideos()[1]->getUrl());
+        $this->assertSame('https://dai.ly/xx0pxj', $trickUpdated->getVideos()[2]->getUrl());
+        $this->assertSame('https://youtu.be/397Z2HrHn-4', $trickUpdated->getVideos()[3]->getUrl());
+        $this->assertSame('https://www.youtube.com/embed/K-RKP3BizWM', $trickUpdated->getVideos()[4]->getUrl());
+        $this->assertSame('https://www.dailymotion.com/embed/video/xx0pxj', $trickUpdated->getVideos()[5]->getUrl());
+        $this->assertSame('https://vimeo.com/14050350', $trickUpdated->getVideos()[6]->getUrl());
+        $this->assertSame('https://player.vimeo.com/video/4806901', $trickUpdated->getVideos()[7]->getUrl());
+
+        $oldImgThumb = $absolutePath . $trick->getImages()[1]->getUploadWebTestThumbPath();
+        $oldImgLarge = $absolutePath . $trick->getImages()[1]->getUploadWebTestLargePath();
+        $oldImgId = $trick->getImages()[1]->getId();
+
+        $oldImgExist = $manager->getRepository(TrickImage::class)->find($oldImgId);
+
+        $this->assertNull($oldImgExist);
+        $this->assertFalse(file_exists($oldImgThumb));
+        $this->assertFalse(file_exists($oldImgLarge));
+
+        foreach ($trickUpdated->getImages() as $newImg) {
+            $this->assertTrue(file_exists($absolutePath . $newImg->getUploadWebTestThumbPath()));
+            $this->asserttrue(file_exists($absolutePath . $newImg->getUploadWebTestLargePath()));
+        }
     }
 
     /**
