@@ -779,13 +779,12 @@ $(function () {
             let editControlId = 'edit-video-' + videosLength;
             let deleteControlId = 'delete-video-' + videosLength;
             let inputId = 'appbundle_trick_videos_' + videosLength + '_url';
-            let inputName = 'appbundle_trick[videos][' + videosLength + '][url]';
 
             $('.video').eq(videosLength).attr('id', mediaId);
             $('.counter-video').eq(videosLength).attr('id', counterId).text(videosLength + 1);
             $('.edit-control-video').eq(videosLength).attr('id', editControlId);
             $('.delete-control-video').eq(videosLength).attr('id', deleteControlId);
-            inputsUrl.eq(videosLength).attr('id', inputId).attr('name', inputName);
+            inputsUrl.eq(videosLength).attr('id', inputId);
 
             videosLength++;
         }
