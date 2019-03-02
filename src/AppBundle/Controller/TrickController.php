@@ -27,9 +27,15 @@ class TrickController extends Controller
     /**
      * @Route("/", name="st_index")
      */
-    public function indexAction()
+    public function indexAction(Request $request)
     {
-        return $this->render('community/index.html.twig');
+        $tricks = $this
+            ->getDoctrine()
+            ->getManager()
+            ->getRepository(Trick::class)
+            ->getTricks(1, 10);
+
+        return $this->render('community/index.html.twig', array('tricks' => $tricks));
     }
 
     /**

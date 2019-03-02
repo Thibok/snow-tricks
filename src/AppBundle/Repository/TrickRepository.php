@@ -2,6 +2,8 @@
 
 namespace AppBundle\Repository;
 
+use Doctrine\ORM\Tools\Pagination\Paginator;
+
 /**
  * TrickRepository
  *
@@ -33,5 +35,24 @@ class TrickRepository extends \Doctrine\ORM\EntityRepository
             ->getQuery()
             ->getOneOrNullResult()
         ;
+    }
+
+    public function getTricks($page, $nbPerPage)
+    {
+        $query = $this->createQueryBuilder('t')
+            ->leftJoin('t.images', 'img')
+            ->addSelect('img')
+            ->setFirstResult(0)
+            ->setMaxResults(0)
+            ->orderBy('t.id', 'DESC')
+            ->getQuery()
+        ;
+
+        $query
+            ->setFirstResult(($page - 1) * $nbPerPage)
+            ->setMaxResults($nbPerPage)
+        ;
+
+        return new Paginator($query, true);
     }
 }

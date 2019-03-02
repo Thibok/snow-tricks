@@ -93,7 +93,7 @@ class TrickImageListener
             $thumbName = 'trick-thumb-'.$trickImage->getId();
             $name = 'trick-'.$trickImage->getId();
     
-            $this->uploader->resize($filename, 200, 100, $thumbName);
+            $this->uploader->resize($filename, 300, 150, $thumbName);
             $this->uploader->resize($filename, 1200, 500, $name);
             $this->uploader->remove($filename);
         }
@@ -159,7 +159,7 @@ class TrickImageListener
             $thumbName = 'trick-thumb-'. $id;
             $name = 'trick-'. $id;
 
-            $this->uploader->resize($filename, 200, 100, $thumbName);
+            $this->uploader->resize($filename, 300, 150, $thumbName);
             $this->uploader->resize($filename, 1200, 500, $name);
             $this->uploader->remove($filename);
         }
