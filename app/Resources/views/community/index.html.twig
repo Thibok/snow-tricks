@@ -8,6 +8,7 @@
     <div id="imgBannerContainer">
         <img id="imgBanner" src="{{ asset('img/banner.jpg') }}" alt="image banner"/>
         <h1 id="bannerTitle">Ready for tricks ?</h1>
+        <a id="arrowDown" href="#"><img src="{{ asset('img/arrow_down.png') }}" alt="arrow down icon"/></a>
     </div>
     <div class="row w-100 mt-5" id="tricksBlock">
         {% for trick in tricks %}
@@ -33,4 +34,5 @@
 
 {% block javascripts %}
     {{ parent() }}
+    <script src="{{ asset('/js/index.js') }}"></script>
 {% endblock %}

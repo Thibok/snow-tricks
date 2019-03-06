@@ -33,7 +33,7 @@ class TrickController extends Controller
             ->getDoctrine()
             ->getManager()
             ->getRepository(Trick::class)
-            ->getTricks(1, 10);
+            ->getTricks(1, 16);
 
         return $this->render('community/index.html.twig', array('tricks' => $tricks));
     }

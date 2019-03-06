@@ -18,7 +18,7 @@ html {
   min-height: 100%;
 }
 
-h1, nav, #copyright, #trickSubInfos li, .comment-user-name, .comment-add-date, #noComments, .trick-name-home {
+h1, nav, #copyright, #trickSubInfos li, .comment-user-name, .comment-add-date, #noComments, #noTricks, .trick-name-home {
   font-family: "bebas-neue", Arial;
 }
 
@@ -318,6 +318,12 @@ footer {
   text-align: center;
 }
 
+#arrowDown {
+  position: absolute;
+  bottom: 20px;
+  right: 10px;
+}
+
 #tricksBlock {
   overflow: auto;
   padding-bottom: 120px;
@@ -342,6 +348,11 @@ footer {
 
 .control-trick-home {
   width:15px;
+}
+
+#noTricks {
+  color: grey;
+  margin: auto;
 }
 
 @media screen and (max-width: 1200px) {
@@ -476,7 +487,7 @@ footer {
   }
 
   #bannerTitle {
-    font-size: 2.5em;
+    font-size: 2em;
   }
 }
 
