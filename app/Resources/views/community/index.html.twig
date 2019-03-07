@@ -14,7 +14,7 @@
         {% for trick in tricks %}
             <div class="mb-5 trick-container-home">
                 <div class="card h-100 trick-card-home">
-                    <a href="{{ path('st_view_trick', {'slug': trick.slug}) }}"><img class="card-img-top trick-img-prev-home" src="{{ asset(trick.images[0].UploadWebThumbPath ?? 'img/preview_trick_thumb.jpg' )}}" alt=""></a>
+                    <a href="{{ path('st_view_trick', {'slug': trick.slug}) }}"><img class="card-img-top trick-img-prev-home" src="{{ asset(trick.images[0].UploadWebThumbPath ?? 'img/preview_trick_thumb.jpg' )}}" alt="trick image"></a>
                     <div class="d-flex justify-content-between pt-2">
                         <h4 class="card-title trick-name-home pt-1 pl-2 w-100">
                             <a class="text-white" href="{{ path('st_view_trick', {'slug': trick.slug}) }}">{{ trick.name }}</a>

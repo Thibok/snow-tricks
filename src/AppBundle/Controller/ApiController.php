@@ -118,4 +118,57 @@ class ApiController extends Controller
 
         return new JsonResponse($response);
     }
+
+    /**
+     * Get tricks with Ajax
+     * @access public
+     * @param Request $request
+     * @param int $nbTricks
+     * @Route(
+     *     "/api/tricks/{nbTricks}",
+     *     name="st_api_tricks",
+     *     requirements={"nbTricks"="\d+"},
+     *     methods={"GET"}
+     * )
+     * 
+     * @return void
+     */
+    public function getTricksAction(Request $request, $nbTricks)
+    {
+        if (!$request->isXmlHttpRequest()) {
+            throw $this->createNotFoundException();
+        }
+
+        $page = ceil($nbTricks / Trick::TRICK_PER_PAGE + 1);
+        $tricks = $this
+            ->getDoctrine()
+            ->getManager()
+            ->getRepository(Trick::class)
+            ->getTricks($page, Trick::TRICK_PER_PAGE);
+
+        $datas = [];
+
+        foreach ($tricks as $trick) {
+
+            if (empty($trick->getImages()[0])) {
+                $imgSrc = null;
+            } else {
+                if ($this->getParameter('kernel.environment') == 'test') {
+                    $imgSrc = $trick->getImages()[0]->getUploadWebTestThumbPath();
+                } else {
+                    $imgSrc = $trick->getImages()[0]->getUploadWebThumbPath();
+                }
+            }
+            
+            $data = [
+                'imgSrc' => $imgSrc,
+                'name' => $trick->getName(),
+                'slug' => $trick->getSlug(),
+            ];
+
+            $datas[] = $data;
+        }
+
+        return new JsonResponse($datas);
+    }
 }
