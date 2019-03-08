@@ -131,7 +131,7 @@ class ApiController extends Controller
      *     methods={"GET"}
      * )
      * 
-     * @return void
+     * @return JsonResponse
      */
     public function getTricksAction(Request $request, $nbTricks)
     {

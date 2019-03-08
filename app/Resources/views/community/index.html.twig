@@ -12,7 +12,7 @@
     </div>
     <div class="row w-100 mt-5" id="tricksBlock">
         {% for trick in tricks %}
-            <div class="mb-5 trick-container-home">
+            <div id="trick-{{ loop.index0 }}" class="mb-5 trick-container-home">
                 <div class="card h-100 trick-card-home">
                     <a href="{{ path('st_view_trick', {'slug': trick.slug}) }}"><img class="card-img-top trick-img-prev-home" src="{{ asset(trick.images[0].UploadWebThumbPath ?? 'img/preview_trick_thumb.jpg' )}}" alt="trick image"></a>
                     <div class="d-flex justify-content-between pt-2">
@@ -22,7 +22,7 @@
                         {% if is_granted('IS_AUTHENTICATED_FULLY') %}
                             <div class="trick-controls text-right mr-3">
                                 <a class="mr-3 control-trick-home" href="{{ path('st_edit_trick', {'slug': trick.slug}) }}"><img src="{{ asset('img/edit.png') }}" alt="edit icon"/></a>
-                                <a class="control-trick-home" href="{{ path('st_api_trick_delete', {'slug': trick.slug}) }}"><img src="{{ asset('img/delete.png') }}" alt="delete icon"/></a>
+                                <a id="delete-trick-{{ loop.index0 }}" class="delete-control control-trick-home" href="{{ path('st_api_trick_delete', {'slug': trick.slug}) }}"><img src="{{ asset('img/delete.png') }}" alt="delete icon"/></a>
                             </div>
                         {% endif %}
                     </div>

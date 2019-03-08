@@ -50,7 +50,7 @@ $(function () {
         let trickEditPath = trickViewUrl + slug + '/update';
         let trickDeletePath = apiTrickDeleteUrl + slug + '/delete';
 
-        let trickContainer = $('<div class="mb-5 trick-container-home"></div>');
+        let trickContainer = $('<div id="trick-' + nbTricks + '" class="mb-5 trick-container-home"></div>');
         let trickCard = $('<div class="card h-100 trick-card-home"></div>');
         let imgLink = $('<a></a>');
         imgLink.attr('href', trickViewPath);
@@ -81,8 +81,19 @@ $(function () {
             editImg.attr('src', editImgPath);
             editLink.append(editImg);
             
-            let deleteLink = $('<a class="control-trick-home"></a>')
+            let deleteLink = $('<a id="delete-trick-' + nbTricks + '" class="control-trick-home"></a>')
             deleteLink.attr('href', trickDeletePath);
+
+            deleteLink.click(function (e) {
+                e.preventDefault();
+        
+                let trickId = $(this).attr('id');
+                let trickIdSplit = trickId.split('-');
+                let deleteModal = createDeleteTrickModal(trickIdSplit[2]);
+        
+                deleteModal.open();
+            });
+
             let deleteImg = $('<img alt="edit icon"/>');
             deleteImg.attr('src', deleteImgPath);
             deleteLink.append(deleteImg);
@@ -129,10 +140,88 @@ $(function () {
         return arrowUpLink;
     }
 
+    function createDeleteTrickModal (trickId) {
+        let contentContainer = $('<div></div>');
+        let content = $('<p>Are you sure you want to do that ?</p>');
+        let trickDeleteId = $('<p id="trickToDelete"></p>');
+        trickDeleteId.text(trickId);
+        trickDeleteId.hide();
+
+        contentContainer.append(content);
+        contentContainer.append(trickDeleteId);
+
+        deleteTrickModal.setContent(contentContainer);
+
+        return deleteTrickModal;
+    }
+
+    function createJboxNotice (color, message) {
+        let jBNotice = new jBox('notice', {
+            addClass: 'jBox-wrapper jBox-Notice jBox-NoticeFancy jBox-Notice-color jBox-Notice-' + color,
+            autoClose: 2500,
+            fixed: true,
+            position: { x: 'left', y: 'bottom' },
+            offset: { x: 0, y: -20 },
+            responsiveWidth: true,
+            content: message,
+            overlay: false,
+            closeOnClick: 'box',
+            onCloseComplete: function () {
+              this.destroy();
+            }
+        })
+
+        return jBNotice;
+    }
+
+    function deleteTrickAjax () {
+        let trickId = $('#trickToDelete').text();
+        let url = $('#delete-trick-' + trickId).attr('href');
+
+        $.ajax({
+            url: url,
+            type: 'DELETE',
+            success: function(response) {
+                let result = response['result'];
+                let message = response['message'];
+
+                if (result == true) {
+                    $('#trick-' + trickId).remove();
+                    nbTricks--;
+
+                    let jBNotice = createJboxNotice('blue', message);
+                    jBNotice.open();
+
+                    if (nbTricks == 0) {
+                        let noTricks = $('<span id="noTricks">No Tricks</span>');
+                        $('#tricksBlock').append(noTricks);
+                    }
+                }
+
+                if (result == false) {
+                    let jBNotice = createJboxNotice('red', message);
+                    jBNotice.open();
+                }
+            },
+            error: function () {
+                let message = 'An error as occured';
+
+                let jBNotice = createJboxNotice('red', message);
+                jBNotice.open();
+            }
+        });
+    }
+
     var nbTricks = $('.trick-container-home').length;
     var tricksLoading = false;
     var canLoadMoreTricks = true;
     var arrowUpExist = false;
+
+    var deleteTrickModal = new jBox('Confirm', {
+        cancelButton: 'Cancel',
+        confirmButton: 'Delete',
+        confirm: deleteTrickAjax,
+    });
 
     $('#arrowDown').click(function(event) {
         event.preventDefault();
@@ -282,5 +371,15 @@ $(function () {
         }
 
         return;
+    });
+
+    $('.delete-control').click(function (e) {
+        e.preventDefault();
+        
+        let trickId = $(this).attr('id');
+        let trickIdSplit = trickId.split('-');
+        let deleteModal = createDeleteTrickModal(trickIdSplit[2]);
+
+        deleteModal.open();
     });
 });
