@@ -1,7 +1,7 @@
 <?php
 
 /**
- * Guard Authenticator
+ * Custom Guard Authenticator
  */
 
 namespace AppBundle\Authenticator;
