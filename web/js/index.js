@@ -42,6 +42,12 @@ $(function () {
             }
 
             tricksLoading = false;
+        }).fail(function () {
+            $('#ajaxLoader').remove();
+            let message = 'An error as occured';
+
+            let jBNotice = createJboxNotice('red', message);
+            jBNotice.open();
         });
     }
 
