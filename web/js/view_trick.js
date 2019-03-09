@@ -347,6 +347,25 @@ $(function () {
         return loadMore;
     }
 
+    function createJboxNotice (color, message) {
+        let jBNotice = new jBox('notice', {
+            addClass: 'jBox-wrapper jBox-Notice jBox-NoticeFancy jBox-Notice-color jBox-Notice-' + color,
+            autoClose: 2500,
+            fixed: true,
+            position: { x: 'left', y: 'bottom' },
+            offset: { x: 0, y: -20 },
+            responsiveWidth: true,
+            content: message,
+            overlay: false,
+            closeOnClick: 'box',
+            onCloseComplete: function () {
+              this.destroy();
+            }
+        })
+
+        return jBNotice;
+    }
+
     function loadMoreComment (button, e) {
         e.preventDefault();
 
@@ -372,6 +391,12 @@ $(function () {
             });
     
             $('#ajaxLoader').replaceWith(loadMoreButton);
+        }).fail(function () {
+            $('#ajaxLoader').remove();
+            let message = 'An error as occured';
+
+            let jBNotice = createJboxNotice('red', message);
+            jBNotice.open();
         });
     }
 

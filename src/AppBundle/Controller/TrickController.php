@@ -1,7 +1,7 @@
 <?php
 
 /**
- * Controller of Community package
+ * TrickController of Community package
  */
 
 namespace AppBundle\Controller;
@@ -25,11 +25,21 @@ use Sensio\Bundle\FrameworkExtraBundle\Configuration\ParamConverter;
 class TrickController extends Controller
 {
     /**
+     * Get tricks and render in the homepage
+     * @access public
      * @Route("/", name="st_index")
+     * 
+     * @return Response
      */
     public function indexAction()
     {
-        return $this->render('community/index.html.twig');
+        $tricks = $this
+            ->getDoctrine()
+            ->getManager()
+            ->getRepository(Trick::class)
+            ->getTricks(1, Trick::TRICK_PER_PAGE);
+
+        return $this->render('community/index.html.twig', array('tricks' => $tricks));
     }
 
     /**

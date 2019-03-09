@@ -37,7 +37,7 @@ class ApiControllerTest extends WebTestCase
     }
 
     /**
-     * Test getComments method of ApiController
+     * Test getComments method of ApiController (Ajax)
      * @access public
      * @covers ::getComments
      *
@@ -85,7 +85,7 @@ class ApiControllerTest extends WebTestCase
     }
 
     /**
-     * Test getComments with null request header
+     * Test getComments with null request header (Ajax)
      * @access public
      * @covers ::getComments
      *
@@ -107,7 +107,7 @@ class ApiControllerTest extends WebTestCase
     }
 
     /**
-     * Test getComments with a bad request method
+     * Test getComments with a bad request method (Ajax)
      *
      * @return void
      */
@@ -135,16 +135,19 @@ class ApiControllerTest extends WebTestCase
     }
 
     /**
-     * Test getComments with an unknow trick id
+     * Test ajax request with bad parameter
      * @access public
-     *
+     * @param string $method
+     * @param string $url
+     * @dataProvider valuesAjaxRequest
+     * 
      * @return void
      */
-    public function testGetCommentsWithAnUnknowTrickId()
+    public function testAjaxRequestWithABadParam($method, $url)
     {
         $this->client->request(
-            'GET',
-            '/api/comments/0/0',
+            $method,
+            $url,
             array(),
             array(),
             array('HTTP_X-Requested-With' => 'XMLHttpRequest')
@@ -154,7 +157,27 @@ class ApiControllerTest extends WebTestCase
     }
 
     /**
-     * Test deleteTrickAction
+     * Values for testAjaxRequestWithABadParam
+     * @access public
+     *
+     * @return array
+     */
+    public function valuesAjaxRequest()
+    {
+        return [
+            [
+                'GET',
+                '/api/comments/0/0'
+            ],
+            [
+                'GET',
+                '/api/tricks/100'
+            ]
+        ];
+    }
+
+    /**
+     * Test deleteTrickAction (Ajax)
      * @access public
      * @covers ::deleteTrickAction
      *
@@ -202,7 +225,7 @@ class ApiControllerTest extends WebTestCase
     }
 
     /**
-     * Test to delete a trick with an Ajax if user is not authenticated
+     * Test to delete a trick with Ajax if user is not authenticated
      * @access public
      * 
      * @return void
@@ -245,18 +268,21 @@ class ApiControllerTest extends WebTestCase
     }
 
     /**
-     * Test to delete trick with an Ajax request and a request bad method (GET)
+     * Test Ajax request with a bad request method
      * @access public
+     * @param string $method
+     * @param string $url
+     * @dataProvider valuesAjaxBadRequest
      *
      * @return void
      */
-    public function testDeleteTrickWithAjaxAndBadRequestMethod()
+    public function testAjaxRequestWithBadRequestMethod($method, $url)
     {
         $this->logIn();
 
         $this->client->request(
-            'GET',
-            '/api/trick/bad-method/delete',
+            $method,
+            $url,
             array(),
             array(),
             array('HTTP_X-Requested-With' => 'XMLHttpRequest')
@@ -266,24 +292,66 @@ class ApiControllerTest extends WebTestCase
     }
 
     /**
-     * Test to delete trick with an Ajax request and a null request header
-     * @access public
+     * Values for testAjaxRequestWithBadRequestMethod
      *
+     * @return array
+     */
+    public function valuesAjaxBadRequest()
+    {
+        return [
+            [
+                'GET',
+                '/api/trick/bad-method/delete'
+            ],
+            [
+                'DELETE',
+                '/api/tricks/15',
+            ]
+        ];
+    }
+
+    /**
+     * Test Ajax request with a null HTTP header
+     * @access public
+     * @param string $method
+     * @param string $url
+     * @dataProvider valuesAjaxNullHttpHeader
+     * 
      * @return void
      */
-    public function testDeleteTrickWithAjaxAndNullHttpHeader()
+    public function testAjaxRequestWithNullHtttpHeader($method, $url)
     {
         $this->logIn();
 
         $this->client->request(
-            'DELETE',
-            '/api/trick/a-simple-trick/delete',
+            $method,
+            $url,
             array(),
             array(),
             array()
         );
 
         $this->assertTrue($this->client->getResponse()->isNotFound());
+    }
+
+    /**
+     * Values for testAjaxRequestWithNullHttpHeader
+     * @access public
+     *
+     * @return array
+     */
+    public function valuesAjaxNullHttpHeader()
+    {
+        return [
+            [
+                'DELETE',
+                '/api/trick/a-simple-trick/delete'
+            ],
+            [
+                'GET',
+                '/api/tricks/15',
+            ]
+        ];
     }
 
     /**
@@ -294,10 +362,47 @@ class ApiControllerTest extends WebTestCase
      */
     public function testPathHomeToDeleteTrick()
     {
-        $crawler = $this->client->request('GET', '/');
-        $deleteLink = $crawler->filter('#deleteTrickTestLink')->attr('href');
+        $this->logIn();
 
-        $this->assertSame('/api/trick/a-very-bad-bad-bad-trick/delete', $deleteLink);
+        $crawler = $this->client->request('GET', '/');
+ 
+        $this->assertEquals(1, $crawler->filter('a[href="/api/trick/twelfth-trick/delete"]')->count());
+    }
+
+    /**
+     * Test getTricksAction, get tricks with ajax
+     * @access public
+     *
+     * @return void
+     */
+    public function testGetTricks()
+    {
+        $this->client->request(
+            'GET',
+            '/api/tricks/15',
+            array(),
+            array(),
+            array('HTTP_X-Requested-With' => 'XMLHttpRequest')
+        );
+
+        $datas = json_decode($this->client->getResponse()->getContent(), true);
+
+        $firstTrick = $datas[0];
+        $secondTrick = $datas[1];
+
+        $firstAbsoluteImgSrc = __DIR__.'/../../../web/'.$firstTrick['imgSrc'];
+        $secondAbsoluteImgSrc = __DIR__.'/../../../web/'.$secondTrick['imgSrc'];
+
+        $this->assertEquals(2, count($datas));
+
+        $this->assertSame('A simple trick', $firstTrick['name']);
+        $this->assertSame('A very good Trick', $secondTrick['name']); 
+
+        $this->assertSame('a-simple-trick', $firstTrick['slug']);
+        $this->assertSame('a-very-good-trick', $secondTrick['slug']);
+
+        $this->assertTrue(file_exists($firstAbsoluteImgSrc));
+        $this->assertTrue(file_exists($secondAbsoluteImgSrc));
     }
 
     /**

@@ -27,6 +27,8 @@ class TrickImageFixtures extends Fixture implements DependentFixtureInterface
         copy($fileDir.'goodTrickImg.jpg', $fileDir.'trickImg-delete-ajax-1.jpg');
         copy($fileDir.'goodTrickImg.jpg', $fileDir.'trickImg-delete-ajax-2.jpg');
 
+        copy($fileDir.'goodTrickImg.jpg', $fileDir.'trickImg-home.jpg');
+
         $firstTrickImgTrickUpdate = new TrickImage;
         $secondTrickImgTrickUpdate = new TrickImage;
 
@@ -37,6 +39,8 @@ class TrickImageFixtures extends Fixture implements DependentFixtureInterface
 
         $firstTrickImgTrickDeleteAjax = new TrickImage;
         $secondTrickImgTrickDeleteAjax = new TrickImage;
+
+        $trickImgHome = new TrickImage;
 
         $firstFileTrickUpdate = new UploadedFile(
             $fileDir.'trickImg-update-1.jpg',
@@ -101,6 +105,15 @@ class TrickImageFixtures extends Fixture implements DependentFixtureInterface
             true
         );
 
+        $trickFileHome = new UploadedFile(
+            $fileDir.'trickImg-home.jpg',
+            'trickImg-home.jpg',
+            'image/jpeg',
+            null,
+            null,
+            true
+        );
+
         $firstTrickImgTrickUpdate->setFile($firstFileTrickUpdate);
         $secondTrickImgTrickUpdate->setFile($secondFileTrickUpdate);
 
@@ -111,6 +124,8 @@ class TrickImageFixtures extends Fixture implements DependentFixtureInterface
 
         $firstTrickImgTrickDeleteAjax->setFile($firstFileTrickDeleteAjax);
         $secondTrickImgTrickDeleteAjax->setFile($secondFileTrickDeleteAjax);
+
+        $trickImgHome->setFile($trickFileHome);
 
         $firstTrickImgTrickUpdate->setTrick($this->getReference(TrickFixtures::TRICK_UPDATE_REFERENCE));
         $secondTrickImgTrickUpdate->setTrick($this->getReference(TrickFixtures::TRICK_UPDATE_REFERENCE));
@@ -123,6 +138,8 @@ class TrickImageFixtures extends Fixture implements DependentFixtureInterface
         $firstTrickImgTrickDeleteAjax->setTrick($this->getReference(TrickFixtures::TRICK_DELETE_AJAX_REFERENCE));
         $secondTrickImgTrickDeleteAjax->setTrick($this->getReference(TrickFixtures::TRICK_DELETE_AJAX_REFERENCE));
 
+        $trickImgHome->setTrick($this->getReference(TrickFixtures::TRICK_HOME_REFERENCE));
+
         $manager->persist($firstTrickImgTrickUpdate);
         $manager->persist($secondTrickImgTrickUpdate);
 
@@ -133,6 +150,8 @@ class TrickImageFixtures extends Fixture implements DependentFixtureInterface
 
         $manager->persist($firstTrickImgTrickDeleteAjax);
         $manager->persist($secondTrickImgTrickDeleteAjax);
+
+        $manager->persist($trickImgHome);
 
         $manager->flush();
     }
