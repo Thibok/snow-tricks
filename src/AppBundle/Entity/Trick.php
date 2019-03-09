@@ -28,7 +28,7 @@ class Trick
     /**
      * @var int
      */
-    const TRICKS_PER_PAGE = 15;
+    const TRICK_PER_PAGE = 15;
 
     /**
      * @var int
