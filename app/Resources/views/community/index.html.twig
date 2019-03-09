@@ -2,9 +2,6 @@
 {% block title %} {{ parent() }} Home{% endblock %}
 
 {% block body %}
-    <a href="{{ path('st_edit_trick', {'slug': 'a-simple-trick'}) }}"></a>
-    <a href="{{ path('st_view_trick', {'slug': 'a-simple-trick'}) }}"></a>
-    <a id="deleteTrickTestLink" href="{{ path('st_api_trick_delete', {'slug': 'a-very-bad-bad-bad-trick'}) }}"></a>
     <div id="imgBannerContainer">
         <img id="imgBanner" src="{{ asset('img/banner.jpg') }}" alt="image banner"/>
         <h1 id="bannerTitle">Ready for tricks ?</h1>
@@ -14,10 +11,14 @@
         {% for trick in tricks %}
             <div id="trick-{{ loop.index0 }}" class="mb-5 trick-container-home">
                 <div class="card h-100 trick-card-home">
-                    <a href="{{ path('st_view_trick', {'slug': trick.slug}) }}"><img class="card-img-top trick-img-prev-home" src="{{ asset(trick.images[0].UploadWebThumbPath ?? 'img/preview_trick_thumb.jpg' )}}" alt="trick image"></a>
+                    {% if app.environment == 'test' %}
+                        <a class="trick-img-link" href="{{ path('st_view_trick', {'slug': trick.slug}) }}"><img class="card-img-top trick-img-prev-home" src="{{ asset(trick.images[0].UploadWebTestThumbPath ?? 'img/preview_trick_thumb.jpg' )}}" alt="trick image"></a>
+                    {% else %}
+                        <a class="trick-img-link" href="{{ path('st_view_trick', {'slug': trick.slug}) }}"><img class="card-img-top trick-img-prev-home" src="{{ asset(trick.images[0].UploadWebThumbPath ?? 'img/preview_trick_thumb.jpg' )}}" alt="trick image"></a>
+                    {% endif %}
                     <div class="d-flex justify-content-between pt-2">
                         <h4 class="card-title trick-name-home pt-1 pl-2 w-100">
-                            <a class="text-white" href="{{ path('st_view_trick', {'slug': trick.slug}) }}">{{ trick.name }}</a>
+                            <a class="text-white trick-name-link" href="{{ path('st_view_trick', {'slug': trick.slug}) }}">{{ trick.name }}</a>
                         </h4>
                         {% if is_granted('IS_AUTHENTICATED_FULLY') %}
                             <div class="trick-controls text-right mr-3">

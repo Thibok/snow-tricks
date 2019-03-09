@@ -417,7 +417,7 @@ class TrickControllerTest extends WebTestCase
     }
 
     /**
-     * Test path to access edit trick page
+     * Test path to access edit trick page (Home - Edit)
      * @access public
      *
      * @return void
@@ -428,10 +428,10 @@ class TrickControllerTest extends WebTestCase
 
         $crawler = $this->client->request('GET', '/');
 
-        $link = $crawler->filter('a[href="/tricks/details/a-simple-trick/update"]')->link();
+        $link = $crawler->filter('a[href="/tricks/details/trick-test/update"]')->link();
         $crawler = $this->client->click($link);
 
-        $this->assertSame(' SnowTricks - Edit A simple trick', $crawler->filter('title')->text());
+        $this->assertSame(' SnowTricks - Edit Trick test', $crawler->filter('title')->text());
     }
 
     /**
@@ -451,7 +451,7 @@ class TrickControllerTest extends WebTestCase
     }
 
     /**
-     * Url values
+     * Url values for testNoAuthUserCantAccess
      * @access public
      *
      * @return array
@@ -507,10 +507,17 @@ class TrickControllerTest extends WebTestCase
     {
         $crawler = $this->client->request('GET', '/');
 
-        $link = $crawler->filter('a[href="/tricks/details/a-simple-trick"]')->link();
+        $link = $crawler->selectLink('Trick test')->link();
         $crawler = $this->client->click($link);
 
-        $this->assertSame(' SnowTricks - A simple trick details', $crawler->filter('title')->text());
+        $this->assertSame(' SnowTricks - Trick test details', $crawler->filter('title')->text());
+
+        $crawler = $this->client->request('GET', '/');
+
+        $link = $crawler->filter('.trick-img-link[href="/tricks/details/trick-test"]')->link();
+        $crawler = $this->client->click($link);
+
+        $this->assertSame(' SnowTricks - Trick test details', $crawler->filter('title')->text());
     }
 
     /**
@@ -685,7 +692,7 @@ class TrickControllerTest extends WebTestCase
     }
 
     /**
-     * Bad values for testComment
+     * Values for testAddCommentWithBadValues
      * @access public
      *
      * @return array
@@ -771,6 +778,58 @@ class TrickControllerTest extends WebTestCase
         $crawler = $this->client->followRedirect();
 
         $this->assertSame(' SnowTricks - Home', $crawler->filter('title')->text());
+    }
+
+    /**
+     * Test path to Home
+     * @access public
+     *
+     * @return void
+     */
+    public function testPathToHome()
+    {
+        $crawler = $this->client->request('GET', '/registration');
+        $homeLink = $crawler->filter('#home')->link();
+        $crawler = $this->client->click($homeLink);
+
+        $this->assertSame(' SnowTricks - Home', $crawler->filter('title')->text());
+    }
+
+    /**
+     * Test indexAction (HomePage)
+     * @access public
+     * @covers ::indexAction
+     *
+     * @return void
+     */
+    public function testHome()
+    {
+        $absolutePath = __DIR__.'/../../../web';
+
+        $crawler = $this->client->request('GET', '/');
+        $nbTricks = $crawler->filter('.trick-container-home')->count();
+        $firstTrickName = $crawler->filter('.trick-name-link')->eq(0)->text();
+        $firstTrickImgPath = $absolutePath . $crawler->filter('.trick-img-prev-home')->eq(0)->attr('src');
+
+        $this->assertEquals(15, $nbTricks);
+        $this->assertSame('Trick test', $firstTrickName);
+        $this->assertTrue(file_exists($firstTrickImgPath));
+    }
+
+    /**
+     * Test user can't access trick controls (on the Homepage, edit and delete links)
+     * if he is not authenticated
+     * @access public
+     *
+     * @return void
+     */
+    public function testUserCantAccessControlsOfTrickIfHeIsNotAuth()
+    {
+        $crawler = $this->client->request('GET', '/');
+        
+        $nbControls = $crawler->filter('control-trick-home')->count();
+
+        $this->assertEquals(0, $nbControls);
     }
 
     /**

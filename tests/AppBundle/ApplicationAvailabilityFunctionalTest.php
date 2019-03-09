@@ -30,9 +30,9 @@ class ApplicationAvailabilityFunctionalTest extends WebTestCase
     }
 
     /**
-     * Test if all page with no authentication is up
+     * Test if all page with no required authentication is up
      * @access public
-     * @param array $url
+     * @param string $url
      * @dataProvider urlProvider
      * 
      * @return void
@@ -45,9 +45,9 @@ class ApplicationAvailabilityFunctionalTest extends WebTestCase
     }
 
     /**
-     * Test if all page with authentication is up
+     * Test if all page with required authentication is up
      * @access public
-     * @param array $url
+     * @param string $url
      * @dataProvider authUrlProvider
      * 
      * @return void
@@ -62,7 +62,7 @@ class ApplicationAvailabilityFunctionalTest extends WebTestCase
     }
 
     /**
-     * Url values
+     * Url values for testPageIsSuccessful
      * @access public
      *
      * @return array
@@ -70,6 +70,7 @@ class ApplicationAvailabilityFunctionalTest extends WebTestCase
     public function urlProvider()
     {
         return array(
+            array('/'),
             array('/registration'),
             array('/login'),
             array('/forgot_password'),
@@ -79,7 +80,7 @@ class ApplicationAvailabilityFunctionalTest extends WebTestCase
     }
 
     /**
-     * Url values
+     * Url values for testPageNeedToBeLoggedIsSuccessful
      * @access public
      *
      * @return array
