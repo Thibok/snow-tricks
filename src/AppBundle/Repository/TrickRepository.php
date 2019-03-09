@@ -37,6 +37,14 @@ class TrickRepository extends \Doctrine\ORM\EntityRepository
         ;
     }
 
+    /**
+     * Get paginate tricks
+     * @access public
+     * @param int $page
+     * @param int $nbPerPage
+     * 
+     * @return Paginator
+     */
     public function getTricks($page, $nbPerPage)
     {
         $query = $this->createQueryBuilder('t')

@@ -72,13 +72,12 @@ class SecurityController extends Controller
     /**
      * Validation Registration
      * @access public
-     * @param Request $request
      * @param string $tokenCode
      * @Route("/registration/validation/{tokenCode}", name="st_valid_registration", requirements={"tokenCode"="[a-z0-9]{80}"})
      * 
      * @return RedirectResponse
      */
-    public function validRegistrationAction(Request $request, $tokenCode)
+    public function validRegistrationAction($tokenCode)
     {
         if ($this->isGranted('IS_AUTHENTICATED_FULLY')) {
             return $this->redirectToRoute('st_index');

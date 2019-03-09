@@ -12,7 +12,7 @@ namespace AppBundle\Slugger;
 class Slugger
 {
     /**
-     * Convert string to slug (url)
+     * Convert a string to a slug (url)
      * @access public
      * @param string $value
      * 

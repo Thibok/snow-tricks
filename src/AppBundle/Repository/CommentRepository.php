@@ -17,6 +17,15 @@ use Doctrine\ORM\Tools\Pagination\Paginator;
  */
 class CommentRepository extends EntityRepository
 {
+    /**
+     * Get paginate comments of a trick
+     * @access public
+     * @param int $trickId
+     * @param int $page
+     * @param int $nbPerPage
+     * 
+     * @return Paginator
+     */
     public function getComments($trickId, $page, $nbPerPage)
     {
         $query = $this->createQueryBuilder('c')
