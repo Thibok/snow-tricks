@@ -19,5 +19,8 @@ parameters:
 
     captcha_secret_key: secretKey
 
+    demo_user_username: yourDemoUser
+    demo_user_password: yourDemoPassword
+
     # A secret key that's used to generate certain security-related tokens
     secret: ThisTokenIsNotSoSecretChangeIt

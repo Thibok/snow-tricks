@@ -71,4 +71,4 @@ services:
             - { name: doctrine.event_listener, event: preRemove }
             - { name: doctrine.event_listener, event: postRemove }
         arguments:
-            $env: '%kernel.environment%'
+            $env: '%kernel.environment%' 
