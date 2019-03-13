@@ -46,6 +46,46 @@ class TrickFixtures extends Fixture implements DependentFixtureInterface, Contai
     const TRICK_HOME_TEST_REFERENCE = 'trick-home-test';
 
     /**
+     * @var string
+     */
+    const TRICK_JAPAN_AIR_DEMO_REFERENCE = 'trick-japan-air-demo';
+
+    /**
+     * @var string
+     */
+    const TRICK_ONE_HUNDRED_EIGHTY_DEMO_REFERENCE = 'trick-one-hundred-eighty-demo';
+
+    /**
+     * @var string
+     */
+    const TRICK_BACK_FLIP_DEMO_REFERENCE = 'trick-back-flip-demo';
+
+    /**
+     * @var string
+     */
+    const TRICK_CORK_SCREW_DEMO_REFERENCE = 'trick-cork-screw-demo';
+
+    /**
+     * @var string
+     */
+    const TRICK_TAIL_SLIDE_DEMO_REFERENCE = 'trick-tail-slide-demo';
+
+    /**
+     * @var string
+     */
+    const TRICK_ROCKET_AIR_DEMO_REFERENCE = 'trick-rocket-air-demo';
+
+    /**
+     * @var string
+     */
+    const TRICK_STALFISH_DEMO_REFERENCE = 'trick-stailfish-demo';
+
+    /**
+     * @var string
+     */
+    const TRICK_HAAKON_FLIP_DEMO_REFERENCE = 'trick-haakon-flip-demo';
+
+    /**
      * Service container
      * @var ContainerInterface
      * @access private
@@ -196,6 +236,109 @@ class TrickFixtures extends Fixture implements DependentFixtureInterface, Contai
             $manager->persist($eleventhTrickHome);
             $manager->persist($twelfthTrickHome);
         }
+
+        if ($env == 'dev') {
+            $trickJapanAir = new Trick;
+            $trickJapanAir->setName('Japan Air');
+            $trickJapanAir->setDescription(
+                'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vivamus in nisl viverra, 
+                malesuada purus ac, ultrices sapien. Nullam vulputate vehicula magna, in congue augue 
+                consequat at.Nunc a nibh id sem vestibulum sollicitudin.');
+            $trickJapanAir->setUser($this->getReference(UserFixtures::USER_DEMO_REFERENCE));
+            $trickJapanAir->setCategory($this->getReference(CategoryFixtures::CATEGORY_GRAB_REFERENCE));
+
+            $trickOneHundredEighty = new Trick;
+            $trickOneHundredEighty->setName('180');
+            $trickOneHundredEighty->setDescription(
+                'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vivamus in nisl viverra, 
+                malesuada purus ac, ultrices sapien. Nullam vulputate vehicula magna, in congue augue 
+                consequat at.Nunc a nibh id sem vestibulum sollicitudin.');
+            $trickOneHundredEighty->setUser($this->getReference(UserFixtures::USER_DEMO_REFERENCE));
+            $trickOneHundredEighty->setCategory($this->getReference(CategoryFixtures::CATEGORY_ROTATION_REFERENCE));
+
+            $trickBackFlip = new Trick;
+            $trickBackFlip->setName('Back Flip');
+            $trickBackFlip->setDescription(
+                'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vivamus in nisl viverra, 
+                malesuada purus ac, ultrices sapien. Nullam vulputate vehicula magna, in congue augue 
+                consequat at.Nunc a nibh id sem vestibulum sollicitudin.');
+            $trickBackFlip->setUser($this->getReference(UserFixtures::USER_DEMO_REFERENCE));
+            $trickBackFlip->setCategory($this->getReference(CategoryFixtures::CATEGORY_FLIP_REFERENCE));
+
+            $trickCorkScrew = new Trick;
+            $trickCorkScrew->setName('Cork Screw');
+            $trickCorkScrew->setDescription(
+                'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vivamus in nisl viverra, 
+                malesuada purus ac, ultrices sapien. Nullam vulputate vehicula magna, in congue augue 
+                consequat at.Nunc a nibh id sem vestibulum sollicitudin.');
+            $trickCorkScrew->setUser($this->getReference(UserFixtures::USER_DEMO_REFERENCE));
+            $trickCorkScrew->setCategory($this->getReference(CategoryFixtures::CATEGORY_OFFSET_ROTATION_REFERENCE));
+
+            $trickTailSlide = new Trick;
+            $trickTailSlide->setName('Tail Slide');
+            $trickTailSlide->setDescription(
+                'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vivamus in nisl viverra, 
+                malesuada purus ac, ultrices sapien. Nullam vulputate vehicula magna, in congue augue 
+                consequat at.Nunc a nibh id sem vestibulum sollicitudin.');
+            $trickTailSlide->setUser($this->getReference(UserFixtures::USER_DEMO_REFERENCE));
+            $trickTailSlide->setCategory($this->getReference(CategoryFixtures::CATEGORY_SLIDE_REFERENCE));
+
+            $trickOneFooter = new Trick;
+            $trickOneFooter->setName('One Footer');
+            $trickOneFooter->setDescription(
+                'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vivamus in nisl viverra, 
+                malesuada purus ac, ultrices sapien. Nullam vulputate vehicula magna, in congue augue 
+                consequat at.Nunc a nibh id sem vestibulum sollicitudin.');
+            $trickOneFooter->setUser($this->getReference(UserFixtures::USER_DEMO_REFERENCE));
+            $trickOneFooter->setCategory($this->getReference(CategoryFixtures::CATEGORY_ONE_FOOT_TRICK_REFERENCE));
+
+            $trickRocketAir = new Trick;
+            $trickRocketAir->setName('Rocket Air');
+            $trickRocketAir->setDescription(
+                'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vivamus in nisl viverra, 
+                malesuada purus ac, ultrices sapien. Nullam vulputate vehicula magna, in congue augue 
+                consequat at.Nunc a nibh id sem vestibulum sollicitudin.');
+            $trickRocketAir->setUser($this->getReference(UserFixtures::USER_DEMO_REFERENCE));
+            $trickRocketAir->setCategory($this->getReference(CategoryFixtures::CATEGORY_OLD_SCHOOL_REFERENCE));
+
+            $trickStalFish = new Trick;
+            $trickStalFish->setName('Stale Fish');
+            $trickStalFish->setDescription(
+                'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vivamus in nisl viverra, 
+                malesuada purus ac, ultrices sapien. Nullam vulputate vehicula magna, in congue augue 
+                consequat at.Nunc a nibh id sem vestibulum sollicitudin.');
+            $trickStalFish->setUser($this->getReference(UserFixtures::USER_DEMO_REFERENCE));
+            $trickStalFish->setCategory($this->getReference(CategoryFixtures::CATEGORY_GRAB_REFERENCE));
+
+            $trickMacTwist = new Trick;
+            $trickMacTwist->setName('Mac Twist');
+            $trickMacTwist->setDescription(
+                'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vivamus in nisl viverra, 
+                malesuada purus ac, ultrices sapien. Nullam vulputate vehicula magna, in congue augue 
+                consequat at.Nunc a nibh id sem vestibulum sollicitudin.');
+            $trickMacTwist->setUser($this->getReference(UserFixtures::USER_DEMO_REFERENCE));
+            $trickMacTwist->setCategory($this->getReference(CategoryFixtures::CATEGORY_FLIP_REFERENCE));
+
+            $trickHaakonFlip = new Trick;
+            $trickHaakonFlip->setName('Haakon Flip');
+            $trickHaakonFlip->setDescription(
+                'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vivamus in nisl viverra, 
+                malesuada purus ac, ultrices sapien. Nullam vulputate vehicula magna, in congue augue 
+                consequat at.Nunc a nibh id sem vestibulum sollicitudin.');
+            $trickHaakonFlip->setUser($this->getReference(UserFixtures::USER_DEMO_REFERENCE));
+            $trickHaakonFlip->setCategory($this->getReference(CategoryFixtures::CATEGORY_FLIP_REFERENCE));
+
+            $manager->persist($trickJapanAir);
+            $manager->persist($trickOneHundredEighty);
+            $manager->persist($trickBackFlip);
+            $manager->persist($trickCorkScrew);
+            $manager->persist($trickTailSlide);
+            $manager->persist($trickOneFooter);
+            $manager->persist($trickRocketAir);
+            $manager->persist($trickStalFish);
+            $manager->persist($trickMacTwist);
+            $manager->persist($trickHaakonFlip);
+        }
         
         $manager->flush();
 
@@ -205,6 +348,17 @@ class TrickFixtures extends Fixture implements DependentFixtureInterface, Contai
             $this->addReference(self::TRICK_DELETE_TEST_REFERENCE, $trickForDelete);
             $this->addReference(self::TRICK_DELETE_AJAX_TEST_REFERENCE, $trickForDeleteAjax);
             $this->addReference(self::TRICK_HOME_TEST_REFERENCE, $twelfthTrickHome);
+        }
+
+        if ($env == 'dev') {
+            $this->addReference(self::TRICK_JAPAN_AIR_DEMO_REFERENCE, $trickJapanAir);
+            $this->addReference(self::TRICK_ONE_HUNDRED_EIGHTY_DEMO_REFERENCE, $trickOneHundredEighty);
+            $this->addReference(self::TRICK_BACK_FLIP_DEMO_REFERENCE, $trickBackFlip);
+            $this->addReference(self::TRICK_CORK_SCREW_DEMO_REFERENCE, $trickCorkScrew);
+            $this->addReference(self::TRICK_TAIL_SLIDE_DEMO_REFERENCE, $trickTailSlide);
+            $this->addReference(self::TRICK_ROCKET_AIR_DEMO_REFERENCE, $trickRocketAir);
+            $this->addReference(self::TRICK_STALFISH_DEMO_REFERENCE, $trickStalFish);
+            $this->addReference(self::TRICK_HAAKON_FLIP_DEMO_REFERENCE, $trickHaakonFlip);
         }
     }
 

@@ -26,6 +26,11 @@ class UserFixtures extends Fixture implements DependentFixtureInterface, Contain
     const ENABLED_USER_TEST_REFERENCE = 'user-enabled-test';
 
     /**
+     * @var string
+     */
+    const USER_DEMO_REFERENCE = 'user-demo';
+
+    /**
      * @var ContainerInterface
      * @access private
      */
@@ -135,6 +140,10 @@ class UserFixtures extends Fixture implements DependentFixtureInterface, Contain
 
         if ($env == 'test') {
             $this->addReference(self::ENABLED_USER_TEST_REFERENCE, $userEnabled);
+        }
+
+        if ($env == 'dev') {
+            $this->addReference(self::USER_DEMO_REFERENCE, $demoUser);
         }
     }
 

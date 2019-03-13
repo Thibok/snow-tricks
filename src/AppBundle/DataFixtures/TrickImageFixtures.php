@@ -173,6 +173,190 @@ class TrickImageFixtures extends Fixture implements DependentFixtureInterface, C
 
             $manager->persist($trickImgHome);
         }
+
+        if ($env == 'dev') {
+            $fileDir = __DIR__.'/../../../web/img/assets/trick/';
+
+            copy($fileDir.'first-japan-air.jpg', $fileDir.'first-japan-air-copy.jpg');
+            copy($fileDir.'second-japan-air.jpg', $fileDir.'second-japan-air-copy.jpg');
+
+            copy($fileDir.'first-one-hundred-eighty.jpg', $fileDir.'first-one-hundred-eighty-copy.jpg');
+            copy($fileDir.'second-one-hundred-eighty.jpg', $fileDir.'second-one-hundred-eighty-copy.jpg');
+
+            copy($fileDir.'back-flip.jpg', $fileDir.'back-flip-copy.jpg');
+
+            copy($fileDir.'cork-screw.jpg', $fileDir.'cork-screw-copy.jpg');
+
+            copy($fileDir.'tail-slide.jpg', $fileDir.'tail-slide-copy.jpg');
+
+            copy($fileDir.'rocket-air.jpeg', $fileDir.'rocket-air-copy.jpeg');
+            
+            copy($fileDir.'stal-fish.jpg', $fileDir.'stal-fish-copy.jpg');
+
+            copy($fileDir.'haakon-flip.jpg', $fileDir.'haakon-flip-copy.jpg');
+
+            $firstImgJapanAir = new TrickImage;
+            $secondImgJapanAir = new TrickImage;
+            
+            $firstImgOneHundredEighty = new TrickImage;
+            $secondImgOneHundredEighty = new TrickImage;
+
+            $imgBackFlip = new TrickImage;
+
+            $imgCorkScrew = new TrickImage;
+
+            $imgTailSlide = new TrickImage;
+
+            $imgRocketAir = new TrickImage;
+
+            $imgStalFish = new TrickImage;
+
+            $imgHaakonFlip = new TrickImage;
+
+            $firstFileJapanAir = new UploadedFile(
+                $fileDir.'first-japan-air-copy.jpg',
+                'first-japan-air-copy.jpg',
+                'image/jpeg',
+                null,
+                null,
+                true
+            );
+
+            $secondFileJapanAir = new UploadedFile(
+                $fileDir.'second-japan-air-copy.jpg',
+                'second-japan-air-copy.jpg',
+                'image/jpeg',
+                null,
+                null,
+                true
+            );
+
+            $firstFileOneHundredEighty = new UploadedFile(
+                $fileDir.'first-one-hundred-eighty-copy.jpg',
+                'first-one-hundred-eighty-copy.jpg',
+                'image/jpeg',
+                null,
+                null,
+                true
+            );
+
+            $secondFileOneHundredEighty = new UploadedFile(
+                $fileDir.'second-one-hundred-eighty-copy.jpg',
+                'second-one-hundred-eighty-copy.jpg',
+                'image/jpeg',
+                null,
+                null,
+                true
+            );
+
+            $fileBackFlip = new UploadedFile(
+                $fileDir.'back-flip-copy.jpg',
+                'back-flip-copy.jpg',
+                'image/jpeg',
+                null,
+                null,
+                true
+            );
+
+            $fileCorkScrew = new UploadedFile(
+                $fileDir.'cork-screw-copy.jpg',
+                'cork-screw-copy.jpg',
+                'image/jpeg',
+                null,
+                null,
+                true
+            );
+
+            $fileTailSlide = new UploadedFile(
+                $fileDir.'tail-slide-copy.jpg',
+                'tail-slide-copy.jpg',
+                'image/jpeg',
+                null,
+                null,
+                true
+            );
+
+            $fileRocketAir = new UploadedFile(
+                $fileDir.'rocket-air-copy.jpeg',
+                'rocket-air-copy.jpeg',
+                'image/jpeg',
+                null,
+                null,
+                true
+            );
+
+            $fileStalFish = new UploadedFile(
+                $fileDir.'stal-fish-copy.jpg',
+                'stal-fish-copy.jpg',
+                'image/jpeg',
+                null,
+                null,
+                true
+            );
+
+            $fileHaakonFlip = new UploadedFile(
+                $fileDir.'haakon-flip-copy.jpg',
+                'haakon-flip-copy.jpg',
+                'image/jpeg',
+                null,
+                null,
+                true
+            );
+
+            $firstImgJapanAir->setFile($firstFileJapanAir);
+            $secondImgJapanAir->setFile($secondFileJapanAir);
+
+            $firstImgOneHundredEighty->setFile($firstFileOneHundredEighty);
+            $secondImgOneHundredEighty->setFile($secondFileOneHundredEighty);
+
+            $imgBackFlip->setFile($fileBackFlip);
+
+            $imgCorkScrew->setFile($fileCorkScrew);
+
+            $imgTailSlide->setFile($fileTailSlide);
+
+            $imgRocketAir->setFile($fileRocketAir);
+
+            $imgStalFish->setFile($fileStalFish);
+
+            $imgHaakonFlip->setFile($fileHaakonFlip);
+
+            $firstImgJapanAir->setTrick($this->getReference(TrickFixtures::TRICK_JAPAN_AIR_DEMO_REFERENCE));
+            $secondImgJapanAir->setTrick($this->getReference(TrickFixtures::TRICK_JAPAN_AIR_DEMO_REFERENCE));
+
+            $firstImgOneHundredEighty->setTrick($this->getReference(TrickFixtures::TRICK_ONE_HUNDRED_EIGHTY_DEMO_REFERENCE));
+            $secondImgOneHundredEighty->setTrick($this->getReference(TrickFixtures::TRICK_ONE_HUNDRED_EIGHTY_DEMO_REFERENCE));
+
+            $imgBackFlip->setTrick($this->getReference(TrickFixtures::TRICK_BACK_FLIP_DEMO_REFERENCE));
+
+            $imgCorkScrew->setTrick($this->getReference(TrickFixtures::TRICK_CORK_SCREW_DEMO_REFERENCE));
+
+            $imgTailSlide->setTrick($this->getReference(TrickFixtures::TRICK_TAIL_SLIDE_DEMO_REFERENCE));
+
+            $imgRocketAir->setTrick($this->getReference(TrickFixtures::TRICK_ROCKET_AIR_DEMO_REFERENCE));
+
+            $imgStalFish->setTrick($this->getReference(TrickFixtures::TRICK_STALFISH_DEMO_REFERENCE));
+
+            $imgHaakonFlip->setTrick($this->getReference(TrickFixtures::TRICK_HAAKON_FLIP_DEMO_REFERENCE));
+        
+            $manager->persist($firstImgJapanAir);
+            $manager->persist($secondImgJapanAir);
+
+            $manager->persist($firstImgOneHundredEighty);
+            $manager->persist($secondImgOneHundredEighty);
+
+            $manager->persist($imgBackFlip);
+
+            $manager->persist($imgCorkScrew);
+
+            $manager->persist($imgTailSlide);
+
+            $manager->persist($imgRocketAir);
+
+            $manager->persist($imgStalFish);
+
+            $manager->persist($imgHaakonFlip);
+        }
         
         $manager->flush();
     }

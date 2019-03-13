@@ -82,6 +82,61 @@ class VideoFixtures extends Fixture implements DependentFixtureInterface, Contai
             $manager->persist($secondVideoTrickDeleteAjax);
         }
 
+        if ($env == 'dev') {
+            $firstJapanAirVid = new Video;
+            $firstJapanAirVid->setUrl('https://www.youtube.com/watch?v=CzDjM7h_Fwo');
+            $firstJapanAirVid->setTrick($this->getReference(TrickFixtures::TRICK_JAPAN_AIR_DEMO_REFERENCE));
+
+            $secondJapanAirVid = new Video;
+            $secondJapanAirVid->setUrl('https://www.youtube.com/watch?v=jH76540wSqU');
+            $secondJapanAirVid->setTrick($this->getReference(TrickFixtures::TRICK_JAPAN_AIR_DEMO_REFERENCE));
+
+            $oneHundredEightyVid = new Video;
+            $oneHundredEightyVid->setUrl('https://www.youtube.com/watch?v=LMfEdzmxAns');
+            $oneHundredEightyVid->setTrick($this->getReference(TrickFixtures::TRICK_ONE_HUNDRED_EIGHTY_DEMO_REFERENCE));
+
+            $backFlipVid = new Video;
+            $backFlipVid->setUrl('https://www.dailymotion.com/video/xyxdbf');
+            $backFlipVid->setTrick($this->getReference(TrickFixtures::TRICK_BACK_FLIP_DEMO_REFERENCE));
+
+            $corkScrewVid = new Video;
+            $corkScrewVid->setUrl('https://www.youtube.com/watch?v=IXC_BNYIUOo');
+            $corkScrewVid->setTrick($this->getReference(TrickFixtures::TRICK_CORK_SCREW_DEMO_REFERENCE));
+
+            $tailSlideVid = new Video;
+            $tailSlideVid->setUrl('https://www.youtube.com/watch?v=HRNXjMBakwM');
+            $tailSlideVid->setTrick($this->getReference(TrickFixtures::TRICK_TAIL_SLIDE_DEMO_REFERENCE));
+
+            $rocketAirVid = new Video;
+            $rocketAirVid->setUrl('https://www.youtube.com/watch?v=nom7QBoGh5w');
+            $rocketAirVid->setTrick($this->getReference(TrickFixtures::TRICK_ROCKET_AIR_DEMO_REFERENCE));
+
+            $stalFishVid = new Video;
+            $stalFishVid->setUrl('https://www.youtube.com/watch?v=f9FjhCt_w2U');
+            $stalFishVid->setTrick($this->getReference(TrickFixtures::TRICK_STALFISH_DEMO_REFERENCE));
+
+            $haakonFlipVid = new Video;
+            $haakonFlipVid->setUrl('https://www.youtube.com/watch?v=RvO2Dqnj7B4');
+            $haakonFlipVid->setTrick($this->getReference(TrickFixtures::TRICK_HAAKON_FLIP_DEMO_REFERENCE));
+
+            $manager->persist($firstJapanAirVid);
+            $manager->persist($secondJapanAirVid);
+
+            $manager->persist($oneHundredEightyVid);
+
+            $manager->persist($backFlipVid);
+
+            $manager->persist($corkScrewVid);
+
+            $manager->persist($tailSlideVid);
+
+            $manager->persist($rocketAirVid);
+
+            $manager->persist($stalFishVid);
+
+            $manager->persist($haakonFlipVid);
+        }
+
         $manager->flush();
     }
 
