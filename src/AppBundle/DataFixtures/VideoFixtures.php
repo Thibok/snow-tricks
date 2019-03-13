@@ -119,6 +119,14 @@ class VideoFixtures extends Fixture implements DependentFixtureInterface, Contai
             $haakonFlipVid->setUrl('https://www.youtube.com/watch?v=RvO2Dqnj7B4');
             $haakonFlipVid->setTrick($this->getReference(TrickFixtures::TRICK_HAAKON_FLIP_DEMO_REFERENCE));
 
+            $truckDriverVid = new Video;
+            $truckDriverVid->setUrl('https://www.youtube.com/watch?v=6tgjY8baFT0');
+            $truckDriverVid->setTrick($this->getReference(TrickFixtures::TRICK_TRUCK_DRIVER_DEMO_REFERENCE));
+
+            $seatBeltVid = new Video;
+            $seatBeltVid->setUrl('https://www.youtube.com/watch?v=4vGEOYNGi_c');
+            $seatBeltVid->setTrick($this->getReference(TrickFixtures::TRICK_SEAT_BELT_DEMO_REFERENCE));
+
             $manager->persist($firstJapanAirVid);
             $manager->persist($secondJapanAirVid);
 
@@ -135,6 +143,10 @@ class VideoFixtures extends Fixture implements DependentFixtureInterface, Contai
             $manager->persist($stalFishVid);
 
             $manager->persist($haakonFlipVid);
+
+            $manager->persist($truckDriverVid);
+
+            $manager->persist($seatBeltVid);
         }
 
         $manager->flush();

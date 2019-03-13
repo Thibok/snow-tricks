@@ -195,6 +195,10 @@ class TrickImageFixtures extends Fixture implements DependentFixtureInterface, C
 
             copy($fileDir.'haakon-flip.jpg', $fileDir.'haakon-flip-copy.jpg');
 
+            copy($fileDir.'truck-driver.jpg', $fileDir.'truck-driver-copy.jpg');
+
+            copy($fileDir.'seat-belt.jpeg', $fileDir.'seat-belt-copy.jpeg');
+
             $firstImgJapanAir = new TrickImage;
             $secondImgJapanAir = new TrickImage;
             
@@ -212,6 +216,10 @@ class TrickImageFixtures extends Fixture implements DependentFixtureInterface, C
             $imgStalFish = new TrickImage;
 
             $imgHaakonFlip = new TrickImage;
+
+            $imgTruckDriver = new TrickImage;
+
+            $imgSeatBelt = new TrickImage;
 
             $firstFileJapanAir = new UploadedFile(
                 $fileDir.'first-japan-air-copy.jpg',
@@ -303,6 +311,24 @@ class TrickImageFixtures extends Fixture implements DependentFixtureInterface, C
                 true
             );
 
+            $fileTruckDriver = new UploadedFile(
+                $fileDir.'truck-driver-copy.jpg',
+                'truck-driver-copy.jpg',
+                'image/jpeg',
+                null,
+                null,
+                true
+            );
+
+            $fileSeatBelt = new UploadedFile(
+                $fileDir.'seat-belt-copy.jpeg',
+                'seat-belt-copy.jpeg',
+                'image/jpeg',
+                null,
+                null,
+                true
+            );
+
             $firstImgJapanAir->setFile($firstFileJapanAir);
             $secondImgJapanAir->setFile($secondFileJapanAir);
 
@@ -321,6 +347,10 @@ class TrickImageFixtures extends Fixture implements DependentFixtureInterface, C
 
             $imgHaakonFlip->setFile($fileHaakonFlip);
 
+            $imgTruckDriver->setFile($fileTruckDriver);
+
+            $imgSeatBelt->setFile($fileSeatBelt);
+
             $firstImgJapanAir->setTrick($this->getReference(TrickFixtures::TRICK_JAPAN_AIR_DEMO_REFERENCE));
             $secondImgJapanAir->setTrick($this->getReference(TrickFixtures::TRICK_JAPAN_AIR_DEMO_REFERENCE));
 
@@ -338,6 +368,10 @@ class TrickImageFixtures extends Fixture implements DependentFixtureInterface, C
             $imgStalFish->setTrick($this->getReference(TrickFixtures::TRICK_STALFISH_DEMO_REFERENCE));
 
             $imgHaakonFlip->setTrick($this->getReference(TrickFixtures::TRICK_HAAKON_FLIP_DEMO_REFERENCE));
+
+            $imgTruckDriver->setTrick($this->getReference(TrickFixtures::TRICK_TRUCK_DRIVER_DEMO_REFERENCE));
+
+            $imgSeatBelt->setTrick($this->getReference(TrickFixtures::TRICK_SEAT_BELT_DEMO_REFERENCE));
         
             $manager->persist($firstImgJapanAir);
             $manager->persist($secondImgJapanAir);
@@ -356,6 +390,10 @@ class TrickImageFixtures extends Fixture implements DependentFixtureInterface, C
             $manager->persist($imgStalFish);
 
             $manager->persist($imgHaakonFlip);
+            
+            $manager->persist($imgTruckDriver);
+            
+            $manager->persist($imgSeatBelt);
         }
         
         $manager->flush();

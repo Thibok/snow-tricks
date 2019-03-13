@@ -86,6 +86,16 @@ class TrickFixtures extends Fixture implements DependentFixtureInterface, Contai
     const TRICK_HAAKON_FLIP_DEMO_REFERENCE = 'trick-haakon-flip-demo';
 
     /**
+     * @var string
+     */
+    const TRICK_TRUCK_DRIVER_DEMO_REFERENCE = 'trick-truck-driver-demo';
+
+    /**
+     * @var string
+     */
+    const TRICK_SEAT_BELT_DEMO_REFERENCE = 'trick-seat-belt';
+
+    /**
      * Service container
      * @var ContainerInterface
      * @access private
@@ -328,6 +338,24 @@ class TrickFixtures extends Fixture implements DependentFixtureInterface, Contai
             $trickHaakonFlip->setUser($this->getReference(UserFixtures::USER_DEMO_REFERENCE));
             $trickHaakonFlip->setCategory($this->getReference(CategoryFixtures::CATEGORY_FLIP_REFERENCE));
 
+            $trickTruckDriver = new Trick;
+            $trickTruckDriver->setName('Truck Driver');
+            $trickTruckDriver->setDescription(
+                'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vivamus in nisl viverra, 
+                malesuada purus ac, ultrices sapien. Nullam vulputate vehicula magna, in congue augue 
+                consequat at.Nunc a nibh id sem vestibulum sollicitudin.');
+            $trickTruckDriver->setUser($this->getReference(UserFixtures::USER_DEMO_REFERENCE));
+            $trickTruckDriver->setCategory($this->getReference(CategoryFixtures::CATEGORY_GRAB_REFERENCE));
+
+            $trickSeatBelt = new Trick;
+            $trickSeatBelt->setName('Seat Belt');
+            $trickSeatBelt->setDescription(
+                'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vivamus in nisl viverra, 
+                malesuada purus ac, ultrices sapien. Nullam vulputate vehicula magna, in congue augue 
+                consequat at.Nunc a nibh id sem vestibulum sollicitudin.');
+            $trickSeatBelt->setUser($this->getReference(UserFixtures::USER_DEMO_REFERENCE));
+            $trickSeatBelt->setCategory($this->getReference(CategoryFixtures::CATEGORY_GRAB_REFERENCE));
+
             $manager->persist($trickJapanAir);
             $manager->persist($trickOneHundredEighty);
             $manager->persist($trickBackFlip);
@@ -338,6 +366,8 @@ class TrickFixtures extends Fixture implements DependentFixtureInterface, Contai
             $manager->persist($trickStalFish);
             $manager->persist($trickMacTwist);
             $manager->persist($trickHaakonFlip);
+            $manager->persist($trickTruckDriver);
+            $manager->persist($trickSeatBelt);
         }
         
         $manager->flush();
@@ -359,6 +389,8 @@ class TrickFixtures extends Fixture implements DependentFixtureInterface, Contai
             $this->addReference(self::TRICK_ROCKET_AIR_DEMO_REFERENCE, $trickRocketAir);
             $this->addReference(self::TRICK_STALFISH_DEMO_REFERENCE, $trickStalFish);
             $this->addReference(self::TRICK_HAAKON_FLIP_DEMO_REFERENCE, $trickHaakonFlip);
+            $this->addReference(self::TRICK_TRUCK_DRIVER_DEMO_REFERENCE, $trickTruckDriver);
+            $this->addReference(self::TRICK_SEAT_BELT_DEMO_REFERENCE, $trickSeatBelt);
         }
     }
 
