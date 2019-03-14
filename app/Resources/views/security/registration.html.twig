@@ -49,9 +49,13 @@
         </div>
     </div>
 {% endblock %}
-{% block javascripts %}
-  {{ parent() }}
-  <script src="https://www.google.com/recaptcha/api.js" async defer></script>
-  <script src="{{ asset('/js/registration.js') }}"></script>
-{% endblock %}
 
+{% block javascripts %}
+    <script src="https://www.google.com/recaptcha/api.js" async defer></script>
+    {{ parent() }}
+    {% javascripts filter='?jsqueeze'
+        '@AppBundle/Resources/public/js/base.js'
+        '@AppBundle/Resources/public/js/registration.js' %}
+        <script src="{{ asset_url }}"></script>
+    {% endjavascripts %}
+{% endblock %}

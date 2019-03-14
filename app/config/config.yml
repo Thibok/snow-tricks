@@ -30,6 +30,8 @@ framework:
     assets: ~
     php_errors:
         log: true
+    templating :
+         engine : ['twig']
 
 # Twig Configuration
 twig:
@@ -71,5 +73,18 @@ swiftmailer:
     port: '%mailer_port%'
 
 sensio_framework_extra:
-   router:
+    router:
         annotations: false
+
+assetic:
+    debug:          '%kernel.debug%'
+    use_controller: '%kernel.debug%'
+    filters:
+        cssrewrite: ~
+        jsqueeze:   ~
+        scssphp:
+          formatter: 'Leafo\ScssPhp\Formatter\Compressed'
+
+services:
+    Symfony\Bundle\AsseticBundle\AsseticBundle:
+        public: true

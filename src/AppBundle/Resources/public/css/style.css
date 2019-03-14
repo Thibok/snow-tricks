@@ -1,0 +1,571 @@
+/*!
+ * Start Bootstrap - Creative v5.0.1 (https://startbootstrap.com/template-overviews/creative)
+ * Copyright 2013-2018 Start Bootstrap
+ * Licensed under MIT (https://github.com/BlackrockDigital/startbootstrap-creative/blob/master/LICENSE)
+ */
+
+ /* Global */
+
+ * {
+  margin: 0;
+  padding: 0;
+}
+body,
+html {
+  width: 100%;
+  height: 100%;
+  background-color: #b7b8b6;
+}
+
+#wrap {
+  min-height: 100%;
+}
+
+h1, nav, #copyright, #trickSubInfos li, .comment-user-name, .comment-add-date, #noComments, #noTricks, .trick-name-home {
+  font-family: "bebas-neue", Arial;
+}
+
+nav {
+  font-size: 1.5em;
+}
+
+#mainNav {
+  justify-content: space-between;
+}
+
+#phoneNav, .trick-card-home {
+  background-color: #4A6C6F;
+}
+
+#phoneNav {
+  justify-content: space-evenly;
+}
+
+#main {
+  overflow: auto;
+  padding-top: 140px;
+  padding-bottom: 120px;
+}
+
+#error_block {
+  overflow: auto;
+  padding-top: 245px;
+  padding-bottom: 120px;
+}
+
+.form-control {
+  border: 1px solid grey;
+}
+
+#security_block, #trick_block {
+  margin: auto;
+}
+
+footer {
+  position: relative;
+  height: 90px;
+  margin-top: -90px;
+  clear: both;
+}
+
+#copyright {
+  padding-top: 35px;
+  padding-left: 70px;
+}
+
+#security_form {
+  border: 1px solid grey;
+  background-color: white;
+  border-radius: 10px;
+  text-align: center;
+}
+
+.border-black {
+  border: 1px solid black;
+}
+
+/* ----- */
+
+/* Trick page */
+
+#trick_form {
+  background-color: white;
+  border-top: none;
+}
+
+#addTrickImage, #addTrickVideo {
+  font-size:0.6em;
+  width:70px;
+}
+
+#medias_container {
+  background-color: #474c47;
+  width:100%;
+}
+
+#see_media_container {
+  background-color: #474c47;
+  width: 100%;
+  display: flex;
+  justify-content: center;
+}
+
+#addMediaContainer {
+  background-color: white;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+}
+
+.media {
+  position: relative;
+  width: 18%;
+  margin-left: 0.8%;
+  margin-right: 0.8%;
+}
+
+.controls-container {
+  background-color: white;
+  width: 100px;
+  height: 30px;
+  position: absolute;
+  right: 0px;
+}
+
+.media img {
+  width: 100%;
+  height: 100px;
+}
+
+.video {
+  background-color: black;
+}
+
+#media_error_container {
+  background-color: white;
+  border-top: 1px solid black;
+}
+
+#pagination {
+  background-color: #474c47;
+  width:100%;
+  display: flex;
+  flex-direction: row;
+  justify-content: center;
+}
+
+#mainTrickImgContainer {
+  position: relative;
+}
+
+#mainTrickImgControls {
+  position:absolute;
+  top:12px;
+  right: 12px;
+  background-color: white;
+  width: 80px;
+}
+
+#manageTrickInfos {
+  margin-left:15%;
+}
+
+#manageTrickNameContainer {
+  width: 60%;
+}
+
+#manageTrickDescriptionContainer, #trickButtonSection, #sectionButtonEditTrick {
+  width: 80%;
+}
+
+#manageTrickCategoryContainer {
+  width: 100px;
+}
+
+.trick-captcha {
+  display: flex;
+  justify-content: flex-start;
+}
+
+.star img, .edit-control-img img, .delete-control-img img {
+  width: 16px;
+  height: 16px;
+}
+
+.counter-img {
+  margin-top: 2px;
+}
+
+#sectionButtonEditTrick {
+  display: flex;
+  justify-content: flex-end;
+}
+
+#deleteTrickBtn {
+  margin-right: 40px;
+}
+
+#trickName, #trickDescription, .comment-user-name, .comment-content {
+  word-wrap: break-word;
+}
+
+#trickName {
+  font-size: 2em;
+  position: absolute;
+  top: 45%;
+  width: 100%;
+  text-shadow: white 1px 0 40px;
+  text-align: center;
+}
+
+#trickInfos {
+  background-color: white;
+  text-align: center;
+}
+
+#trickSubInfos {
+  list-style-type: none;
+  display: flex;
+  justify-content: space-around;
+}
+
+#trickSubInfos li {
+  border-radius: 10px;
+  padding: 5px;
+  margin-right: 5px;
+  margin-left: 5px;
+  font-size: 0.75em;
+}
+
+#trickDescription, .comment-content {
+  font-family: cursive, sans-serif;
+}
+
+#commentForm {
+  background-color: white;
+  width: 100%;
+}
+
+#formCommentFieldsPosition {
+  width: 100%;
+  display: flex;
+  justify-content: center;
+}
+
+#commentContentInputContainer {
+  width: 30%;
+}
+
+#leaveCommentBtn {
+  width: 135px;
+  height: 40px;
+  font-size: 0.9em;
+  margin-left: 10px;
+  margin-top: 10px;
+}
+
+.comment-captcha {
+  margin-right: 10px;
+}
+
+#commentsSection {
+  background-color: white;
+  display: flex;
+  flex-direction: column
+}
+
+.comment {
+  display: flex;
+  justify-content: center;
+  width: 100%;
+}
+
+.comment-infos {
+  border: 1px solid black; 
+  width: 50%;
+  padding: 5px;
+  background-color: #b7b8b6;
+}
+
+.comment-user-img {
+  height: 50px;
+  border-radius: 30px;
+  border: 1px solid black;
+}
+
+.comment-content {
+  font-size: 0.85em;
+}
+
+#noComments {
+  color: grey;
+  text-align: center;
+  padding-bottom: 50px;
+}
+
+#imgBannerContainer {
+  width: 100%;
+  height: 100vh;
+  position: relative;
+}
+
+#imgBanner {
+  width: 100%;
+  z-index: 50;
+  height: 100vh;
+}
+
+#bannerTitle {
+  color: #00A3E6;
+  font-size: 4em;
+  position: absolute;
+  top: 40%;
+  width: 100%;
+  text-shadow: white 1px 0 40px;
+  text-align: center;
+}
+
+#arrowDown {
+  position: absolute;
+  bottom: 20px;
+  right: 10px;
+}
+
+#tricksBlock {
+  overflow: auto;
+  padding-bottom: 120px;
+  padding-right: 1%;
+  margin: auto;
+}
+
+.trick-container-home {
+  width: 17.5%;
+  margin-left: 2.3%;
+}
+
+.trick-name-home {
+  font-size: 0.95em;
+  word-wrap: break-word;
+  min-width:1%;
+}
+
+.trick-controls {
+  width:130px;
+}
+
+.control-trick-home {
+  width:15px;
+}
+
+#noTricks {
+  color: grey;
+  margin: auto;
+}
+
+/* --- */
+
+@media screen and (max-width: 1200px) {
+  .trick-container-home {
+    width: 22%;
+    margin-left: 2.7%;
+  }
+}
+
+@media screen and (max-width: 1608px) {
+  .media {
+    width: 22.5%; 
+  }
+} 
+
+@media screen and (max-width: 1508px) {
+  #trickSubInfos {
+    display: initial;
+  }
+
+  #trickSubInfos li{
+    width: 50%;
+    margin: auto;
+    margin-bottom: 5px;
+  }
+}
+
+@media screen and (max-width: 1299px) {
+  .media {
+    width: 30.5%; 
+  }
+}
+
+@media screen and (max-width: 1154px) {
+  .media {
+    width: 35%;
+    margin-left: 7%;
+    margin-right: 7%;
+  }
+}
+
+@media screen and (max-width: 1100px) {
+  #formCommentFieldsPosition {
+    flex-direction: column;
+    justify-content: center;
+    align-items: center;
+  }
+
+  #commentContentInputContainer {
+    margin-top: 10px;
+    width: 80%;
+  }
+
+  #leaveCommentBtn {
+    margin-top: 0px;
+    margin-bottom: 10px;
+  }
+}
+
+@media screen and (max-width: 1000px) {
+  .trick-container-home {
+    width: 30%;
+  }
+}
+
+@media screen and (max-width: 991px) {
+  .media {
+    width:23%;
+    margin-left: 0.8%;
+    margin-right: 0.8%;
+  }
+  
+  #trickSubInfos {
+    display: flex;
+  }
+
+  #trickSubInfos li {
+    margin-left: 5px;
+    margin-right: 5px;
+    width: unset;
+  }
+
+  #formCommentFieldsPosition {
+    flex-direction: row;
+  }
+
+  #commentContentInputContainer {
+    margin-top: 10px;
+    width: 30%;
+  }
+
+  .comment-captcha {
+    margin-bottom: 10px;
+  }
+}
+
+@media screen and (max-width: 944px) {
+  .media {
+    width: 31%;
+  }
+}
+
+@media screen and (max-width: 885px) {
+  #trickSubInfos {
+    display: initial;
+  }
+
+  #trickSubInfos li{
+    width: 50%;
+    margin: auto;
+    margin-bottom: 5px;
+  }
+}
+
+@media screen and (max-width: 815px) {
+  .media {
+    width: 34%;
+    margin-left: 7%;
+    margin-right: 7%;
+  }
+}
+
+@media screen and (max-width: 770px) {
+  #imgBannerContainer {
+    max-height: 100vh;
+    height: auto;
+  }
+  
+  #imgBanner {
+    height: auto;
+    max-height: 100vh;
+  }
+
+  #bannerTitle {
+    font-size: 2em;
+  }
+}
+
+@media screen and (max-width: 700px) {
+  .trick-container-home {
+    width: 46%;
+    margin-left: 3%;
+  }
+}
+
+@media screen and (max-width: 680px) {
+  #formCommentFieldsPosition {
+    flex-direction: column;
+  }
+
+  #commentContentInputContainer {
+    width: 80%;
+  }
+}
+
+@media screen and (max-width: 590px) {
+  #main {
+    padding-top: 20px;
+  }
+
+  .jBox-notice {
+    padding-bottom: 62px;
+  }
+
+  .media {
+    width: 50%;
+    margin-left: 23%;
+  }
+
+  #manageTrickNameContainer, #manageTrickDescriptionContainer, #trickButtonSection, #sectionButtonEditTrick {
+    width: 100%;
+  }
+
+  #manageTrickInfos {
+    margin-left: 0;
+  }
+
+  .trick-captcha {
+    justify-content: center;
+  }
+
+  #sectionButtonEditTrick {
+    justify-content: space-around;
+  }
+
+  #trickSubInfos li{
+    width: 100%;
+  }
+
+  #trickName {
+    font-size: 1.5em;
+  }
+}
+
+@media screen and (max-width: 590px) and (max-height: 780px) {
+  #error_block {
+    padding-top: 10px;
+  }
+}
+
+@media screen and (max-width: 500px) {
+  .trick-container-home {
+    width: 100%;
+    margin-left: 3%;
+    margin-right: 3%
+  }
+}

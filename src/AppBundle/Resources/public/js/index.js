@@ -66,7 +66,7 @@ $(function () {
         if (imgSrc == null) {
             trickImg.attr('src', trickPrevThumbImg);
         } else {
-            trickImg.attr('src', imgSrc);
+            trickImg.attr('src', '/' + imgSrc);
         }
 
         let trickInfosContainer = $('<div class="d-flex justify-content-between pt-2"></div>');

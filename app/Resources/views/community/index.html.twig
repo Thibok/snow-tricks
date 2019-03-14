@@ -35,5 +35,9 @@
 
 {% block javascripts %}
     {{ parent() }}
-    <script src="{{ asset('/js/index.js') }}"></script>
+    {% javascripts filter='?jsqueeze'
+        '@AppBundle/Resources/public/js/base.js'
+        '@AppBundle/Resources/public/js/index.js' %}
+        <script src="{{ asset_url }}"></script>
+    {% endjavascripts %}
 {% endblock %}
