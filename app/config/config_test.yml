@@ -23,16 +23,3 @@ security:
     firewalls:
         main:
             http_basic: ~
-
-assetic:
-    debug:          '%kernel.debug%'
-    use_controller: '%kernel.debug%'
-    filters:
-        cssrewrite: ~
-        jsqueeze:   ~
-        scssphp:
-          formatter: 'Leafo\ScssPhp\Formatter\Compressed'
-
-services:
-    Symfony\Bundle\AsseticBundle\AsseticBundle:
-        public: true

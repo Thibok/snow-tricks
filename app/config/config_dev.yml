@@ -39,6 +39,3 @@ monolog:
 
 #swiftmailer:
 #    delivery_addresses: ['me@example.com']
-services:
-    Symfony\Bundle\AsseticBundle\AsseticBundle:
-        public: true
