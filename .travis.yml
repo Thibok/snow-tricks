@@ -30,7 +30,6 @@ install:
  - mkdir -p web/uploads/img/tests/user/
  - mkdir -p web/uploads/img/tests/trick/
  - php bin/console assetic:dump --env="test"
- - php bin/console cache:clear --env="test"
  - php bin/console doctrine:database:create --env=test
  - php bin/console doctrine:schema:create --env=test
  - php bin/console doctrine:fixtures:load -n --env=test
