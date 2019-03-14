@@ -93,7 +93,32 @@ class TrickFixtures extends Fixture implements DependentFixtureInterface, Contai
     /**
      * @var string
      */
-    const TRICK_SEAT_BELT_DEMO_REFERENCE = 'trick-seat-belt';
+    const TRICK_SEAT_BELT_DEMO_REFERENCE = 'trick-seat-belt-demo';
+
+    /**
+     * @var string
+     */
+    const TRICK_NOSE_GRAB_DEMO_REFERENCE = 'trick-nose-grab-demo';
+
+    /**
+     * @var string
+     */
+    const TRICK_TAIL_GRAB_DEMO_REFERENCE = 'trick-tail-grab-demo';
+
+    /**
+     * @var string
+     */
+    const TRICK_INDY_DEMO_REFERENCE = 'trick-indy-demo';
+
+    /**
+     * @var string
+     */
+    const TRICK_SAD_DEMO_REFERENCE = 'trick-sad-demo';
+
+    /**
+     * @var string
+     */
+    const TRICK_MUTE_DEMO_REFERENCE = 'trick-mute-demo';
 
     /**
      * Service container
@@ -356,6 +381,51 @@ class TrickFixtures extends Fixture implements DependentFixtureInterface, Contai
             $trickSeatBelt->setUser($this->getReference(UserFixtures::USER_DEMO_REFERENCE));
             $trickSeatBelt->setCategory($this->getReference(CategoryFixtures::CATEGORY_GRAB_REFERENCE));
 
+            $trickNoseGrab = new Trick;
+            $trickNoseGrab->setName('Nose Grab');
+            $trickNoseGrab->setDescription(
+                'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vivamus in nisl viverra, 
+                malesuada purus ac, ultrices sapien. Nullam vulputate vehicula magna, in congue augue 
+                consequat at.Nunc a nibh id sem vestibulum sollicitudin.');
+            $trickNoseGrab->setUser($this->getReference(UserFixtures::USER_DEMO_REFERENCE));
+            $trickNoseGrab->setCategory($this->getReference(CategoryFixtures::CATEGORY_GRAB_REFERENCE));
+
+            $trickTailGrab = new Trick;
+            $trickTailGrab->setName('Tail grab');
+            $trickTailGrab->setDescription(
+                'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vivamus in nisl viverra, 
+                malesuada purus ac, ultrices sapien. Nullam vulputate vehicula magna, in congue augue 
+                consequat at.Nunc a nibh id sem vestibulum sollicitudin.');
+            $trickTailGrab->setUser($this->getReference(UserFixtures::USER_DEMO_REFERENCE));
+            $trickTailGrab->setCategory($this->getReference(CategoryFixtures::CATEGORY_GRAB_REFERENCE));
+
+            $trickIndy = new Trick;
+            $trickIndy->setName('Indy');
+            $trickIndy->setDescription(
+                'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vivamus in nisl viverra, 
+                malesuada purus ac, ultrices sapien. Nullam vulputate vehicula magna, in congue augue 
+                consequat at.Nunc a nibh id sem vestibulum sollicitudin.');
+            $trickIndy->setUser($this->getReference(UserFixtures::USER_DEMO_REFERENCE));
+            $trickIndy->setCategory($this->getReference(CategoryFixtures::CATEGORY_GRAB_REFERENCE));
+
+            $trickSad = new Trick;
+            $trickSad->setName('Sad');
+            $trickSad->setDescription(
+                'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vivamus in nisl viverra, 
+                malesuada purus ac, ultrices sapien. Nullam vulputate vehicula magna, in congue augue 
+                consequat at.Nunc a nibh id sem vestibulum sollicitudin.');
+            $trickSad->setUser($this->getReference(UserFixtures::USER_DEMO_REFERENCE));
+            $trickSad->setCategory($this->getReference(CategoryFixtures::CATEGORY_GRAB_REFERENCE));
+
+            $trickMute = new Trick;
+            $trickMute->setName('Mute');
+            $trickMute->setDescription(
+                'Lorem ipsum dolor sit amet, consectetur adipiscing elit. Vivamus in nisl viverra, 
+                malesuada purus ac, ultrices sapien. Nullam vulputate vehicula magna, in congue augue 
+                consequat at.Nunc a nibh id sem vestibulum sollicitudin.');
+            $trickMute->setUser($this->getReference(UserFixtures::USER_DEMO_REFERENCE));
+            $trickMute->setCategory($this->getReference(CategoryFixtures::CATEGORY_GRAB_REFERENCE));
+
             $manager->persist($trickJapanAir);
             $manager->persist($trickOneHundredEighty);
             $manager->persist($trickBackFlip);
@@ -368,6 +438,11 @@ class TrickFixtures extends Fixture implements DependentFixtureInterface, Contai
             $manager->persist($trickHaakonFlip);
             $manager->persist($trickTruckDriver);
             $manager->persist($trickSeatBelt);
+            $manager->persist($trickNoseGrab);
+            $manager->persist($trickTailGrab);
+            $manager->persist($trickIndy);
+            $manager->persist($trickSad);
+            $manager->persist($trickMute);
         }
         
         $manager->flush();
@@ -391,6 +466,11 @@ class TrickFixtures extends Fixture implements DependentFixtureInterface, Contai
             $this->addReference(self::TRICK_HAAKON_FLIP_DEMO_REFERENCE, $trickHaakonFlip);
             $this->addReference(self::TRICK_TRUCK_DRIVER_DEMO_REFERENCE, $trickTruckDriver);
             $this->addReference(self::TRICK_SEAT_BELT_DEMO_REFERENCE, $trickSeatBelt);
+            $this->addReference(self::TRICK_NOSE_GRAB_DEMO_REFERENCE, $trickNoseGrab);
+            $this->addReference(self::TRICK_TAIL_GRAB_DEMO_REFERENCE, $trickTailGrab);
+            $this->addReference(self::TRICK_INDY_DEMO_REFERENCE, $trickIndy);
+            $this->addReference(self::TRICK_SAD_DEMO_REFERENCE, $trickSad);
+            $this->addReference(self::TRICK_MUTE_DEMO_REFERENCE, $trickMute);
         }
     }
 

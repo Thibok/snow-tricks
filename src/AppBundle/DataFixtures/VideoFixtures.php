@@ -127,6 +127,34 @@ class VideoFixtures extends Fixture implements DependentFixtureInterface, Contai
             $seatBeltVid->setUrl('https://www.youtube.com/watch?v=4vGEOYNGi_c');
             $seatBeltVid->setTrick($this->getReference(TrickFixtures::TRICK_SEAT_BELT_DEMO_REFERENCE));
 
+            $noseGrabVid = new Video;
+            $noseGrabVid->setUrl('https://www.youtube.com/watch?v=M-W7Pmo-YMY');
+            $noseGrabVid->setTrick($this->getReference(TrickFixtures::TRICK_NOSE_GRAB_DEMO_REFERENCE));
+
+            $tailGrabVid = new Video;
+            $tailGrabVid->setUrl('https://www.youtube.com/watch?v=id8VKl9RVQw');
+            $tailGrabVid->setTrick($this->getReference(TrickFixtures::TRICK_TAIL_GRAB_DEMO_REFERENCE));
+
+            $indyVid = new Video;
+            $indyVid->setUrl('https://www.youtube.com/watch?v=iKkhKekZNQ8');
+            $indyVid->setTrick($this->getReference(TrickFixtures::TRICK_INDY_DEMO_REFERENCE));
+
+            $sadVid = new Video;
+            $sadVid->setUrl('https://www.youtube.com/watch?v=KEdFwJ4SWq4');
+            $sadVid->setTrick($this->getReference(TrickFixtures::TRICK_SAD_DEMO_REFERENCE));
+
+            $firstMuteVid = new Video;
+            $firstMuteVid->setUrl('https://www.youtube.com/watch?v=k6aOWf0LDcQ');
+            $firstMuteVid->setTrick($this->getReference(TrickFixtures::TRICK_MUTE_DEMO_REFERENCE));
+
+            $secondMuteVid = new Video;
+            $secondMuteVid->setUrl('https://www.youtube.com/watch?v=CA5bURVJ5zk');
+            $secondMuteVid->setTrick($this->getReference(TrickFixtures::TRICK_MUTE_DEMO_REFERENCE));
+
+            $thirdMuteVid = new Video;
+            $thirdMuteVid->setUrl('https://www.youtube.com/watch?v=6z6KBAbM0MY');
+            $thirdMuteVid->setTrick($this->getReference(TrickFixtures::TRICK_MUTE_DEMO_REFERENCE));
+
             $manager->persist($firstJapanAirVid);
             $manager->persist($secondJapanAirVid);
 
@@ -147,6 +175,18 @@ class VideoFixtures extends Fixture implements DependentFixtureInterface, Contai
             $manager->persist($truckDriverVid);
 
             $manager->persist($seatBeltVid);
+
+            $manager->persist($noseGrabVid);
+
+            $manager->persist($tailGrabVid);
+
+            $manager->persist($indyVid);
+
+            $manager->persist($sadVid);
+
+            $manager->persist($firstMuteVid);
+            $manager->persist($secondMuteVid);
+            $manager->persist($thirdMuteVid);
         }
 
         $manager->flush();

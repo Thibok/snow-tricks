@@ -199,6 +199,18 @@ class TrickImageFixtures extends Fixture implements DependentFixtureInterface, C
 
             copy($fileDir.'seat-belt.jpeg', $fileDir.'seat-belt-copy.jpeg');
 
+            copy($fileDir.'nose-grab.jpeg', $fileDir.'nose-grab-copy.jpeg');
+
+            copy($fileDir.'tail-grab.jpg', $fileDir.'tail-grab-copy.jpg');
+
+            copy($fileDir.'indy.jpg', $fileDir.'indy-copy.jpg');
+
+            copy($fileDir.'sad.jpg', $fileDir.'sad-copy.jpg');
+
+            copy($fileDir.'first-mute.jpg', $fileDir.'first-mute-copy.jpg');
+            copy($fileDir.'second-mute.jpg', $fileDir.'second-mute-copy.jpg');
+            copy($fileDir.'third-mute.jpg', $fileDir.'third-mute-copy.jpg');
+
             $firstImgJapanAir = new TrickImage;
             $secondImgJapanAir = new TrickImage;
             
@@ -220,6 +232,18 @@ class TrickImageFixtures extends Fixture implements DependentFixtureInterface, C
             $imgTruckDriver = new TrickImage;
 
             $imgSeatBelt = new TrickImage;
+
+            $imgNoseGrab = new TrickImage;
+
+            $imgTailGrab = new TrickImage;
+
+            $imgIndy = new TrickImage;
+
+            $imgSad = new TrickImage;
+
+            $imgFirstMute = new TrickImage;
+            $imgSecondMute = new TrickImage;
+            $imgThirdMute = new TrickImage;
 
             $firstFileJapanAir = new UploadedFile(
                 $fileDir.'first-japan-air-copy.jpg',
@@ -329,6 +353,69 @@ class TrickImageFixtures extends Fixture implements DependentFixtureInterface, C
                 true
             );
 
+            $fileNoseGrab = new UploadedFile(
+                $fileDir.'nose-grab-copy.jpeg',
+                'nose-grab-copy.jpeg',
+                'image/jpeg',
+                null,
+                null,
+                true
+            );
+
+            $fileTailGrab = new UploadedFile(
+                $fileDir.'tail-grab-copy.jpg',
+                'tail-grab-copy.jpg',
+                'image/jpeg',
+                null,
+                null,
+                true
+            );
+
+            $fileIndy = new UploadedFile(
+                $fileDir.'indy-copy.jpg',
+                'indy-copy.jpg',
+                'image/jpeg',
+                null,
+                null,
+                true
+            );
+
+            $fileSad = new UploadedFile(
+                $fileDir.'sad-copy.jpg',
+                'sad-copy.jpg',
+                'image/jpeg',
+                null,
+                null,
+                true
+            );
+
+            $fileFirstMute = new UploadedFile(
+                $fileDir.'first-mute-copy.jpg',
+                'first-mute-copy.jpg',
+                'image/jpeg',
+                null,
+                null,
+                true
+            );
+
+            $fileSecondMute = new UploadedFile(
+                $fileDir.'second-mute-copy.jpg',
+                'second-mute-copy.jpg',
+                'image/jpeg',
+                null,
+                null,
+                true
+            );
+
+            $fileThirdMute = new UploadedFile(
+                $fileDir.'third-mute-copy.jpg',
+                'third-mute-copy.jpg',
+                'image/jpeg',
+                null,
+                null,
+                true
+            );
+
             $firstImgJapanAir->setFile($firstFileJapanAir);
             $secondImgJapanAir->setFile($secondFileJapanAir);
 
@@ -351,6 +438,18 @@ class TrickImageFixtures extends Fixture implements DependentFixtureInterface, C
 
             $imgSeatBelt->setFile($fileSeatBelt);
 
+            $imgNoseGrab->setFile($fileNoseGrab);
+            
+            $imgTailGrab->setFile($fileTailGrab);
+
+            $imgIndy->setFile($fileIndy);
+
+            $imgSad->setFile($fileSad);
+
+            $imgFirstMute->setFile($fileFirstMute);
+            $imgSecondMute->setFile($fileSecondMute);
+            $imgThirdMute->setFile($fileThirdMute);
+
             $firstImgJapanAir->setTrick($this->getReference(TrickFixtures::TRICK_JAPAN_AIR_DEMO_REFERENCE));
             $secondImgJapanAir->setTrick($this->getReference(TrickFixtures::TRICK_JAPAN_AIR_DEMO_REFERENCE));
 
@@ -372,6 +471,18 @@ class TrickImageFixtures extends Fixture implements DependentFixtureInterface, C
             $imgTruckDriver->setTrick($this->getReference(TrickFixtures::TRICK_TRUCK_DRIVER_DEMO_REFERENCE));
 
             $imgSeatBelt->setTrick($this->getReference(TrickFixtures::TRICK_SEAT_BELT_DEMO_REFERENCE));
+
+            $imgNoseGrab->setTrick($this->getReference(TrickFixtures::TRICK_NOSE_GRAB_DEMO_REFERENCE));
+
+            $imgTailGrab->setTrick($this->getReference(TrickFixtures::TRICK_TAIL_GRAB_DEMO_REFERENCE));
+
+            $imgIndy->setTrick($this->getReference(TrickFixtures::TRICK_INDY_DEMO_REFERENCE));
+
+            $imgSad->setTrick($this->getReference(TrickFixtures::TRICK_SAD_DEMO_REFERENCE));
+
+            $imgFirstMute->setTrick($this->getReference(TrickFixtures::TRICK_MUTE_DEMO_REFERENCE));
+            $imgSecondMute->setTrick($this->getReference(TrickFixtures::TRICK_MUTE_DEMO_REFERENCE));
+            $imgThirdMute->setTrick($this->getReference(TrickFixtures::TRICK_MUTE_DEMO_REFERENCE));
         
             $manager->persist($firstImgJapanAir);
             $manager->persist($secondImgJapanAir);
@@ -394,6 +505,18 @@ class TrickImageFixtures extends Fixture implements DependentFixtureInterface, C
             $manager->persist($imgTruckDriver);
             
             $manager->persist($imgSeatBelt);
+
+            $manager->persist($imgNoseGrab);
+
+            $manager->persist($imgTailGrab);
+
+            $manager->persist($imgIndy);
+
+            $manager->persist($imgSad);
+
+            $manager->persist($imgFirstMute);
+            $manager->persist($imgSecondMute);
+            $manager->persist($imgThirdMute);
         }
         
         $manager->flush();

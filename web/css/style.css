@@ -3,6 +3,9 @@
  * Copyright 2013-2018 Start Bootstrap
  * Licensed under MIT (https://github.com/BlackrockDigital/startbootstrap-creative/blob/master/LICENSE)
  */
+
+ /* Global */
+
  * {
   margin: 0;
   padding: 0;
@@ -50,8 +53,24 @@ nav {
   padding-bottom: 120px;
 }
 
+.form-control {
+  border: 1px solid grey;
+}
+
 #security_block, #trick_block {
   margin: auto;
+}
+
+footer {
+  position: relative;
+  height: 90px;
+  margin-top: -90px;
+  clear: both;
+}
+
+#copyright {
+  padding-top: 35px;
+  padding-left: 70px;
 }
 
 #security_form {
@@ -65,30 +84,18 @@ nav {
   border: 1px solid black;
 }
 
+/* ----- */
+
+/* Trick page */
+
 #trick_form {
   background-color: white;
   border-top: none;
 }
 
-footer {
-  position: relative;
-  height: 90px;
-  margin-top: -90px;
-  clear: both;
-}
-
 #addTrickImage, #addTrickVideo {
   font-size:0.6em;
   width:70px;
-}
-
-#copyright {
-  padding-top: 35px;
-  padding-left: 70px;
-}
-
-.form-control {
-  border: 1px solid grey;
 }
 
 #medias_container {
@@ -354,6 +361,8 @@ footer {
   color: grey;
   margin: auto;
 }
+
+/* --- */
 
 @media screen and (max-width: 1200px) {
   .trick-container-home {

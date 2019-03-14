@@ -131,6 +131,73 @@ class CommentFixtures extends Fixture implements DependentFixtureInterface, Cont
             $manager->persist($firstCommentTrickDeleteAjax);
             $manager->persist($secondCommentTrickDeleteAjax);
         }
+
+        if ($env == 'dev') {
+            $firstCommentMute = new Comment;
+            $secondCommentMute = new Comment;
+            $thirdCommentMute = new Comment;
+            $fourthCommentMute = new Comment;
+            $fifthCommentMute = new Comment;
+            $sixthCommentMute = new Comment;
+            $seventhCommentMute = new Comment;
+            $eighthCommentMute = new Comment;
+            $ninthCommentMute = new Comment;
+            $tenthCommentMute = new Comment;
+            $eleventhCommentMute = new Comment;
+            $twelftCommentMute = new Comment;
+
+            $firstCommentMute->setContent('First !');
+            $secondCommentMute->setContent('Love this trick !');
+            $thirdCommentMute->setContent('This trick is very hard...');
+            $fourthCommentMute->setContent('A very good trick');
+            $fifthCommentMute->setContent('This jump');
+            $sixthCommentMute->setContent('Beautiful snow');
+            $seventhCommentMute->setContent('Need help for this trick');
+            $eighthCommentMute->setContent('Go to ride !');
+            $ninthCommentMute->setContent('Thanks for this trick');
+            $tenthCommentMute->setContent('Mute trick !');
+            $eleventhCommentMute->setContent('What place to test that?');
+            $twelftCommentMute->setContent('Love SnowTricks');
+
+            $firstCommentMute->setUser($this->getReference(UserFixtures::USER_DEMO_REFERENCE));
+            $secondCommentMute->setUser($this->getReference(UserFixtures::USER_DEMO_REFERENCE));
+            $thirdCommentMute->setUser($this->getReference(UserFixtures::USER_DEMO_REFERENCE));
+            $fourthCommentMute->setUser($this->getReference(UserFixtures::USER_DEMO_REFERENCE));
+            $fifthCommentMute->setUser($this->getReference(UserFixtures::USER_DEMO_REFERENCE));
+            $sixthCommentMute->setUser($this->getReference(UserFixtures::USER_DEMO_REFERENCE));
+            $seventhCommentMute->setUser($this->getReference(UserFixtures::USER_DEMO_REFERENCE));
+            $eighthCommentMute->setUser($this->getReference(UserFixtures::USER_DEMO_REFERENCE));
+            $ninthCommentMute->setUser($this->getReference(UserFixtures::USER_DEMO_REFERENCE));
+            $tenthCommentMute->setUser($this->getReference(UserFixtures::USER_DEMO_REFERENCE));
+            $eleventhCommentMute->setUser($this->getReference(UserFixtures::USER_DEMO_REFERENCE));
+            $twelftCommentMute->setUser($this->getReference(UserFixtures::USER_DEMO_REFERENCE));
+
+            $firstCommentMute->setTrick($this->getReference(TrickFixtures::TRICK_MUTE_DEMO_REFERENCE));
+            $secondCommentMute->setTrick($this->getReference(TrickFixtures::TRICK_MUTE_DEMO_REFERENCE));
+            $thirdCommentMute->setTrick($this->getReference(TrickFixtures::TRICK_MUTE_DEMO_REFERENCE));
+            $fourthCommentMute->setTrick($this->getReference(TrickFixtures::TRICK_MUTE_DEMO_REFERENCE));
+            $fifthCommentMute->setTrick($this->getReference(TrickFixtures::TRICK_MUTE_DEMO_REFERENCE));
+            $sixthCommentMute->setTrick($this->getReference(TrickFixtures::TRICK_MUTE_DEMO_REFERENCE));
+            $seventhCommentMute->setTrick($this->getReference(TrickFixtures::TRICK_MUTE_DEMO_REFERENCE));
+            $eighthCommentMute->setTrick($this->getReference(TrickFixtures::TRICK_MUTE_DEMO_REFERENCE));
+            $ninthCommentMute->setTrick($this->getReference(TrickFixtures::TRICK_MUTE_DEMO_REFERENCE));
+            $tenthCommentMute->setTrick($this->getReference(TrickFixtures::TRICK_MUTE_DEMO_REFERENCE));
+            $eleventhCommentMute->setTrick($this->getReference(TrickFixtures::TRICK_MUTE_DEMO_REFERENCE));
+            $twelftCommentMute->setTrick($this->getReference(TrickFixtures::TRICK_MUTE_DEMO_REFERENCE));
+
+            $manager->persist($firstCommentMute);
+            $manager->persist($secondCommentMute);
+            $manager->persist($thirdCommentMute);
+            $manager->persist($fourthCommentMute);
+            $manager->persist($fifthCommentMute);
+            $manager->persist($sixthCommentMute);
+            $manager->persist($seventhCommentMute);
+            $manager->persist($eighthCommentMute);
+            $manager->persist($ninthCommentMute);
+            $manager->persist($tenthCommentMute);
+            $manager->persist($eleventhCommentMute);
+            $manager->persist($twelftCommentMute);
+        }
         
         $manager->flush();
     }
