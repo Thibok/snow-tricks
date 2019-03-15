@@ -44,106 +44,106 @@ class UserFixtures extends Fixture implements DependentFixtureInterface, Contain
         $env = $this->container->get('kernel')->getEnvironment();
 
         if ($env == 'test') {
-            $user = new User;
-            $user->setUsername('GoodUser');
-            $user->setEmail('good@email.com');
-            $user->setPassword('verystrongpassword12');
-            $user->setName('Test');
-            $user->setFirstName('Bryan');
-            $user->setToken($this->getReference(TokenFixtures::VALID_TOKEN_REGISTRATION_TEST_REFERENCE));
-            $user->setImage($this->getReference(UserImageFixtures::VALID_REGISTRATION_USERIMAGE_TEST_REFERENCE));
+            $usr = new User;
+            $usr->setUsername('GoodUser');
+            $usr->setEmail('good@email.com');
+            $usr->setPassword('verystrongpassword12');
+            $usr->setName('Test');
+            $usr->setFirstName('Bryan');
+            $usr->setToken($this->getReference(TokenFixtures::VALID_TOKEN_REGISTRATION_TEST_REFERENCE));
+            $usr->setImage($this->getReference(UserImageFixtures::VALID_REGISTRATION_USERIMAGE_TEST_REFERENCE));
 
-            $inactiveUser = new User;
-            $inactiveUser->setUsername('InactiveUser');
-            $inactiveUser->setEmail('bad@email.com');
-            $inactiveUser->setPassword('verystrongpassword1222');
-            $inactiveUser->setName('TestInactive');
-            $inactiveUser->setFirstName('BryanDisabled');
-            $inactiveUser->setToken($this->getReference(TokenFixtures::TOKEN_INACTIVE_USER_TEST_REFERENCE));
-            $inactiveUser->setImage($this->getReference(UserImageFixtures::USERIMAGE_INACTIVE_USER_TEST_REFERENCE));
+            $inactiveUsr = new User;
+            $inactiveUsr->setUsername('InactiveUser');
+            $inactiveUsr->setEmail('bad@email.com');
+            $inactiveUsr->setPassword('verystrongpassword1222');
+            $inactiveUsr->setName('TestInactive');
+            $inactiveUsr->setFirstName('BryanDisabled');
+            $inactiveUsr->setToken($this->getReference(TokenFixtures::TOKEN_INACTIVE_USER_TEST_REFERENCE));
+            $inactiveUsr->setImage($this->getReference(UserImageFixtures::USERIMAGE_INACTIVE_USER_TEST_REFERENCE));
 
-            $userEnabled = new User;
-            $userEnabled->setUsername('EnabledUser');
-            $userEnabled->setEmail('goodie@email.com');
-            $userEnabled->setPassword('verystrongpassword123');
-            $userEnabled->setName('TestEnabled');
-            $userEnabled->setFirstName('BryanEnabled');
-            $userEnabled->setIsActive(true);
-            $userEnabled->setToken($this->getReference(TokenFixtures::TOKEN_ENABLED_USER_TEST_REFERENCE));
-            $userEnabled->setImage($this->getReference(UserImageFixtures::USERIMAGE_ENABLED_USER_TEST_REFERENCE));
+            $usrEnabled = new User;
+            $usrEnabled->setUsername('EnabledUser');
+            $usrEnabled->setEmail('goodie@email.com');
+            $usrEnabled->setPassword('verystrongpassword123');
+            $usrEnabled->setName('TestEnabled');
+            $usrEnabled->setFirstName('BryanEnabled');
+            $usrEnabled->setIsActive(true);
+            $usrEnabled->setToken($this->getReference(TokenFixtures::TOKEN_ENABLED_USER_TEST_REFERENCE));
+            $usrEnabled->setImage($this->getReference(UserImageFixtures::USERIMAGE_ENABLED_USER_TEST_REFERENCE));
 
-            $userResetPass = new User;
-            $userResetPass->setUsername('ResetPassUser');
-            $userResetPass->setEmail('resetpass@email.com');
-            $userResetPass->setPassword('verystrongpassword1234');
-            $userResetPass->setName('TestResetPass');
-            $userResetPass->setFirstName('BryanResetPass');
-            $userResetPass->setIsActive(true);
-            $userResetPass->setToken($this->getReference(TokenFixtures::TOKEN_RESET_PASS_USER_TEST_REFERENCE));
-            $userResetPass->setImage($this->getReference(UserImageFixtures::USERIMAGE_RESET_PASS_USER_TEST_REFERENCE));
+            $usrResetPass = new User;
+            $usrResetPass->setUsername('ResetPassUser');
+            $usrResetPass->setEmail('resetpass@email.com');
+            $usrResetPass->setPassword('verystrongpassword1234');
+            $usrResetPass->setName('TestResetPass');
+            $usrResetPass->setFirstName('BryanResetPass');
+            $usrResetPass->setIsActive(true);
+            $usrResetPass->setToken($this->getReference(TokenFixtures::TOKEN_RESET_PASS_USER_TEST_REFERENCE));
+            $usrResetPass->setImage($this->getReference(UserImageFixtures::USERIMAGE_RESET_PASS_USER_TEST_REFERENCE));
 
-            $userBadResetPass = new User;
-            $userBadResetPass->setUsername('ResetPassOtherUser');
-            $userBadResetPass->setEmail('resetpasss@email.com');
-            $userBadResetPass->setPassword('verystrongpassword12345');
-            $userBadResetPass->setName('TestOtherResetPass');
-            $userBadResetPass->setFirstName('BryanOtherResetPass');
-            $userBadResetPass->setIsActive(true);
-            $userBadResetPass->setToken($this->getReference(TokenFixtures::TOKEN_RESET_PASS_BAD_USER_TEST_REFERENCE));
-            $userBadResetPass->setImage($this->getReference(UserImageFixtures::USERIMAGE_RESET_PASS_BAD_TEST_REFERENCE));
+            $usrBadResetPass = new User;
+            $usrBadResetPass->setUsername('ResetPassOtherUser');
+            $usrBadResetPass->setEmail('resetpasss@email.com');
+            $usrBadResetPass->setPassword('verystrongpassword12345');
+            $usrBadResetPass->setName('TestOtherResetPass');
+            $usrBadResetPass->setFirstName('BryanOtherResetPass');
+            $usrBadResetPass->setIsActive(true);
+            $usrBadResetPass->setToken($this->getReference(TokenFixtures::TOKEN_RESET_PASS_BAD_USER_TEST_REFERENCE));
+            $usrBadResetPass->setImage($this->getReference(UserImageFixtures::USERIMAGE_RESET_PASS_BAD_TEST_REFERENCE));
 
-            $userResetPassExpiredToken = new User;
-            $userResetPassExpiredToken->setUsername('IWantResetMyPass');
-            $userResetPassExpiredToken->setEmail('resetmypass@email.com');
-            $userResetPassExpiredToken->setPassword('verystrongpassword123456');
-            $userResetPassExpiredToken->setName('TestMyResetPass');
-            $userResetPassExpiredToken->setFirstName('ResetReset');
-            $userResetPassExpiredToken->setToken($this->getReference(TokenFixtures::TOKEN_RESET_PASS_EXPIRED_TEST_REFERENCE));
-            $userResetPassExpiredToken->setImage($this->getReference(UserImageFixtures::USERIMAGE_RESET_PASS_EXPIRED_TEST_REFERENCE));
+            $usrResetPassExpiredToken = new User;
+            $usrResetPassExpiredToken->setUsername('IWantResetMyPass');
+            $usrResetPassExpiredToken->setEmail('resetmypass@email.com');
+            $usrResetPassExpiredToken->setPassword('verystrongpassword123456');
+            $usrResetPassExpiredToken->setName('TestMyResetPass');
+            $usrResetPassExpiredToken->setFirstName('ResetReset');
+            $usrResetPassExpiredToken->setToken($this->getReference(TokenFixtures::TOKEN_RESET_PASS_EXPIRED_TEST_REFERENCE));
+            $usrResetPassExpiredToken->setImage($this->getReference(UserImageFixtures::USERIMAGE_RESET_PASS_EXPIRED_TEST_REFERENCE));
 
-            $userValidRegistrationExpired = new User;
-            $userValidRegistrationExpired->setUsername('ValidMyRegistration');
-            $userValidRegistrationExpired->setEmail('validregister@email.com');
-            $userValidRegistrationExpired->setPassword('verystrongpassword1234567');
-            $userValidRegistrationExpired->setName('TestBadValidRegister');
-            $userValidRegistrationExpired->setFirstName('BadRegistration');
-            $userValidRegistrationExpired->setToken($this->getReference(TokenFixtures::TOKEN_VALID_REGISTRATION_EXPIRED_TEST_REFERENCE));
-            $userValidRegistrationExpired->setImage($this->getReference(UserImageFixtures::USERIMAGE_VALID_REGISTRATION_EXPIRED_TEST_REFERENCE));
+            $usrValidRegistrationExpired = new User;
+            $usrValidRegistrationExpired->setUsername('ValidMyRegistration');
+            $usrValidRegistrationExpired->setEmail('validregister@email.com');
+            $usrValidRegistrationExpired->setPassword('verystrongpassword1234567');
+            $usrValidRegistrationExpired->setName('TestBadValidRegister');
+            $usrValidRegistrationExpired->setFirstName('BadRegistration');
+            $usrValidRegistrationExpired->setToken($this->getReference(TokenFixtures::TOKEN_VALID_REGISTRATION_EXPIRED_TEST_REFERENCE));
+            $usrValidRegistrationExpired->setImage($this->getReference(UserImageFixtures::USERIMAGE_VALID_REGISTRATION_EXPIRED_TEST_REFERENCE));
 
-            $manager->persist($user);
-            $manager->persist($userEnabled);
-            $manager->persist($inactiveUser);
-            $manager->persist($userResetPass);
-            $manager->persist($userBadResetPass);
-            $manager->persist($userResetPassExpiredToken);
-            $manager->persist($userValidRegistrationExpired);
+            $manager->persist($usr);
+            $manager->persist($usrEnabled);
+            $manager->persist($inactiveUsr);
+            $manager->persist($usrResetPass);
+            $manager->persist($usrBadResetPass);
+            $manager->persist($usrResetPassExpiredToken);
+            $manager->persist($usrValidRegistrationExpired);
         }
 
         if ($env == 'dev') {
-            $demoUsername = $this->container->getParameter('demo_user_username');
+            $demoUsrname = $this->container->getParameter('demo_user_username');
             $demoPassword = $this->container->getParameter('demo_user_password');
 
-            $demoUser = new User;
-            $demoUser->setUsername($demoUsername);
-            $demoUser->setEmail('demobryantrickemail@yahoo.com');
-            $demoUser->setPassword($demoPassword);
-            $demoUser->setName('Trick');
-            $demoUser->setFirstName('Bryan');
-            $demoUser->setIsActive(true);
-            $demoUser->setToken($this->getReference(TokenFixtures::TOKEN_DEMO_REFERENCE));
-            $demoUser->setImage($this->getReference(UserImageFixtures::USERIMAGE_DEMO_REFERENCE));
+            $demoUsr = new User;
+            $demoUsr->setUsername($demoUsrname);
+            $demoUsr->setEmail('demobryantrickemail@yahoo.com');
+            $demoUsr->setPassword($demoPassword);
+            $demoUsr->setName('Trick');
+            $demoUsr->setFirstName('Bryan');
+            $demoUsr->setIsActive(true);
+            $demoUsr->setToken($this->getReference(TokenFixtures::TOKEN_DEMO_REFERENCE));
+            $demoUsr->setImage($this->getReference(UserImageFixtures::USERIMAGE_DEMO_REFERENCE));
 
-            $manager->persist($demoUser);
+            $manager->persist($demoUsr);
         }
 
         $manager->flush();
 
         if ($env == 'test') {
-            $this->addReference(self::ENABLED_USER_TEST_REFERENCE, $userEnabled);
+            $this->addReference(self::ENABLED_USER_TEST_REFERENCE, $usrEnabled);
         }
 
         if ($env == 'dev') {
-            $this->addReference(self::USER_DEMO_REFERENCE, $demoUser);
+            $this->addReference(self::USER_DEMO_REFERENCE, $demoUsr);
         }
     }
 

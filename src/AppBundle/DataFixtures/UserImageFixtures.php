@@ -85,16 +85,16 @@ class UserImageFixtures extends Fixture implements ContainerAwareInterface
             copy($fileDir.'userimage.png', $fileDir.'img-bad-reset-pass-user.png');
             copy($fileDir.'userimage.png', $fileDir.'img-expired-reset-pass-user');
 
-            $userImgValidRegistration = new UserImage;
-            $userImgValidRegistrationExpired = new UserImage;
+            $imgValidRegistration = new UserImage;
+            $imgValidRegistrationExpired = new UserImage;
 
-            $userImgEnabledUser = new UserImage;
+            $imgEnabledUser = new UserImage;
 
-            $userImgInactiveUser = new UserImage;
+            $imgInactiveUser = new UserImage;
 
-            $userImgResetPassUser = new UserImage;
-            $userImgResetPassBadUser = new UserImage;
-            $userImgResetPassExpired = new UserImage;
+            $imgResetPassUser = new UserImage;
+            $imgResetPassBadUser = new UserImage;
+            $imgResetPassExpired = new UserImage;
 
             $fileValidRegistration = new UploadedFile(
                 $fileDir.'img-valid-registration.png',
@@ -159,33 +159,33 @@ class UserImageFixtures extends Fixture implements ContainerAwareInterface
                 true
             );
 
-            $userImgValidRegistration->setFile($fileValidRegistration);
-            $userImgValidRegistrationExpired->setFile($fileValidRegistrationExpired);
+            $imgValidRegistration->setFile($fileValidRegistration);
+            $imgValidRegistrationExpired->setFile($fileValidRegistrationExpired);
 
-            $userImgEnabledUser->setFile($fileEnabledUser);
+            $imgEnabledUser->setFile($fileEnabledUser);
 
-            $userImgInactiveUser->setFile($fileInactiveUser);
+            $imgInactiveUser->setFile($fileInactiveUser);
 
-            $userImgResetPassUser->setFile($fileResetPassUser);
-            $userImgResetPassBadUser->setFile($fileResetPassBadUser);
-            $userImgResetPassExpired->setFile($fileResetPassExpired);
+            $imgResetPassUser->setFile($fileResetPassUser);
+            $imgResetPassBadUser->setFile($fileResetPassBadUser);
+            $imgResetPassExpired->setFile($fileResetPassExpired);
 
-            $manager->persist($userImgValidRegistration);
-            $manager->persist($userImgValidRegistrationExpired);
+            $manager->persist($imgValidRegistration);
+            $manager->persist($imgValidRegistrationExpired);
 
-            $manager->persist($userImgEnabledUser);
+            $manager->persist($imgEnabledUser);
 
-            $manager->persist($userImgInactiveUser);
+            $manager->persist($imgInactiveUser);
 
-            $manager->persist($userImgResetPassUser);
-            $manager->persist($userImgResetPassBadUser);
-            $manager->persist($userImgResetPassExpired);
+            $manager->persist($imgResetPassUser);
+            $manager->persist($imgResetPassBadUser);
+            $manager->persist($imgResetPassExpired);
         }
 
         if ($env == 'dev') {
             $fileDir = __DIR__.'/../../../web/img/assets/user/';
 
-            $userImgDemo = new UserImage;
+            $imgDemo = new UserImage;
 
             copy($fileDir.'demo-user-img.png', $fileDir.'demo-user-img-copy.png');
 
@@ -198,28 +198,28 @@ class UserImageFixtures extends Fixture implements ContainerAwareInterface
                 true
             );
 
-            $userImgDemo->setFile($fileDemoUserImg);
+            $imgDemo->setFile($fileDemoUserImg);
 
-            $manager->persist($userImgDemo);
+            $manager->persist($imgDemo);
         }
 
         $manager->flush();
 
         if ($env == 'test') {
-            $this->addReference(self::VALID_REGISTRATION_USERIMAGE_TEST_REFERENCE, $userImgValidRegistration);
-            $this->addReference(self::USERIMAGE_VALID_REGISTRATION_EXPIRED_TEST_REFERENCE, $userImgValidRegistrationExpired);
+            $this->addReference(self::VALID_REGISTRATION_USERIMAGE_TEST_REFERENCE, $imgValidRegistration);
+            $this->addReference(self::USERIMAGE_VALID_REGISTRATION_EXPIRED_TEST_REFERENCE, $imgValidRegistrationExpired);
 
-            $this->addReference(self::USERIMAGE_ENABLED_USER_TEST_REFERENCE, $userImgEnabledUser);
+            $this->addReference(self::USERIMAGE_ENABLED_USER_TEST_REFERENCE, $imgEnabledUser);
 
-            $this->addReference(self::USERIMAGE_INACTIVE_USER_TEST_REFERENCE, $userImgInactiveUser);
+            $this->addReference(self::USERIMAGE_INACTIVE_USER_TEST_REFERENCE, $imgInactiveUser);
 
-            $this->addReference(self::USERIMAGE_RESET_PASS_USER_TEST_REFERENCE, $userImgResetPassUser);
-            $this->addReference(self::USERIMAGE_RESET_PASS_BAD_TEST_REFERENCE, $userImgResetPassBadUser);
-            $this->addReference(self::USERIMAGE_RESET_PASS_EXPIRED_TEST_REFERENCE, $userImgResetPassExpired);
+            $this->addReference(self::USERIMAGE_RESET_PASS_USER_TEST_REFERENCE, $imgResetPassUser);
+            $this->addReference(self::USERIMAGE_RESET_PASS_BAD_TEST_REFERENCE, $imgResetPassBadUser);
+            $this->addReference(self::USERIMAGE_RESET_PASS_EXPIRED_TEST_REFERENCE, $imgResetPassExpired);
         }
 
         if ($env == 'dev') {
-            $this->addReference(self::USERIMAGE_DEMO_REFERENCE, $userImgDemo);
+            $this->addReference(self::USERIMAGE_DEMO_REFERENCE, $imgDemo);
         }
     }
 

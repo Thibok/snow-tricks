@@ -77,6 +77,49 @@ $(function () {
         });
     }
 
+    function createVideoIframe (videoSrc) {
+        let iframeVideoEl = "<iframe class='align-middle' width=100% height=100% " + videoSrc + " frameborder='0'></iframe>";
+
+        return iframeVideoEl;
+    }
+
+    function convertLinkToEmbed(link) {
+        if (youtubeRegex.test(link)) {
+            let videoCode = link.split("v=");
+            let embedLink = youtubeEmbedFormat + videoCode[1];
+
+            return embedLink;
+        }
+
+        if (youtubeShortRegex.test(link)) {
+            let videoCode = link.split("/");
+            let embedLink = youtubeEmbedFormat + videoCode[3];
+            
+            return embedLink;
+        }
+
+        if (dailymotionRegex.test(link)) {
+            let videoCode = link.split("/");
+            let embedLink = dailymotionEmbedFormat + videoCode[4];
+
+            return embedLink;
+        }
+
+        if (dailymotionShortRegex.test(link)) {
+            let videoCode = link.split("/");
+            let embedLink = dailymotionEmbedFormat + videoCode[3];
+
+            return embedLink;
+        }
+
+        if (vimeoRegex.test(link)) {
+            let videoCode = link.split("/");
+            let embedLink = vimeoEmbedFormat + videoCode[3];
+
+            return embedLink;
+        }
+    }
+
     function recreateVideos() {
         let videos = $(".video");
 
@@ -190,49 +233,6 @@ $(function () {
     recreateVideos();
 
     showPagination();
-
-    function convertLinkToEmbed(link) {
-        if (youtubeRegex.test(link)) {
-            let videoCode = link.split("v=");
-            let embedLink = youtubeEmbedFormat + videoCode[1];
-
-            return embedLink;
-        }
-
-        if (youtubeShortRegex.test(link)) {
-            let videoCode = link.split("/");
-            let embedLink = youtubeEmbedFormat + videoCode[3];
-            
-            return embedLink;
-        }
-
-        if (dailymotionRegex.test(link)) {
-            let videoCode = link.split("/");
-            let embedLink = dailymotionEmbedFormat + videoCode[4];
-
-            return embedLink;
-        }
-
-        if (dailymotionShortRegex.test(link)) {
-            let videoCode = link.split("/");
-            let embedLink = dailymotionEmbedFormat + videoCode[3];
-
-            return embedLink;
-        }
-
-        if (vimeoRegex.test(link)) {
-            let videoCode = link.split("/");
-            let embedLink = vimeoEmbedFormat + videoCode[3];
-
-            return embedLink;
-        }
-    }
-
-    function createVideoIframe (videoSrc) {
-        let iframeVideoEl = "<iframe class='align-middle' width=100% height=100% " + videoSrc + " frameborder='0'></iframe>";
-
-        return iframeVideoEl;
-    }
 
     function pageNext() {
         $(".reveal-media").each(function () {
@@ -435,15 +435,6 @@ $(function () {
         return true;
     }
 
-    function validateForm() {
-        
-        if (!validateComment(commentField.val())) {
-            return false;
-        }
-     
-        return true;
-    }
-
     function formSubmit() {
         $("#commentForm").submit();
     }
@@ -527,6 +518,15 @@ $(function () {
     commentField.on("keyup blur", function () {
         validateComment($(this).val());
     });
+
+    function validateForm() {
+        
+        if (!validateComment(commentField.val())) {
+            return false;
+        }
+     
+        return true;
+    }
 
     $("#leaveCommentBtn").click(function (event) {
         event.preventDefault();

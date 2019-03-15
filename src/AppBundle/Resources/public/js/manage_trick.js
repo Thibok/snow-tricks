@@ -566,6 +566,13 @@ $(function () {
         return true;
     }
 
+    var addVideoModal = new jBox("Confirm", {
+        title: "Add a video",
+        cancelButton: "Cancel",
+        confirmButton: "Upload",
+        confirm: uploadVideo,
+    });
+
     function createAddVideoIframeModal() {
         let modalContainer = $("<div class='modalContainer'></div>");
         let labelModalUrl = $("<label id='addVideoLabel' class='control-label required' for='addVideo'>Iframe</label>");
@@ -660,10 +667,54 @@ $(function () {
         return addVideoContainer;
     }
 
+    var addVideoByModalContent = createAddVideoByModalContent();
+
+    var addVideoByModal = new jBox("Modal", {
+        title: "Add a video",
+        content: addVideoByModalContent,
+    });
+
     function createVideoIframe (videoSrc) {
         let iframeVideoEl = "<iframe class='align-middle' width=100% height=100% " + videoSrc + " frameborder='0'></iframe>";
 
         return iframeVideoEl;
+    }
+
+    function convertLinkToEmbed(link) {
+        if (youtubeRegex.test(link)) {
+            let videoCode = link.split("v=");
+            let embedLink = youtubeEmbedFormat + videoCode[1];
+
+            return embedLink;
+        }
+
+        if (youtubeShortRegex.test(link)) {
+            let videoCode = link.split("/");
+            let embedLink = youtubeEmbedFormat + videoCode[3];
+            
+            return embedLink;
+        }
+
+        if (dailymotionRegex.test(link)) {
+            let videoCode = link.split("/");
+            let embedLink = dailymotionEmbedFormat + videoCode[4];
+
+            return embedLink;
+        }
+
+        if (dailymotionShortRegex.test(link)) {
+            let videoCode = link.split("/");
+            let embedLink = dailymotionEmbedFormat + videoCode[3];
+
+            return embedLink;
+        }
+
+        if (vimeoRegex.test(link)) {
+            let videoCode = link.split("/");
+            let embedLink = vimeoEmbedFormat + videoCode[3];
+
+            return embedLink;
+        }
     }
 
     function editVideo() {
@@ -702,6 +753,12 @@ $(function () {
 
         return;
     }
+
+    var editVideoModal = new jBox("Confirm", {
+        cancelButton: "Cancel",
+        confirmButton: "Edit",
+        confirm: editVideo,
+    });
 
     function createEditVideoModal(videoId) {       
         let modalEditContainer = $("<div class='modalContainer'></div>");
@@ -877,43 +934,6 @@ $(function () {
         return urlField;
     }
 
-    function convertLinkToEmbed(link) {
-        if (youtubeRegex.test(link)) {
-            let videoCode = link.split("v=");
-            let embedLink = youtubeEmbedFormat + videoCode[1];
-
-            return embedLink;
-        }
-
-        if (youtubeShortRegex.test(link)) {
-            let videoCode = link.split("/");
-            let embedLink = youtubeEmbedFormat + videoCode[3];
-            
-            return embedLink;
-        }
-
-        if (dailymotionRegex.test(link)) {
-            let videoCode = link.split("/");
-            let embedLink = dailymotionEmbedFormat + videoCode[4];
-
-            return embedLink;
-        }
-
-        if (dailymotionShortRegex.test(link)) {
-            let videoCode = link.split("/");
-            let embedLink = dailymotionEmbedFormat + videoCode[3];
-
-            return embedLink;
-        }
-
-        if (vimeoRegex.test(link)) {
-            let videoCode = link.split("/");
-            let embedLink = vimeoEmbedFormat + videoCode[3];
-
-            return embedLink;
-        }
-    }
-
     function uploadVideo() {
         let videoValue  = $("#addVideo").val();
 
@@ -1019,26 +1039,6 @@ $(function () {
     recreateImages();
     recreateVideos();
     showPagination();
-
-    var addVideoByModalContent = createAddVideoByModalContent();
-
-    var addVideoByModal = new jBox("Modal", {
-        title: "Add a video",
-        content: addVideoByModalContent,
-    });
-
-    var addVideoModal = new jBox("Confirm", {
-        title: "Add a video",
-        cancelButton: "Cancel",
-        confirmButton: "Upload",
-        confirm: uploadVideo,
-    });
-
-    var editVideoModal = new jBox("Confirm", {
-        cancelButton: "Cancel",
-        confirmButton: "Edit",
-        confirm: editVideo,
-    });
 
     var deleteTrickModal = new jBox("Confirm", {
         cancelButton: "Cancel",

@@ -170,7 +170,7 @@ $(function() {
 
             reader.onload = function(e) {
                 $("#preview").attr("src", e.target.result).css("width", "50px").css("height", "50px");
-            }
+            };
 
             reader.readAsDataURL(input.files[0]);
         }
@@ -204,7 +204,7 @@ $(function() {
     image.change(function () {
         validateImage($(this).val());
         readURL(this);
-    })
+    });
 
     function formSubmit() {
         $("#security_form").submit();

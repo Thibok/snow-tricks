@@ -49,18 +49,18 @@ class TrickImageFixtures extends Fixture implements DependentFixtureInterface, C
 
             copy($fileDir.'goodTrickImg.jpg', $fileDir.'trickImg-home.jpg');
 
-            $firstTrickImgTrickUpdate = new TrickImage;
-            $secondTrickImgTrickUpdate = new TrickImage;
+            $firstImgTrickUpdate = new TrickImage;
+            $secondImgTrickUpdate = new TrickImage;
 
-            $trickImgTrickView = new TrickImage;
+            $imgTrickView = new TrickImage;
             
-            $firstTrickImgTrickDelete = new TrickImage;
+            $firstImgTrickDelete = new TrickImage;
             $secondTrickImgTrickDelete = new TrickImage;
 
-            $firstTrickImgTrickDeleteAjax = new TrickImage;
+            $firstImgTrickDeleteAjax = new TrickImage;
             $secondTrickImgTrickDeleteAjax = new TrickImage;
 
-            $trickImgHome = new TrickImage;
+            $imgHome = new TrickImage;
 
             $firstFileTrickUpdate = new UploadedFile(
                 $fileDir.'trickImg-update-1.jpg',
@@ -134,44 +134,44 @@ class TrickImageFixtures extends Fixture implements DependentFixtureInterface, C
                 true
             );
 
-            $firstTrickImgTrickUpdate->setFile($firstFileTrickUpdate);
-            $secondTrickImgTrickUpdate->setFile($secondFileTrickUpdate);
+            $firstImgTrickUpdate->setFile($firstFileTrickUpdate);
+            $secondImgTrickUpdate->setFile($secondFileTrickUpdate);
 
-            $trickImgTrickView->setFile($fileTrickView);
+            $imgTrickView->setFile($fileTrickView);
 
-            $firstTrickImgTrickDelete->setFile($firstFileTrickDelete);
+            $firstImgTrickDelete->setFile($firstFileTrickDelete);
             $secondTrickImgTrickDelete->setFile($secondFileTrickDelete);
 
-            $firstTrickImgTrickDeleteAjax->setFile($firstFileTrickDeleteAjax);
+            $firstImgTrickDeleteAjax->setFile($firstFileTrickDeleteAjax);
             $secondTrickImgTrickDeleteAjax->setFile($secondFileTrickDeleteAjax);
 
-            $trickImgHome->setFile($trickFileHome);
+            $imgHome->setFile($trickFileHome);
 
-            $firstTrickImgTrickUpdate->setTrick($this->getReference(TrickFixtures::TRICK_UPDATE_TEST_REFERENCE));
-            $secondTrickImgTrickUpdate->setTrick($this->getReference(TrickFixtures::TRICK_UPDATE_TEST_REFERENCE));
+            $firstImgTrickUpdate->setTrick($this->getReference(TrickFixtures::TRICK_UPDATE_TEST_REFERENCE));
+            $secondImgTrickUpdate->setTrick($this->getReference(TrickFixtures::TRICK_UPDATE_TEST_REFERENCE));
 
-            $trickImgTrickView->setTrick($this->getReference(TrickFixtures::TRICK_VIEW_TEST_REFERENCE));
+            $imgTrickView->setTrick($this->getReference(TrickFixtures::TRICK_VIEW_TEST_REFERENCE));
 
-            $firstTrickImgTrickDelete->setTrick($this->getReference(TrickFixtures::TRICK_DELETE_TEST_REFERENCE));
+            $firstImgTrickDelete->setTrick($this->getReference(TrickFixtures::TRICK_DELETE_TEST_REFERENCE));
             $secondTrickImgTrickDelete->setTrick($this->getReference(TrickFixtures::TRICK_DELETE_TEST_REFERENCE));
 
-            $firstTrickImgTrickDeleteAjax->setTrick($this->getReference(TrickFixtures::TRICK_DELETE_AJAX_TEST_REFERENCE));
+            $firstImgTrickDeleteAjax->setTrick($this->getReference(TrickFixtures::TRICK_DELETE_AJAX_TEST_REFERENCE));
             $secondTrickImgTrickDeleteAjax->setTrick($this->getReference(TrickFixtures::TRICK_DELETE_AJAX_TEST_REFERENCE));
 
-            $trickImgHome->setTrick($this->getReference(TrickFixtures::TRICK_HOME_TEST_REFERENCE));
+            $imgHome->setTrick($this->getReference(TrickFixtures::TRICK_HOME_TEST_REFERENCE));
 
-            $manager->persist($firstTrickImgTrickUpdate);
-            $manager->persist($secondTrickImgTrickUpdate);
+            $manager->persist($firstImgTrickUpdate);
+            $manager->persist($secondImgTrickUpdate);
 
-            $manager->persist($trickImgTrickView);
+            $manager->persist($imgTrickView);
 
-            $manager->persist($firstTrickImgTrickDelete);
+            $manager->persist($firstImgTrickDelete);
             $manager->persist($secondTrickImgTrickDelete);
 
-            $manager->persist($firstTrickImgTrickDeleteAjax);
+            $manager->persist($firstImgTrickDeleteAjax);
             $manager->persist($secondTrickImgTrickDeleteAjax);
 
-            $manager->persist($trickImgHome);
+            $manager->persist($imgHome);
         }
 
         if ($env == 'dev') {

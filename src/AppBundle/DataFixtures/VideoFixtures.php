@@ -33,53 +33,53 @@ class VideoFixtures extends Fixture implements DependentFixtureInterface, Contai
         $env = $this->container->get('kernel')->getEnvironment();
 
         if ($env == 'test') {
-            $firstVideoTrickUpdate = new Video;
-            $secondVideoTrickUpdate = new Video;
-            $thirdVideoTrickUpdate = new Video;
+            $firstVidTrickUpdate = new Video;
+            $secondVidTrickUpdate = new Video;
+            $thirdVidTrickUpdate = new Video;
 
-            $videoTrickView = new Video;
+            $vidTrickView = new Video;
 
-            $firstVideoTrickDelete = new Video;
+            $firstVidTrickDelete = new Video;
             $secondVideoTrickDelete = new Video;
 
-            $firstVideoTrickDeleteAjax = new Video;
-            $secondVideoTrickDeleteAjax = new Video;
+            $firstVidTrickDeleteAjax = new Video;
+            $secondVidTrickDeleteAjax = new Video;
 
-            $firstVideoTrickUpdate->setUrl('https://www.youtube.com/watch?v=SQyTWk7OxSI');
-            $secondVideoTrickUpdate->setUrl('https://www.youtube.com/watch?v=8CtWgw9xYRE');
-            $thirdVideoTrickUpdate->setUrl('https://www.youtube.com/watch?v=dSZ7_TXcEdM');
+            $firstVidTrickUpdate->setUrl('https://www.youtube.com/watch?v=SQyTWk7OxSI');
+            $secondVidTrickUpdate->setUrl('https://www.youtube.com/watch?v=8CtWgw9xYRE');
+            $thirdVidTrickUpdate->setUrl('https://www.youtube.com/watch?v=dSZ7_TXcEdM');
 
-            $videoTrickView->setUrl('https://www.youtube.com/watch?v=dSZ7_TXcEdM');
+            $vidTrickView->setUrl('https://www.youtube.com/watch?v=dSZ7_TXcEdM');
 
-            $firstVideoTrickDelete->setUrl('https://www.youtube.com/watch?v=-27nqjI844I');
+            $firstVidTrickDelete->setUrl('https://www.youtube.com/watch?v=-27nqjI844I');
             $secondVideoTrickDelete->setUrl('https://www.youtube.com/watch?v=FaVnYAQ8BXM');
 
-            $firstVideoTrickDeleteAjax->setUrl('https://www.youtube.com/watch?v=FaVnYAQ8BXM');
-            $secondVideoTrickDeleteAjax->setUrl('https://www.youtube.com/watch?v=FaVnYAQ8BXM');
+            $firstVidTrickDeleteAjax->setUrl('https://www.youtube.com/watch?v=FaVnYAQ8BXM');
+            $secondVidTrickDeleteAjax->setUrl('https://www.youtube.com/watch?v=FaVnYAQ8BXM');
 
-            $firstVideoTrickUpdate->setTrick($this->getReference(TrickFixtures::TRICK_UPDATE_TEST_REFERENCE));
-            $secondVideoTrickUpdate->setTrick($this->getReference(TrickFixtures::TRICK_UPDATE_TEST_REFERENCE));
-            $thirdVideoTrickUpdate->setTrick($this->getReference(TrickFixtures::TRICK_UPDATE_TEST_REFERENCE));
+            $firstVidTrickUpdate->setTrick($this->getReference(TrickFixtures::TRICK_UPDATE_TEST_REFERENCE));
+            $secondVidTrickUpdate->setTrick($this->getReference(TrickFixtures::TRICK_UPDATE_TEST_REFERENCE));
+            $thirdVidTrickUpdate->setTrick($this->getReference(TrickFixtures::TRICK_UPDATE_TEST_REFERENCE));
 
-            $videoTrickView->setTrick($this->getReference(TrickFixtures::TRICK_VIEW_TEST_REFERENCE));
+            $vidTrickView->setTrick($this->getReference(TrickFixtures::TRICK_VIEW_TEST_REFERENCE));
 
-            $firstVideoTrickDelete->setTrick($this->getReference(TrickFixtures::TRICK_DELETE_TEST_REFERENCE));
+            $firstVidTrickDelete->setTrick($this->getReference(TrickFixtures::TRICK_DELETE_TEST_REFERENCE));
             $secondVideoTrickDelete->setTrick($this->getReference(TrickFixtures::TRICK_DELETE_TEST_REFERENCE));
 
-            $firstVideoTrickDeleteAjax->setTrick($this->getReference(TrickFixtures::TRICK_DELETE_AJAX_TEST_REFERENCE));
-            $secondVideoTrickDeleteAjax->setTrick($this->getReference(TrickFixtures::TRICK_DELETE_AJAX_TEST_REFERENCE));
+            $firstVidTrickDeleteAjax->setTrick($this->getReference(TrickFixtures::TRICK_DELETE_AJAX_TEST_REFERENCE));
+            $secondVidTrickDeleteAjax->setTrick($this->getReference(TrickFixtures::TRICK_DELETE_AJAX_TEST_REFERENCE));
 
-            $manager->persist($firstVideoTrickUpdate);
-            $manager->persist($secondVideoTrickUpdate);
-            $manager->persist($thirdVideoTrickUpdate);
+            $manager->persist($firstVidTrickUpdate);
+            $manager->persist($secondVidTrickUpdate);
+            $manager->persist($thirdVidTrickUpdate);
         
-            $manager->persist($videoTrickView);
+            $manager->persist($vidTrickView);
 
-            $manager->persist($firstVideoTrickDelete);
+            $manager->persist($firstVidTrickDelete);
             $manager->persist($secondVideoTrickDelete);
 
-            $manager->persist($firstVideoTrickDeleteAjax);
-            $manager->persist($secondVideoTrickDeleteAjax);
+            $manager->persist($firstVidTrickDeleteAjax);
+            $manager->persist($secondVidTrickDeleteAjax);
         }
 
         if ($env == 'dev') {
