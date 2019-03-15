@@ -147,7 +147,6 @@ class ImageUploader
         if (file_exists($basePath)) {
             unlink($basePath);
         } else if (file_exists($targetPath)) {
-            $path = $this->targetDir.'/'.$filename;
             unlink($targetPath);
         }
         

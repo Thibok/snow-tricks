@@ -20,6 +20,15 @@ $(function() {
     const minLengthMessage = "must be at least";
     const maxLengthMessage = "must be at most";
 
+    var username = $('#appbundle_user_username');
+    var password = $('#appbundle_user_password');
+    var email = $('#appbundle_user_email');
+    var name = $('#appbundle_user_name');
+    var firstName = $('#appbundle_user_firstName');
+    var image = $('#appbundle_user_image_file');
+
+    image.hide();
+
     function validateUsername(username) {
         
         if (username.length < usernameMinLength) {
@@ -166,15 +175,6 @@ $(function() {
             reader.readAsDataURL(input.files[0]);
         }
     }
-
-    var username = $('#appbundle_user_username');
-    var password = $('#appbundle_user_password');
-    var email = $('#appbundle_user_email');
-    var name = $('#appbundle_user_name');
-    var firstName = $('#appbundle_user_firstName');
-    var image = $('#appbundle_user_image_file');
-
-    image.hide();
 
     $('#add_preview').click(function ($e) {
         $e.preventDefault();

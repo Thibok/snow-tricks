@@ -8,6 +8,74 @@ $(function () {
     const deleteImgPath = '/img/delete.png';
     const arrowUpImgPath = '/img/arrow_up.png';
 
+    var nbTricks = $('.trick-container-home').length;
+    var tricksLoading = false;
+    var canLoadMoreTricks = true;
+    var arrowUpExist = false;
+
+    var deleteTrickModal = new jBox('Confirm', {
+        cancelButton: 'Cancel',
+        confirmButton: 'Delete',
+        confirm: deleteTrickAjax,
+    });
+
+    function createJboxNotice (color, message) {
+        let jBNotice = new jBox('notice', {
+            addClass: 'jBox-wrapper jBox-Notice jBox-NoticeFancy jBox-Notice-color jBox-Notice-' + color,
+            autoClose: 2500,
+            fixed: true,
+            position: { x: 'left', y: 'bottom' },
+            offset: { x: 0, y: -20 },
+            responsiveWidth: true,
+            content: message,
+            overlay: false,
+            closeOnClick: 'box',
+            onCloseComplete: function () {
+              this.destroy();
+            }
+        })
+
+        return jBNotice;
+    }
+
+    function deleteTrickAjax () {
+        let trickId = $('#trickToDelete').text();
+        let url = $('#delete-trick-' + trickId).attr('href');
+
+        $.ajax({
+            url: url,
+            type: 'DELETE',
+            success: function(response) {
+                let result = response['result'];
+                let message = response['message'];
+
+                if (result === true) {
+                    $('#trick-' + trickId).remove();
+                    nbTricks--;
+
+                    let jBNotice = createJboxNotice('blue', message);
+                    jBNotice.open();
+
+                    if (nbTricks == 0) {
+                        let noTricks = $('<span id="noTricks">No Tricks</span>');
+                        $('#tricksBlock').append(noTricks);
+                    }
+                }
+
+                if (result == false) {
+                    let jBNotice = createJboxNotice('red', message);
+                    jBNotice.open();
+                }
+            },
+            error: function () {
+                let message = 'An error as occured';
+
+                let jBNotice = createJboxNotice('red', message);
+                jBNotice.open();
+            }
+        });
+    }
+
     function createAjaxLoader () {
         let loadImg = $('<div id="ajaxLoader" class="w-100 text-center"><img class="mb-2 mt-2" src="' + ajaxLoaderImgPath + '" alt="loader"/></div>');
         loadImg.css('width', '48px').css('height', '48px');
@@ -78,7 +146,7 @@ $(function () {
 
         trickInfosContainer.append(trickNameContainer);
 
-        if ($('#logout').length == 1) {
+        if ($('#logout').length === 1) {
             let controlsContainer = $('<div class="trick-controls text-right mr-3"></div>');
 
             let editLink = $(' <a class="mr-3 control-trick-home"></a>');
@@ -161,74 +229,6 @@ $(function () {
         return deleteTrickModal;
     }
 
-    function createJboxNotice (color, message) {
-        let jBNotice = new jBox('notice', {
-            addClass: 'jBox-wrapper jBox-Notice jBox-NoticeFancy jBox-Notice-color jBox-Notice-' + color,
-            autoClose: 2500,
-            fixed: true,
-            position: { x: 'left', y: 'bottom' },
-            offset: { x: 0, y: -20 },
-            responsiveWidth: true,
-            content: message,
-            overlay: false,
-            closeOnClick: 'box',
-            onCloseComplete: function () {
-              this.destroy();
-            }
-        })
-
-        return jBNotice;
-    }
-
-    function deleteTrickAjax () {
-        let trickId = $('#trickToDelete').text();
-        let url = $('#delete-trick-' + trickId).attr('href');
-
-        $.ajax({
-            url: url,
-            type: 'DELETE',
-            success: function(response) {
-                let result = response['result'];
-                let message = response['message'];
-
-                if (result == true) {
-                    $('#trick-' + trickId).remove();
-                    nbTricks--;
-
-                    let jBNotice = createJboxNotice('blue', message);
-                    jBNotice.open();
-
-                    if (nbTricks == 0) {
-                        let noTricks = $('<span id="noTricks">No Tricks</span>');
-                        $('#tricksBlock').append(noTricks);
-                    }
-                }
-
-                if (result == false) {
-                    let jBNotice = createJboxNotice('red', message);
-                    jBNotice.open();
-                }
-            },
-            error: function () {
-                let message = 'An error as occured';
-
-                let jBNotice = createJboxNotice('red', message);
-                jBNotice.open();
-            }
-        });
-    }
-
-    var nbTricks = $('.trick-container-home').length;
-    var tricksLoading = false;
-    var canLoadMoreTricks = true;
-    var arrowUpExist = false;
-
-    var deleteTrickModal = new jBox('Confirm', {
-        cancelButton: 'Cancel',
-        confirmButton: 'Delete',
-        confirm: deleteTrickAjax,
-    });
-
     $('#arrowDown').click(function(event) {
         event.preventDefault();
         let speed = 500;
@@ -302,22 +302,22 @@ $(function () {
             result =  $('#imgBanner').height() + 2;
         }
 
-        if (window.innerWidth < 501 && nbTricks == 2) {
+        if (window.innerWidth < 501 && nbTricks === 2) {
             result =  $('#imgBanner').height() / 2 - 50;
         }
 
-        if (window.innerWidth < 431 && nbTricks == 2) {
+        if (window.innerWidth < 431 && nbTricks === 2) {
             result =  result - 50;
         }
 
-        if (window.innerWidth < 401 && nbTricks == 3) {
+        if (window.innerWidth < 401 && nbTricks === 3) {
             result =  result / 2 + 50;
         }
 
         $('html, body').animate( { scrollTop: result, speed });
     });
 
-    if (nbTricks == 0) {
+    if (nbTricks === 0) {
         let noTricks = $('<span id="noTricks">No Tricks</span>');
         $('#tricksBlock').append(noTricks);
     }
@@ -331,7 +331,7 @@ $(function () {
             }
         }
 
-        if (arrowUpExist == false) {
+        if (arrowUpExist === false) {
             return;
         }
 
@@ -358,7 +358,7 @@ $(function () {
         if (this.innerWidth > 991 && arrowUpExist == false && nbTricks > 15 && $(this).scrollTop() > scrollCap) {
             $('#tricksBlock').append(createArrowUp());
         } else {
-            if (arrowUpExist == true) {
+            if (arrowUpExist === true) {
                 if (this.innerWidth >= 1000 && this.innerWidth <= 1350) {
                     $('#arrowUp').css('right', '2px');
                 } else {

@@ -20,33 +20,38 @@ $(function () {
     const maxLengthMessage = "must be at most";
     const commentRegex = new RegExp('[<>]');
 
-    function recreateVideos() {
-        let videos = $('.video');
+    function getMediaPerPage() {
+        if (window.innerWidth < 1609 && window.innerWidth > 1299 || window.innerWidth < 992  && window.innerWidth > 944) {
+            return 4;
+        }
 
-        videos.each(function () {
-            let span = $(this).children('span');
-            let url = span.text();
+        if (window.innerWidth < 1300 && window.innerWidth > 1154 || window.innerWidth < 945  && window.innerWidth > 815) {
+            return 3;
+        }
 
-            if (linksRegex.test(url)) {
-                url = convertLinkToEmbed(url);
-            }
+        if (window.innerWidth < 1155 && window.innerWidth > 991 || window.innerWidth < 816  && window.innerWidth > 590) {
+            return 2;
+        }
 
-            let srcUrl = 'src="' + url + '"';
-            let iframe = createVideoIframe(srcUrl);
+        if (window.innerWidth < 591){
+            return 1;
+        }
 
-            if (getNbOfMediaActualPage() < getMediaPerPage()) {
-                $(this).addClass('reveal-media');
-            } else {
-                $(this).removeClass('d-inline-block');
-                $(this).hide();
-            }
+        return 5;
+    }
 
-            videosLength++;
-            totalMedias++;
+    function getTotalPages() {
+        var totalPages = Math.ceil(totalMedias / getMediaPerPage());
 
-            $(this).css('height', '100px');
-            span.replaceWith(iframe);
-        });
+        if (totalPages === 0) {
+            return 1;
+        }
+
+        return totalPages;
+    }
+
+    function getNbOfMediaActualPage() {
+        return $('.reveal-media').length;
     }
 
     function recreateImages() {
@@ -102,38 +107,63 @@ $(function () {
         }
     }
 
-    function getTotalMedias() {
-        return $('.media').length;
+    function createVideoIframe (videoSrc) {
+        let iframeVideoEl = '<iframe class="align-middle" width=100% height=100% ' + videoSrc + ' frameborder="0"></iframe>';
+
+        return iframeVideoEl;
     }
 
-    function getMediaPerPage() {
-        if (window.innerWidth < 1609 && window.innerWidth > 1299 || window.innerWidth < 992  && window.innerWidth > 944) {
-            return 4;
-        }
+    function recreateVideos() {
+        let videos = $('.video');
 
-        if (window.innerWidth < 1300 && window.innerWidth > 1154 || window.innerWidth < 945  && window.innerWidth > 815) {
-            return 3;
-        }
+        videos.each(function () {
+            let span = $(this).children('span');
+            let url = span.text();
 
-        if (window.innerWidth < 1155 && window.innerWidth > 991 || window.innerWidth < 816  && window.innerWidth > 590) {
-            return 2;
-        }
+            if (linksRegex.test(url)) {
+                url = convertLinkToEmbed(url);
+            }
 
-        if (window.innerWidth < 591){
-            return 1;
-        }
+            let srcUrl = 'src="' + url + '"';
+            let iframe = createVideoIframe(srcUrl);
 
-        return 5;
+            if (getNbOfMediaActualPage() < getMediaPerPage()) {
+                $(this).addClass('reveal-media');
+            } else {
+                $(this).removeClass('d-inline-block');
+                $(this).hide();
+            }
+
+            videosLength++;
+            totalMedias++;
+
+            $(this).css('height', '100px');
+            span.replaceWith(iframe);
+        });
     }
 
-    function getTotalPages() {
-        var totalPages = Math.ceil(totalMedias / getMediaPerPage());
+    function disableNext() {
+        $('#next').removeAttr('href');
+        $('#next img').attr('src', nextDisableddPath);
+        return;
+    }
 
-        if (totalPages === 0) {
-            return 1;
-        }
+    function disablePrev() {
+        $('#previous').removeAttr('href');
+        $('#previous img').attr('src', prevDisabledPath);
+        return;
+    }
 
-        return totalPages;
+    function enableNext() {
+        $('#next').attr('href', '#');
+        $('#next img').attr('src', nextEnabledPath);
+        return;
+    }
+
+    function enablePrev() {
+        $('#previous').attr('href', '#');
+        $('#previous img').attr('src', prevEnabledPath);
+        return;
     }
 
     function showPagination() {
@@ -167,6 +197,26 @@ $(function () {
 
             return;
         }
+    }
+
+    var actualPage = 1;
+    var totalMedias = 0;
+    var mediaPerPage = getMediaPerPage();
+    var totalPages = getTotalPages();
+
+    var imagesLength = 0;
+    recreateImages();
+
+    var videosLength = 0;
+    recreateVideos();
+
+    $('#see_media_container').hide();
+    var seeMedia = false;
+
+    showPagination();
+
+    function getTotalMedias() {
+        return $('.media').length;
     }
 
     function canPrev() {
@@ -280,40 +330,6 @@ $(function () {
         showPagination();
 
         return;
-    }
-
-    function disableNext() {
-        $('#next').removeAttr('href');
-        $('#next img').attr('src', nextDisableddPath);
-        return;
-    }
-
-    function disablePrev() {
-        $('#previous').removeAttr('href');
-        $('#previous img').attr('src', prevDisabledPath);
-        return;
-    }
-
-    function enableNext() {
-        $('#next').attr('href', '#');
-        $('#next img').attr('src', nextEnabledPath);
-        return;
-    }
-
-    function enablePrev() {
-        $('#previous').attr('href', '#');
-        $('#previous img').attr('src', prevEnabledPath);
-        return;
-    }
-
-    function getNbOfMediaActualPage() {
-        return $('.reveal-media').length;
-    }
-
-    function createVideoIframe (videoSrc) {
-        let iframeVideoEl = '<iframe class="align-middle" width=100% height=100% ' + videoSrc + ' frameborder="0"></iframe>';
-
-        return iframeVideoEl;
     }
 
     function createCommentElement (imgSrc, author, content, date) {
@@ -490,22 +506,6 @@ $(function () {
         actualPage = 1;
         refreshPagination();
     });
-
-    var actualPage = 1;
-    var totalMedias = 0;
-    var mediaPerPage = getMediaPerPage();
-    var totalPages = getTotalPages();
-
-    var imagesLength = 0;
-    recreateImages();
-
-    var videosLength = 0;
-    recreateVideos();
-
-    $('#see_media_container').hide();
-    var seeMedia = false;
-
-    showPagination();
 
     if(window.innerWidth < 591) {
         $('#medias_container').hide();
