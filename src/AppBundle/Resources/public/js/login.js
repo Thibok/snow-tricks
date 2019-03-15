@@ -1,11 +1,11 @@
 $(function () {
     function formSubmit() {
-        $('#security_form').submit();
-      }
-  
+        $("#security_form").submit();
+    }
+
     window.formSubmit = formSubmit;
 
-    $('#loginBtn').click(function (event) {
+    $("#loginBtn").click(function (event) {
         event.preventDefault();
         grecaptcha.reset();
         grecaptcha.execute();    
@@ -15,19 +15,19 @@ $(function () {
         var width = this.innerWidth;
 
         if (width < 591) {
-            $('#register').show();
-            $('#buttonSection').after($('#links'));
+            $("#register").show();
+            $("#buttonSection").after($("#links"));
         } else {
-            $('#register').hide();
-            $('#buttonSection').before($('#links'));
+            $("#register").hide();
+            $("#buttonSection").before($("#links"));
         }
     });
 
     if (window.innerWidth < 591) {
-        $('#register').show();
-        $('#buttonSection').after($('#links'));
+        $("#register").show();
+        $("#buttonSection").after($("#links"));
     } else {
-        $('#register').hide();
-        $('#buttonSection').before($('#links'));
+        $("#register").hide();
+        $("#buttonSection").before($("#links"));
     }
 });

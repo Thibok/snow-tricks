@@ -1,11 +1,11 @@
 $(function () {
     function formSubmit() {
-        $('#security_form').submit();
-      }
-  
+        $("#security_form").submit();
+    }
+
     window.formSubmit = formSubmit;
 
-    $('#forgotPassBtn').click(function (event) {
+    $("#forgotPassBtn").click(function (event) {
         event.preventDefault();
         grecaptcha.reset();
         grecaptcha.execute();    
@@ -15,15 +15,15 @@ $(function () {
         var width = this.innerWidth;
 
         if (width < 591) {
-            $('#forgotPassBtn').text('Ask for reset');
+            $("#forgotPassBtn").text("Ask for reset");
         } else {
-            $('#forgotPassBtn').text('Ask for reset password');
+            $("#forgotPassBtn").text("Ask for reset password");
         }
     });
 
     if (window.innerWidth < 591) {
-        $('#forgotPassBtn').text('Ask for reset');
+        $("#forgotPassBtn").text("Ask for reset");
     } else {
-        $('#forgotPassBtn').text('Ask for reset password');
+        $("#forgotPassBtn").text("Ask for reset password");
     }
 });
