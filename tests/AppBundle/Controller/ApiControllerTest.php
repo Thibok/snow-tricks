@@ -417,8 +417,8 @@ class ApiControllerTest extends WebTestCase
 
         $firewallName = 'main';
         $firewallContext = 'main';
-        $em = $this->client->getContainer()->get('doctrine')->getManager(); 
-        $user = $em->getRepository('AppBundle:User')->findOneByUsername('EnabledUser'); 
+        $manager = $this->client->getContainer()->get('doctrine')->getManager(); 
+        $user = $manager->getRepository('AppBundle:User')->findOneByUsername('EnabledUser'); 
 
         $token = new UsernamePasswordToken($user, $user->getPassword(), $firewallName, $user->getRoles());
         $session->set('_security_'.$firewallContext, serialize($token));

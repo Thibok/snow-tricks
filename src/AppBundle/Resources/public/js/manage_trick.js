@@ -8,15 +8,14 @@ $(function () {
     const nextDisableddPath = "/img/next_disabled.png";
     const prevDisabledPath = "/img/prev_disabled.png";
     const favIconPath = "/img/fav.png";
-    const localImgSrcRegex = new RegExp("^\/uploads\/img\/trick\/[a-z0-9.-]+$")
+    const localImgSrcRegex = new RegExp("^\/uploads\/img\/trick\/[a-z0-9.-]+$");
     const youtubeEmbedFormat = "https://www.youtube.com/embed/";
     const dailymotionEmbedFormat = "https://www.dailymotion.com/embed/video/";
     const vimeoEmbedFormat = "https://player.vimeo.com/video/";
     const iframeRegex = new RegExp("^<iframe .*><\/iframe>$");
     const videoUrlSrcRegex = /src\s*=\s*"(.+?)"/;
     const urlRegex = new RegExp("^(https\:\/\/){1}(www\.youtube\.com\/embed\/[a-zA-Z0-9\?\=\&_-]{1,2053}|www\.dailymotion\.com\/embed\/video\/[a-zA-Z0-9\?\=\&_-]{1,2043}|player\.vimeo\.com\/video\/[a-zA-Z0-9\?\=\#\&_-]{1,2052}|youtu\.be\/[a-zA-Z0-9\?\=\&_-]{1,2066}|www\.youtube\.com\/watch\\?v\=[a-zA-Z0-9\?\=\&_-]{1,2051}|www\.dailymotion\.com\/video\/[a-zA-Z0-9\?\=\&_-]{1,2049}|dai\.ly\/[a-zA-Z0-9\?\=\&_-]{1,2068}|vimeo\.com\/[a-zA-Z0-9\?\=\#\&_-]{1,2065})$");
-    const urlEmbedRegex = new RegExp("^(https\:\/\/){1}(www\.youtube\.com\/embed\/[a-zA-Z0-9\?\=\&_-]{1,2053}|"
-    + "www\.dailymotion\.com\/embed\/video\/[a-zA-Z0-9\?\=\&_-]{1,2043}|player\.vimeo\.com\/video\/[a-zA-Z0-9\?\=\#\&_-]{1,2052})$");
+    const urlEmbedRegex = new RegExp("^(https\:\/\/){1}(www\.youtube\.com\/embed\/[a-zA-Z0-9\?\=\&_-]{1,2053}|www\.dailymotion\.com\/embed\/video\/[a-zA-Z0-9\?\=\&_-]{1,2043}|player\.vimeo\.com\/video\/[a-zA-Z0-9\?\=\#\&_-]{1,2052})$");
     const linksRegex = new RegExp("^(https\:\/\/){1}(www\.youtube\.com\/watch\\?v\=[a-zA-Z0-9\?\=\&_-]{1,2051}|youtu\.be\/[a-zA-Z0-9\?\=\&_-]{1,2066}|www\.dailymotion\.com\/video\/[a-zA-Z0-9\?\=\&_-]{1,2049}|dai\.ly\/[a-zA-Z0-9\?\=\&_-]{1,2068}|vimeo\.com\/[a-zA-Z0-9\?\=\#\&_-]{1,2065})$");
     const youtubeRegex = new RegExp("^(https\:\/\/){1}(www\.youtube\.com\/watch\\?v\=[a-zA-Z0-9\?\=\&_-]{1,2051})$");
     const youtubeShortRegex = new RegExp("^(https\:\/\/){1}(youtu\.be\/[a-zA-Z0-9\?\=\&_-]{1,2066})$");
@@ -37,6 +36,42 @@ $(function () {
     var description = $("#appbundle_trick_description");
     var actualPage = 1;
     var totalMedias = 0;
+    var containerImages = $("#trickImages");
+    var containerVideos = $("#trickVideos");
+    $("#see_media_container").hide();
+    var seeMedia = false;
+    var imagesLength = 0;
+    var videosLength = 0;
+
+    function getMediaPerPage() {
+        if (window.innerWidth < 1609 && window.innerWidth > 1299 || window.innerWidth < 992  && window.innerWidth > 944) {
+            return 4;
+        }
+
+        if (window.innerWidth < 1300 && window.innerWidth > 1154 || window.innerWidth < 945  && window.innerWidth > 815) {
+            return 3;
+        }
+
+        if (window.innerWidth < 1155 && window.innerWidth > 991 || window.innerWidth < 816  && window.innerWidth > 590) {
+            return 2;
+        }
+
+        if (window.innerWidth < 591){
+            return 1;
+        }
+
+        return 5;
+    }
+
+    function getTotalPages() {
+        var totalPages = Math.ceil(totalMedias / getMediaPerPage());
+
+        if (totalPages === 0) {
+            return 1;
+        }
+
+        return totalPages;
+    }
 
     function readThumbURL(input) {
         if (input.files && input.files[0]) {
@@ -72,10 +107,9 @@ $(function () {
 
                     canvas.width = width;
                     canvas.height = height;
-                    var ctx = canvas.getContext("2d");
                     ctx.drawImage(img, 0, 0, width, height);
 
-                    dataurl = canvas.toDataURL(input.files[0].type);
+                    let dataurl = canvas.toDataURL(input.files[0].type);
                     $("#mainTrickImg").attr("src", dataurl);
                 }
                     
@@ -95,43 +129,46 @@ $(function () {
         }
     }
 
-    function validateImage(image) {
-        let val = image.val();
-        let imageId = image.attr("id").split("_");
-        imageId = Number(imageId[3]) + 1;
-
-        if (val.length === 0) {
-            $("#media_error").text("");
-            return true;
-        }
-
-        if ($.inArray(val.split(".").pop().toLowerCase(), allowedFileExtension) == -1) {
-            $("#media_error").text("Image " + imageId + " : Allowed extensions : jpg, jpeg, png");
-            return false;
-        }
-
-        $("#media_error").text("");
-        return true;
+    function deleteTrickImage(imageId) {
+        $("#img-container-" + imageId).remove();
+        $("#appbundle_trick_images_" + imageId +"_file").remove();
     }
 
-    function getMediaPerPage() {
-        if (window.innerWidth < 1609 && window.innerWidth > 1299 || window.innerWidth < 992  && window.innerWidth > 944) {
-            return 4;
+    function refreshImages() {
+        let inputsFile = containerImages.children(":input");
+        let inputsFileLength = inputsFile.length;
+
+        if (inputsFileLength === 0) {
+            imagesLength  = 0;
+            return;
         }
 
-        if (window.innerWidth < 1300 && window.innerWidth > 1154 || window.innerWidth < 945  && window.innerWidth > 815) {
-            return 3;
+        imagesLength = 0;
+
+        while(imagesLength < inputsFileLength) {
+            let mediaId = "img-container-" + imagesLength;
+            let mediaImgId = "trick-img-thumb-" + imagesLength;
+            let counterId = "img-number-" + imagesLength;
+            let editControlId = "edit-img-" + imagesLength;
+            let deleteControlId = "delete-img-" + imagesLength;
+            let inputId = "appbundle_trick_images_" + imagesLength + "_file";
+            let inputName = "appbundle_trick[images][" + imagesLength + "][file]";
+
+            $(".image").eq(imagesLength).attr("id", mediaId);
+            $(".media-img").eq(imagesLength).attr("id", mediaImgId);
+            $(".counter-img").eq(imagesLength).attr("id", counterId).text(imagesLength + 1);
+            $(".edit-control-img").eq(imagesLength).attr("id", editControlId);
+            $(".delete-control-img").eq(imagesLength).attr("id", deleteControlId);
+            inputsFile.eq(imagesLength).attr("id", inputId);
+
+            imagesLength++;
         }
 
-        if (window.innerWidth < 1155 && window.innerWidth > 991 || window.innerWidth < 816  && window.innerWidth > 590) {
-            return 2;
-        }
+        return;
+    }
 
-        if (window.innerWidth < 591){
-            return 1;
-        }
-
-        return 5;
+    function getTotalMedias() {
+        return $(".media").length;
     }
 
     function disableNext() {
@@ -158,16 +195,6 @@ $(function () {
         return;
     }
 
-    function getTotalPages() {
-        var totalPages = Math.ceil(totalMedias / getMediaPerPage());
-
-        if (totalPages === 0) {
-            return 1;
-        }
-
-        return totalPages;
-    }
-
     function canPrev() {
         if (actualPage > 1) {
             return true;
@@ -182,6 +209,68 @@ $(function () {
         }
 
         return false;
+    }
+
+    function showPagination() {
+
+        if (window.innerWidth < 591 && seeMedia === false) {
+            $("#pagination").hide();
+            return;
+        }
+        
+        if (getTotalMedias() <= getMediaPerPage()) {
+            disableNext();
+            disablePrev();
+            $("#pagination").hide();
+            return;
+        }
+
+        if (getTotalMedias() > getMediaPerPage()) {
+            $("#pagination").show();
+
+            if (canNext()) {
+                enableNext();
+            } else {
+                disableNext();
+            }
+
+            if (canPrev()) {
+                enablePrev();
+            } else {
+                disablePrev();
+            }
+
+            return;
+        }
+    }
+
+    function refreshPagination() {
+        $(".reveal-media").each(function () {
+            $(this).removeClass("reveal-media d-inline-block");
+            $(this).hide();
+        })
+
+        if (getMediaPerPage() === 1) {
+            $(".media").eq(actualPage - 1).addClass("reveal-media d-inline-block").show();
+            showPagination();
+            return;
+        }
+
+        var lastPos = actualPage * getMediaPerPage();
+        var firstPos = lastPos - getMediaPerPage();
+
+        while(firstPos < lastPos) {
+            $(".media").eq(firstPos).addClass("reveal-media d-inline-block").show();
+            firstPos++;
+        }
+
+        showPagination();
+
+        return;
+    }
+
+    function getNbOfMediaActualPage() {
+        return $(".reveal-media").length;
     }
 
     function pageNext() {
@@ -254,110 +343,6 @@ $(function () {
         }
 
         return;
-    }
-
-    function getNbOfMediaActualPage() {
-        return $(".reveal-media").length;
-    }
-
-    function getTotalMedias() {
-        return $(".media").length;
-    }
-
-    function showPagination() {
-
-        if (window.innerWidth < 591 && seeMedia === false) {
-            $("#pagination").hide();
-            return;
-        }
-        
-        if (getTotalMedias() <= getMediaPerPage()) {
-            disableNext();
-            disablePrev();
-            $("#pagination").hide();
-            return;
-        }
-
-        if (getTotalMedias() > getMediaPerPage()) {
-            $("#pagination").show();
-
-            if (canNext()) {
-                enableNext();
-            } else {
-                disableNext();
-            }
-
-            if (canPrev()) {
-                enablePrev();
-            } else {
-                disablePrev();
-            }
-
-            return;
-        }
-    }
-
-    function refreshImages() {
-        let inputsFile = containerImages.children(":input");
-        let inputsFileLength = inputsFile.length;
-
-        if (inputsFileLength === 0) {
-            imagesLength  = 0;
-            return;
-        }
-
-        imagesLength = 0;
-
-        while(imagesLength < inputsFileLength) {
-            let mediaId = "img-container-" + imagesLength;
-            let mediaImgId = "trick-img-thumb-" + imagesLength;
-            let counterId = "img-number-" + imagesLength;
-            let editControlId = "edit-img-" + imagesLength;
-            let deleteControlId = "delete-img-" + imagesLength;
-            let inputId = "appbundle_trick_images_" + imagesLength + "_file";
-            let inputName = "appbundle_trick[images][" + imagesLength + "][file]";
-
-            $(".image").eq(imagesLength).attr("id", mediaId);
-            $(".media-img").eq(imagesLength).attr("id", mediaImgId);
-            $(".counter-img").eq(imagesLength).attr("id", counterId).text(imagesLength + 1);
-            $(".edit-control-img").eq(imagesLength).attr("id", editControlId);
-            $(".delete-control-img").eq(imagesLength).attr("id", deleteControlId);
-            inputsFile.eq(imagesLength).attr("id", inputId);
-
-            imagesLength++;
-        }
-
-        return;
-    }
-
-    function refreshPagination() {
-        $(".reveal-media").each(function () {
-            $(this).removeClass("reveal-media d-inline-block");
-            $(this).hide();
-        })
-
-        if (getMediaPerPage() === 1) {
-            $(".media").eq(actualPage - 1).addClass("reveal-media d-inline-block").show();
-            showPagination();
-            return;
-        }
-
-        var lastPos = actualPage * getMediaPerPage();
-        var firstPos = lastPos - getMediaPerPage();
-
-        while(firstPos < lastPos) {
-            $(".media").eq(firstPos).addClass("reveal-media d-inline-block").show();
-            firstPos++;
-        }
-
-        showPagination();
-
-        return;
-    }
-
-    function deleteTrickImage(imageId) {
-        $("#img-container-" + imageId).remove();
-        $("#appbundle_trick_images_" + imageId +"_file").remove();
     }
 
     function createControlsImage() {
@@ -444,6 +429,25 @@ $(function () {
         return controlsContainer;
     }
 
+    function validateImage(image) {
+        let val = image.val();
+        let imageId = image.attr("id").split("_");
+        imageId = Number(imageId[3]) + 1;
+
+        if (val.length === 0) {
+            $("#media_error").text("");
+            return true;
+        }
+
+        if ($.inArray(val.split(".").pop().toLowerCase(), allowedFileExtension) === -1) {
+            $("#media_error").text("Image " + imageId + " : Allowed extensions : jpg, jpeg, png");
+            return false;
+        }
+
+        $("#media_error").text("");
+        return true;
+    }
+
     function recreateImages() {
         if (imagesLength === 0) {
             $(".edit-main-trick-img").attr("id", "edit-main-0");
@@ -479,7 +483,7 @@ $(function () {
                 if ($(this).val().length !== 0 && validateImage($(this))) {
                     readThumbURL(this);
                     if ($(this).hasClass("fav-input")) {
-                        readMainUrl(this)
+                        readMainUrl(this);
                     }
                 } else {
                     loadDefaultThumbImgPreview($(this));
@@ -511,27 +515,6 @@ $(function () {
         }
 
         return;
-    }
-
-    function createImageEl() {
-        var previewImgContainer = $("<div id='img-container-'" + imagesLength + "' class='d-inline-block mt-1 mb-5 media image'></div>");
-        if (imagesLength === 0) {
-            previewImgContainer.addClass("fav");
-        }
-        var previewImg = $("<img class='border-black media-img' id='trick-img-thumb-'" + imagesLength + "' src='"+ previewThumbPath +"' alt='Thumb image'/>");
-
-        var controlsEl = createControlsImage();
-
-        previewImgContainer.append(previewImg);
-        previewImgContainer.append(controlsEl);
-
-        return previewImgContainer;
-    }
-
-    function createVideoIframe (videoSrc) {
-        let iframeVideoEl = "<iframe class='align-middle' width=100% height=100% " + videoSrc + " frameborder='0'></iframe>";
-
-        return iframeVideoEl;
     }
 
     function validateEmbedUrl(url, errorTarget) {
@@ -583,6 +566,25 @@ $(function () {
         return true;
     }
 
+    function createAddVideoIframeModal() {
+        let modalContainer = $("<div class='modalContainer'></div>");
+        let labelModalUrl = $("<label id='addVideoLabel' class='control-label required' for='addVideo'>Iframe</label>");
+        let textareaModalUrl = $("<textarea id='addVideo' required='required' class='form-control'></textarea>")
+        let errorModalUrl = $("<span class='invalid-feedback d-block' id='add_video_error'></span>");
+
+        textareaModalUrl.on("keyup blur", function () {
+            validateIframe($(this).val(), $("#add_video_error"));
+        });
+
+        modalContainer.append(labelModalUrl);
+        modalContainer.append(textareaModalUrl);
+        modalContainer.append(errorModalUrl);
+
+        addVideoModal.setContent(modalContainer);
+
+        return;
+    }
+
     function validateLink(link, errorTarget) {
         if (link.length === 0) {
             let errorMsg = "You must enter a link !";
@@ -607,6 +609,98 @@ $(function () {
 
         errorTarget.text("");
         return true;
+    }
+
+    function createAddVideoLinkModal() {
+        let modalContainer = $("<div class='modalContainer'></div>");
+        let labelModalUrl = $("<label id='addVideoLabel' class='control-label required' for='addVideo'>Link</label>");
+        let textareaModalUrl = $("<textarea id='addVideo' required='required' class='form-control'></textarea>")
+        let errorModalUrl = $("<span class='invalid-feedback d-block' id='add_video_error'></span>");
+
+        textareaModalUrl.on("keyup blur", function () {
+            validateLink($(this).val(), $("#add_video_error"));
+        });
+
+        modalContainer.append(labelModalUrl);
+        modalContainer.append(textareaModalUrl);
+        modalContainer.append(errorModalUrl);
+
+        addVideoModal.setContent(modalContainer);
+
+        return;
+    }
+
+    function createAddVideoByModalContent() {
+        let addVideoContainer = $("<ul></ul>");
+        let videoIframeLi = $("<li></li>").css("list-style-type", "none");
+        let videoLinkLi = $("<li></li>").css("list-style-type", "none");
+        let videoIframeLink = $("<a href='#'>Add video with embed tag</a>");
+        let videoLink = $("<a href='#'>Add video with link</a>");
+
+        videoIframeLink.click(function (e) {
+            e.preventDefault();
+            addVideoByModal.close();
+            createAddVideoIframeModal();
+            addVideoModal.open();
+        });
+
+        videoLink.click(function (e) {
+            e.preventDefault();
+            addVideoByModal.close();
+            createAddVideoLinkModal()
+            addVideoModal.open();
+        });
+
+        videoIframeLi.append(videoIframeLink);
+        videoLinkLi.append(videoLink);
+
+        addVideoContainer.append(videoIframeLi);
+        addVideoContainer.append(videoLinkLi);
+
+        return addVideoContainer;
+    }
+
+    function createVideoIframe (videoSrc) {
+        let iframeVideoEl = "<iframe class='align-middle' width=100% height=100% " + videoSrc + " frameborder='0'></iframe>";
+
+        return iframeVideoEl;
+    }
+
+    function editVideo() {
+        let videoValue  = $("#editVideo").val();
+        let titleSplit = $("#editModalTitle").text().split(" ");
+        let videoId = Number(titleSplit[3]) - 1;
+
+        if ($("#labelEditVideo").text() === "Iframe") {
+            if(!validateIframe(videoValue, $("#video_edit_error"))) {
+                return;
+            }
+
+            let src = videoUrlSrcRegex.exec(videoValue);
+            let url = src[0].split("\"");
+
+            let videoIframePreview = $("#video-container-" + videoId + " iframe");
+            videoIframePreview.attr("src", url[1]);
+
+            let videoUrlInput = $("#appbundle_trick_videos_" + videoId + "_url");
+            videoUrlInput.val(url[1]);
+            videoUrlInput.change();
+        } else {
+            if (!validateLink(videoValue, $("#video_edit_error"))) {
+                return;
+            }
+
+            let embedLink = convertLinkToEmbed(videoValue);
+
+            let videoIframePreview = $("#video-container-" + videoId + " iframe");
+            videoIframePreview.attr("src", embedLink);
+
+            let videoUrlInput = $("#appbundle_trick_videos_" + videoId + "_url");
+            videoUrlInput.val(videoValue);
+            videoUrlInput.change();
+        }
+
+        return;
     }
 
     function createEditVideoModal(videoId) {       
@@ -650,7 +744,7 @@ $(function () {
         $("#video-container-" + idNumber).remove();
         $("#appbundle_trick_videos_" + idNumber +"_url").remove();
     }
-
+    
     function refreshVideos() {
         let inputsUrl = containerVideos.children(":input");
         let inputsUrlLength = inputsUrl.length;
@@ -741,197 +835,6 @@ $(function () {
         return videoContainerEl;
     }
 
-    function convertLinkToEmbed(link) {
-        if (youtubeRegex.test(link)) {
-            let videoCode = link.split("v=");
-            let embedLink = youtubeEmbedFormat + videoCode[1];
-
-            return embedLink;
-        }
-
-        if (youtubeShortRegex.test(link)) {
-            let videoCode = link.split("/");
-            let embedLink = youtubeEmbedFormat + videoCode[3];
-            
-            return embedLink;
-        }
-
-        if (dailymotionRegex.test(link)) {
-            let videoCode = link.split("/");
-            let embedLink = dailymotionEmbedFormat + videoCode[4];
-
-            return embedLink;
-        }
-
-        if (dailymotionShortRegex.test(link)) {
-            let videoCode = link.split("/");
-            let embedLink = dailymotionEmbedFormat + videoCode[3];
-
-            return embedLink;
-        }
-
-        if (vimeoRegex.test(link)) {
-            let videoCode = link.split("/");
-            let embedLink = vimeoEmbedFormat + videoCode[3];
-
-            return embedLink;
-        }
-    }
-
-    function editVideo() {
-        let videoValue  = $("#editVideo").val();
-        let titleSplit = $("#editModalTitle").text().split(" ");
-        let videoId = Number(titleSplit[3]) - 1;
-
-        if ($("#labelEditVideo").text() === "Iframe") {
-            if(!validateIframe(videoValue, $("#video_edit_error"))) {
-                return;
-            }
-
-            let src = videoUrlSrcRegex.exec(videoValue);
-            let url = src[0].split("\"");
-
-            let videoIframePreview = $("#video-container-" + videoId + " iframe");
-            videoIframePreview.attr("src", url[1]);
-
-            let videoUrlInput = $("#appbundle_trick_videos_" + videoId + "_url");
-            videoUrlInput.val(url[1]);
-            videoUrlInput.change();
-        } else {
-            if (!validateLink(videoValue, $("#video_edit_error"))) {
-                return;
-            }
-
-            let embedLink = convertLinkToEmbed(videoValue);
-
-            let videoIframePreview = $("#video-container-" + videoId + " iframe");
-            videoIframePreview.attr("src", embedLink);
-
-            let videoUrlInput = $("#appbundle_trick_videos_" + videoId + "_url");
-            videoUrlInput.val(videoValue);
-            videoUrlInput.change();
-        }
-
-        return;
-    }
-
-    function recreateVideos() {
-        let videosInputs = containerVideos.children(":input");
-        let videosInputsLength = videosInputs.length;
-
-        videosInputs.hide();
-
-        if (videosInputsLength === 0) {
-            return;
-        }
-
-        while (videosLength < videosInputsLength) {
-            let videoInputId = "appbundle_trick_videos_" + videosLength + "_url";
-            let videoInputName = "appbundle_trick[videos][" + videosLength + "][url]";
-
-            let videoInput = videosInputs.eq(videosLength);
-            videoInput.attr("id", videoInputId).attr("name", videoInputName);
-
-            var videoUrl = videoInput.val();
-
-            if (linksRegex.test(videoUrl)) {
-                var videoUrl = convertLinkToEmbed(videoUrl);
-            }
-
-            let srcVideo = "src='" + videoUrl + "'";
-
-            let spanServerError = videoInput.next("span");
-            let errorMsg = spanServerError.find(".form-error-message").text();
-            if (errorMsg.length !== 0) {
-                errorMsg = "Video " + (videosLength + 1) + " : " + errorMsg;
-                $("#media_error").text(errorMsg);
-                spanServerError.remove();
-            }
-
-            let videoEl = createVideoEl(srcVideo);
-
-            if (getNbOfMediaActualPage() < getMediaPerPage()) {
-                videoEl.addClass("reveal-media");
-            } else {
-                videoEl.removeClass("d-inline-block");
-                videoEl.hide();
-            }
-
-            $("#medias_container").append(videoEl);
-
-            videosLength++;
-            totalMedias++;
-        }
-    }
-
-    function createAddVideoIframeModal() {
-        let modalContainer = $("<div class='modalContainer'></div>");
-        let labelModalUrl = $("<label id='addVideoLabel' class='control-label required' for='addVideo'>Iframe</label>");
-        let textareaModalUrl = $("<textarea id='addVideo' required='required' class='form-control'></textarea>")
-        let errorModalUrl = $("<span class='invalid-feedback d-block' id='add_video_error'></span>");
-
-        textareaModalUrl.on("keyup blur", function () {
-            validateIframe($(this).val(), $("#add_video_error"));
-        });
-
-        modalContainer.append(labelModalUrl);
-        modalContainer.append(textareaModalUrl);
-        modalContainer.append(errorModalUrl);
-
-        addVideoModal.setContent(modalContainer);
-
-        return;
-    }
-
-    function createAddVideoLinkModal() {
-        let modalContainer = $("<div class='modalContainer'></div>");
-        let labelModalUrl = $("<label id='addVideoLabel' class='control-label required' for='addVideo'>Link</label>");
-        let textareaModalUrl = $("<textarea id='addVideo' required='required' class='form-control'></textarea>")
-        let errorModalUrl = $("<span class='invalid-feedback d-block' id='add_video_error'></span>");
-
-        textareaModalUrl.on("keyup blur", function () {
-            validateLink($(this).val(), $("#add_video_error"));
-        });
-
-        modalContainer.append(labelModalUrl);
-        modalContainer.append(textareaModalUrl);
-        modalContainer.append(errorModalUrl);
-
-        addVideoModal.setContent(modalContainer);
-
-        return;
-    }
-
-    function createAddVideoByModalContent() {
-        let addVideoContainer = $("<ul></ul>");
-        let videoIframeLi = $("<li></li>").css("list-style-type", "none");
-        let videoLinkLi = $("<li></li>").css("list-style-type", "none");
-        let videoIframeLink = $("<a href='#'>Add video with embed tag</a>");
-        let videoLink = $("<a href='#'>Add video with link</a>");
-
-        videoIframeLink.click(function (e) {
-            e.preventDefault();
-            addVideoByModal.close();
-            createAddVideoIframeModal();
-            addVideoModal.open();
-        });
-
-        videoLink.click(function (e) {
-            e.preventDefault();
-            addVideoByModal.close();
-            createAddVideoLinkModal()
-            addVideoModal.open();
-        });
-
-        videoIframeLi.append(videoIframeLink);
-        videoLinkLi.append(videoLink);
-
-        addVideoContainer.append(videoIframeLi);
-        addVideoContainer.append(videoLinkLi);
-
-        return addVideoContainer;
-    }
-
     function validateUrl(url, videoId) {
         if (url.length === 0) {
             let errorMsg = "Url of the video can not be empty !";
@@ -972,6 +875,43 @@ $(function () {
         });
 
         return urlField;
+    }
+
+    function convertLinkToEmbed(link) {
+        if (youtubeRegex.test(link)) {
+            let videoCode = link.split("v=");
+            let embedLink = youtubeEmbedFormat + videoCode[1];
+
+            return embedLink;
+        }
+
+        if (youtubeShortRegex.test(link)) {
+            let videoCode = link.split("/");
+            let embedLink = youtubeEmbedFormat + videoCode[3];
+            
+            return embedLink;
+        }
+
+        if (dailymotionRegex.test(link)) {
+            let videoCode = link.split("/");
+            let embedLink = dailymotionEmbedFormat + videoCode[4];
+
+            return embedLink;
+        }
+
+        if (dailymotionShortRegex.test(link)) {
+            let videoCode = link.split("/");
+            let embedLink = dailymotionEmbedFormat + videoCode[3];
+
+            return embedLink;
+        }
+
+        if (vimeoRegex.test(link)) {
+            let videoCode = link.split("/");
+            let embedLink = vimeoEmbedFormat + videoCode[3];
+
+            return embedLink;
+        }
     }
 
     function uploadVideo() {
@@ -1027,22 +967,57 @@ $(function () {
         $(location).attr("href", url);
     }
 
-    var mediaPerPage = getMediaPerPage();
-    var totalPages = getTotalPages();
+    function recreateVideos() {
+        let videosInputs = containerVideos.children(":input");
+        let videosInputsLength = videosInputs.length;
 
-    var containerImages = $("#trickImages");
+        videosInputs.hide();
 
-    var imagesLength = 0;
+        if (videosInputsLength === 0) {
+            return;
+        }
+
+        while (videosLength < videosInputsLength) {
+            let videoInputId = "appbundle_trick_videos_" + videosLength + "_url";
+            let videoInputName = "appbundle_trick[videos][" + videosLength + "][url]";
+
+            let videoInput = videosInputs.eq(videosLength);
+            videoInput.attr("id", videoInputId).attr("name", videoInputName);
+
+            var videoUrl = videoInput.val();
+
+            if (linksRegex.test(videoUrl)) {
+                var videoUrl = convertLinkToEmbed(videoUrl);
+            }
+
+            let srcVideo = "src='" + videoUrl + "'";
+
+            let spanServerError = videoInput.next("span");
+            let errorMsg = spanServerError.find(".form-error-message").text();
+            if (errorMsg.length !== 0) {
+                errorMsg = "Video " + (videosLength + 1) + " : " + errorMsg;
+                $("#media_error").text(errorMsg);
+                spanServerError.remove();
+            }
+
+            let videoEl = createVideoEl(srcVideo);
+
+            if (getNbOfMediaActualPage() < getMediaPerPage()) {
+                videoEl.addClass("reveal-media");
+            } else {
+                videoEl.removeClass("d-inline-block");
+                videoEl.hide();
+            }
+
+            $("#medias_container").append(videoEl);
+
+            videosLength++;
+            totalMedias++;
+        }
+    }
+
     recreateImages();
-    
-    var containerVideos = $("#trickVideos");
-
-    var videosLength = 0;
     recreateVideos();
-
-    $("#see_media_container").hide();
-    var seeMedia = false;
-
     showPagination();
 
     var addVideoByModalContent = createAddVideoByModalContent();
@@ -1071,6 +1046,21 @@ $(function () {
         content: "Are you sure you want to do that ?",
         confirm: goToDeleteTrickPage,
     });
+
+    function createImageEl() {
+        var previewImgContainer = $("<div id='img-container-'" + imagesLength + "' class='d-inline-block mt-1 mb-5 media image'></div>");
+        if (imagesLength === 0) {
+            previewImgContainer.addClass("fav");
+        }
+        var previewImg = $("<img class='border-black media-img' id='trick-img-thumb-'" + imagesLength + "' src='"+ previewThumbPath +"' alt='Thumb image'/>");
+
+        var controlsEl = createControlsImage();
+
+        previewImgContainer.append(previewImg);
+        previewImgContainer.append(controlsEl);
+
+        return previewImgContainer;
+    }
 
     function createInputImageFile() {
         let prototype = containerImages.attr("data-prototype").replace(/__name__/g, imagesLength);

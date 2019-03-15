@@ -19,7 +19,7 @@ class CaptchaChecker
      * @var ValidatorInterface
      * @access private
      */
-    private $captchaValidator;
+    private $validator;
 
     /**
      * @var RequestStack

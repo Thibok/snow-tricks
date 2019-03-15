@@ -83,40 +83,19 @@ $(function () {
         return loadImg;
     }
 
-    function getTricks () {
-        tricksLoading = true;
+    function createDeleteTrickModal (trickId) {
+        let contentContainer = $("<div></div>");
+        let content = $("<p>Are you sure you want to do that ?</p>");
+        let trickDeleteId = $("<p id='trickToDelete'></p>");
+        trickDeleteId.text(trickId);
+        trickDeleteId.hide();
 
-        let url = apiTricksUrl + nbTricks;
+        contentContainer.append(content);
+        contentContainer.append(trickDeleteId);
 
-        $("#tricksBlock").append(createAjaxLoader());
+        deleteTrickModal.setContent(contentContainer);
 
-        $.get(url, function (datas) {
-            if (datas.length === 0) {
-                $("#ajaxLoader").remove();
-                canLoadMoreTricks = false;
-                return;
-            }
-
-            $("#ajaxLoader").remove();
-
-            $(datas).each(function () {
-                let trick = createTrickElement(this["imgSrc"], this["name"], this["slug"]);
-                $("#tricksBlock").append(trick);
-                nbTricks++;
-            });
-
-            if (window.innerWidth > 991 && arrowUpExist == false && nbTricks > 15) {
-                $("#tricksBlock").append(createArrowUp());
-            }
-
-            tricksLoading = false;
-        }).fail(function () {
-            $("#ajaxLoader").remove();
-            let message = "An error as occured";
-
-            let jBNotice = createJboxNotice("red", message);
-            jBNotice.open();
-        });
+        return deleteTrickModal;
     }
 
     function createTrickElement(imgSrc, name, slug) {
@@ -214,19 +193,40 @@ $(function () {
         return arrowUpLink;
     }
 
-    function createDeleteTrickModal (trickId) {
-        let contentContainer = $("<div></div>");
-        let content = $("<p>Are you sure you want to do that ?</p>");
-        let trickDeleteId = $("<p id='trickToDelete'></p>");
-        trickDeleteId.text(trickId);
-        trickDeleteId.hide();
+    function getTricks () {
+        tricksLoading = true;
 
-        contentContainer.append(content);
-        contentContainer.append(trickDeleteId);
+        let url = apiTricksUrl + nbTricks;
 
-        deleteTrickModal.setContent(contentContainer);
+        $("#tricksBlock").append(createAjaxLoader());
 
-        return deleteTrickModal;
+        $.get(url, function (datas) {
+            if (datas.length === 0) {
+                $("#ajaxLoader").remove();
+                canLoadMoreTricks = false;
+                return;
+            }
+
+            $("#ajaxLoader").remove();
+
+            $(datas).each(function () {
+                let trick = createTrickElement(this["imgSrc"], this["name"], this["slug"]);
+                $("#tricksBlock").append(trick);
+                nbTricks++;
+            });
+
+            if (window.innerWidth > 991 && arrowUpExist == false && nbTricks > 15) {
+                $("#tricksBlock").append(createArrowUp());
+            }
+
+            tricksLoading = false;
+        }).fail(function () {
+            $("#ajaxLoader").remove();
+            let message = "An error as occured";
+
+            let jBNotice = createJboxNotice("red", message);
+            jBNotice.open();
+        });
     }
 
     $("#arrowDown").click(function(event) {

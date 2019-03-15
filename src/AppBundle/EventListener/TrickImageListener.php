@@ -147,7 +147,6 @@ class TrickImageListener
 
             $this->uploader->setTargetDir($targetDir);
 
-            $oldExtension = $trickImage->getTempFilename();
             $id = $trickImage->getId();
             $oldImg = 'trick-'. $trickImage->getTempFilename();
             $oldImgThumb = 'trick-thumb-'. $trickImage->getTempFilename();

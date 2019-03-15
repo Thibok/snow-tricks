@@ -20,6 +20,13 @@ $(function () {
     const maxLengthMessage = "must be at most";
     const commentRegex = new RegExp("[<>]");
 
+    var imagesLength = 0;
+    var videosLength = 0;
+    var actualPage = 1;
+    var totalMedias = 0;
+    $("#see_media_container").hide();
+    var seeMedia = false;
+
     function getMediaPerPage() {
         if (window.innerWidth < 1609 && window.innerWidth > 1299 || window.innerWidth < 992  && window.innerWidth > 944) {
             return 4;
@@ -68,49 +75,6 @@ $(function () {
             imagesLength++;
             totalMedias++;
         });
-    }
-
-    function convertLinkToEmbed(link) {
-        if (youtubeRegex.test(link)) {
-            let videoCode = link.split("v=");
-            let embedLink = youtubeEmbedFormat + videoCode[1];
-
-            return embedLink;
-        }
-
-        if (youtubeShortRegex.test(link)) {
-            let videoCode = link.split("/");
-            let embedLink = youtubeEmbedFormat + videoCode[3];
-            
-            return embedLink;
-        }
-
-        if (dailymotionRegex.test(link)) {
-            let videoCode = link.split("/");
-            let embedLink = dailymotionEmbedFormat + videoCode[4];
-
-            return embedLink;
-        }
-
-        if (dailymotionShortRegex.test(link)) {
-            let videoCode = link.split("/");
-            let embedLink = dailymotionEmbedFormat + videoCode[3];
-
-            return embedLink;
-        }
-
-        if (vimeoRegex.test(link)) {
-            let videoCode = link.split("/");
-            let embedLink = vimeoEmbedFormat + videoCode[3];
-
-            return embedLink;
-        }
-    }
-
-    function createVideoIframe (videoSrc) {
-        let iframeVideoEl = "<iframe class='align-middle' width=100% height=100% " + videoSrc + " frameborder='0'></iframe>";
-
-        return iframeVideoEl;
     }
 
     function recreateVideos() {
@@ -166,6 +130,26 @@ $(function () {
         return;
     }
 
+    function getTotalMedias() {
+        return $(".media").length;
+    }
+
+    function canPrev() {
+        if (actualPage > 1) {
+            return true;
+        }
+
+        return false;
+    }
+
+    function canNext() {
+        if (actualPage < getTotalPages()) {
+            return true;
+        }
+
+        return false;
+    }
+
     function showPagination() {
 
         if (window.innerWidth < 591 && seeMedia === false) {
@@ -199,40 +183,55 @@ $(function () {
         }
     }
 
-    var actualPage = 1;
-    var totalMedias = 0;
     var mediaPerPage = getMediaPerPage();
     var totalPages = getTotalPages();
 
-    var imagesLength = 0;
     recreateImages();
-
-    var videosLength = 0;
     recreateVideos();
-
-    $("#see_media_container").hide();
-    var seeMedia = false;
 
     showPagination();
 
-    function getTotalMedias() {
-        return $(".media").length;
-    }
+    function convertLinkToEmbed(link) {
+        if (youtubeRegex.test(link)) {
+            let videoCode = link.split("v=");
+            let embedLink = youtubeEmbedFormat + videoCode[1];
 
-    function canPrev() {
-        if (actualPage > 1) {
-            return true;
+            return embedLink;
         }
 
-        return false;
-    }
-
-    function canNext() {
-        if (actualPage < getTotalPages()) {
-            return true;
+        if (youtubeShortRegex.test(link)) {
+            let videoCode = link.split("/");
+            let embedLink = youtubeEmbedFormat + videoCode[3];
+            
+            return embedLink;
         }
 
-        return false;
+        if (dailymotionRegex.test(link)) {
+            let videoCode = link.split("/");
+            let embedLink = dailymotionEmbedFormat + videoCode[4];
+
+            return embedLink;
+        }
+
+        if (dailymotionShortRegex.test(link)) {
+            let videoCode = link.split("/");
+            let embedLink = dailymotionEmbedFormat + videoCode[3];
+
+            return embedLink;
+        }
+
+        if (vimeoRegex.test(link)) {
+            let videoCode = link.split("/");
+            let embedLink = vimeoEmbedFormat + videoCode[3];
+
+            return embedLink;
+        }
+    }
+
+    function createVideoIframe (videoSrc) {
+        let iframeVideoEl = "<iframe class='align-middle' width=100% height=100% " + videoSrc + " frameborder='0'></iframe>";
+
+        return iframeVideoEl;
     }
 
     function pageNext() {
