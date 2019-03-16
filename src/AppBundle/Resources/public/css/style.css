@@ -569,3 +569,9 @@ footer {
     margin-right: 3%
   }
 }
+
+@media screen and (max-width: 350px) {
+  #registrationBtn {
+    font-size: 0.8em;
+  }
+}

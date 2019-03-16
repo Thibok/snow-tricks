@@ -333,7 +333,7 @@ $(function () {
 
     function createCommentElement (imgSrc, author, content, date) {
         let commentContainer = $("<div class='comment pb-3'></div>");
-        let commentImg = $("<img class='mr-2 mt-4 comment-user-img' src='/'" + imgSrc + "' alt='user image thumbnail'>")
+        let commentImg = $("<img class='mr-2 mt-4 comment-user-img' src='/" + imgSrc + "' alt='user image thumbnail'>")
         let commentInfosContainer = $("<div class='comment-infos'></div>");
         let commentAuthor = $("<span class='comment-user-name text-primary'>" + author + "</span>");
         let commentContent = $("<p class='comment-content mt-2'>" + content + "</p>");

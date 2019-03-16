@@ -351,13 +351,13 @@ $(function () {
         let editImg = $("<img src='" + editIconPath + "' alt='Edit image icon'/>").css("height", "16px").css("width", "16px");
         let deleteImg = $("<img src='" + deleteIconPath + "' alt='Delete image icon'/>").css("height", "16px").css("width", "16px");
 
-        let editLink = $("<a id='edit-img-'" + imagesLength + "' class='edit-control-img' href='#'></a>");
-        let deleteLink = $("<a id='delete-img-'" + imagesLength + "' class='delete-control-img' href='#'></a>");
+        let editLink = $("<a id='edit-img-" + imagesLength + "' class='edit-control-img' href='#'></a>");
+        let deleteLink = $("<a id='delete-img-" + imagesLength + "' class='delete-control-img' href='#'></a>");
 
         editLink.append(editImg);
         deleteLink.append(deleteImg);
         
-        let numberOfImg = $("<span class='counter-img' id='img-number-'" + imagesLength + "'></span>");
+        let numberOfImg = $("<span class='counter-img' id='img-number-" + imagesLength + "'></span>");
         numberOfImg.css("margin-top", "2px");
         numberOfImg.text(imagesLength + 1);
 
@@ -831,10 +831,10 @@ $(function () {
         let editImg = $("<img src='" + editIconPath + "' alt='Edit video icon'/>").css("height", "16px").css("width", "16px");
         let deleteImg = $("<img src='" + deleteIconPath + "' alt='Delete video icon'/>").css("height", "16px").css("width", "16px");
 
-        let editLink = $("<a id='edit-video-'" + videosLength + "' class='edit-control-video px-1' href='#'></a>");
-        let deleteLink = $("<a id='delete-video-'" + videosLength + "' class='delete-control-video px-1' href='#'></a>");
+        let editLink = $("<a id='edit-video-" + videosLength + "' class='edit-control-video px-1' href='#'></a>");
+        let deleteLink = $("<a id='delete-video-" + videosLength + "' class='delete-control-video px-1' href='#'></a>");
 
-        let numberOfVideos = $("<span class='counter-video px-1' id='video-number-'" + videosLength + "'></span>");
+        let numberOfVideos = $("<span class='counter-video px-1' id='video-number-" + videosLength + "'></span>");
         numberOfVideos.css("margin-top", "2px");
         numberOfVideos.text(videosLength + 1);
 
@@ -874,7 +874,7 @@ $(function () {
     }
 
     function createVideoEl (videoSrc) {
-        let videoContainerEl = $("<div id='video-container-'" + videosLength + "' class='d-inline-block mt-1 mb-5 media video'></div>");
+        let videoContainerEl = $("<div id='video-container-" + videosLength + "' class='d-inline-block mt-1 mb-5 media video'></div>");
         videoContainerEl.css("height", "100px");
         let videoIframeEl = createVideoIframe(videoSrc);
         let controlsEl = createControlsVideo();
@@ -1048,11 +1048,11 @@ $(function () {
     });
 
     function createImageEl() {
-        var previewImgContainer = $("<div id='img-container-'" + imagesLength + "' class='d-inline-block mt-1 mb-5 media image'></div>");
+        var previewImgContainer = $("<div id='img-container-" + imagesLength + "' class='d-inline-block mt-1 mb-5 media image'></div>");
         if (imagesLength === 0) {
             previewImgContainer.addClass("fav");
         }
-        var previewImg = $("<img class='border-black media-img' id='trick-img-thumb-'" + imagesLength + "' src='"+ previewThumbPath +"' alt='Thumb image'/>");
+        var previewImg = $("<img class='border-black media-img' id='trick-img-thumb-" + imagesLength + "' src='"+ previewThumbPath +"' alt='Thumb image'/>");
 
         var controlsEl = createControlsImage();
 

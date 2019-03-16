@@ -137,7 +137,7 @@ $(function() {
             return false;
         }
         
-        if ($.inArray(filename.split(".").pop().toLowerCase(), allowedFileExtension) == -1) {
+        if ($.inArray(filename.split(".").pop().toLowerCase(), allowedFileExtension) === -1) {
             $("#image_error").text("Allowed extensions : jpg, jpeg, png");
             return false;
         }

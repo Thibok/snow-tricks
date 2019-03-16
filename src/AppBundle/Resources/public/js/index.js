@@ -50,13 +50,13 @@ $(function () {
                     let jBNotice = createJboxNotice("blue", message);
                     jBNotice.open();
 
-                    if (nbTricks == 0) {
+                    if (nbTricks === 0) {
                         let noTricks = $("<span id='noTricks'>No Tricks</span>");
                         $("#tricksBlock").append(noTricks);
                     }
                 }
 
-                if (result == false) {
+                if (result === false) {
                     let jBNotice = createJboxNotice("red", message);
                     jBNotice.open();
                 }
@@ -103,14 +103,14 @@ $(function () {
         let trickEditPath = trickViewUrl + slug + "/update";
         let trickDeletePath = apiTrickDeleteUrl + slug + "/delete";
 
-        let trickContainer = $("<div id='trick-'" + nbTricks + "' class='mb-5 trick-container-home'></div>");
+        let trickContainer = $("<div id='trick-" + nbTricks + "' class='mb-5 trick-container-home'></div>");
         let trickCard = $("<div class='card h-100 trick-card-home'></div>");
         let imgLink = $("<a></a>");
         imgLink.attr("href", trickViewPath);
         let trickImg = $("<img class='card-img-top trick-img-prev-home' alt='trick image'/>");
         imgLink.append(trickImg);
 
-        if (imgSrc == null) {
+        if (imgSrc === null) {
             trickImg.attr("src", trickPrevThumbImg);
         } else {
             trickImg.attr("src", "/" + imgSrc);
@@ -134,7 +134,7 @@ $(function () {
             editImg.attr("src", editImgPath);
             editLink.append(editImg);
             
-            let deleteLink = $("<a id='delete-trick-'" + nbTricks + "' class='control-trick-home'></a>")
+            let deleteLink = $("<a id='delete-trick-" + nbTricks + "' class='control-trick-home'></a>")
             deleteLink.attr("href", trickDeletePath);
 
             deleteLink.click(function (e) {
@@ -215,7 +215,7 @@ $(function () {
                 nbTricks++;
             });
 
-            if (window.innerWidth > 991 && arrowUpExist == false && nbTricks > 15) {
+            if (window.innerWidth > 991 && arrowUpExist === false && nbTricks > 15) {
                 $("#tricksBlock").append(createArrowUp());
             }
 
@@ -355,7 +355,7 @@ $(function () {
 
         let scrollCap = $("#imgBanner").height() - 90;
 
-        if (this.innerWidth > 991 && arrowUpExist == false && nbTricks > 15 && $(this).scrollTop() > scrollCap) {
+        if (this.innerWidth > 991 && arrowUpExist === false && nbTricks > 15 && $(this).scrollTop() > scrollCap) {
             $("#tricksBlock").append(createArrowUp());
         } else {
             if (arrowUpExist === true) {
