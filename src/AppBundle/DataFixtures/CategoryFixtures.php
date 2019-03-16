@@ -119,9 +119,4 @@ class CategoryFixtures extends Fixture implements ContainerAwareInterface
     {
         $this->container = $container;
     }
-
-    protected function getEnvironments()
-    {
-        return ['dev', 'prod', 'test'];
-    }
 }

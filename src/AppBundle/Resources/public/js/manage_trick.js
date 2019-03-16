@@ -667,13 +667,6 @@ $(function () {
         return addVideoContainer;
     }
 
-    var addVideoByModalContent = createAddVideoByModalContent();
-
-    var addVideoByModal = new jBox("Modal", {
-        title: "Add a video",
-        content: addVideoByModalContent,
-    });
-
     function createVideoIframe (videoSrc) {
         let iframeVideoEl = "<iframe class='align-middle' width=100% height=100% " + videoSrc + " frameborder='0'></iframe>";
 
@@ -981,6 +974,13 @@ $(function () {
 
         refreshPagination();
     }
+
+    var addVideoByModalContent = createAddVideoByModalContent();
+
+    var addVideoByModal = new jBox("Modal", {
+        title: "Add a video",
+        content: addVideoByModalContent,
+    });
 
     function goToDeleteTrickPage() {
         let url = $("#deleteTrickBtn").attr("href");
