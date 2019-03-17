@@ -49,7 +49,7 @@ This project is for my training at Openclassroom on the DA PHP/Symfony path.This
 <h4>Run It !</h4>
 <p>Now you can start your server with this :</p>
 <pre>php bin/console server:start</pre>
-<strong>And go on the local adress !</strong>
+<strong>And go on the local address !</strong>
 <h2>Tests</h2>
 <p>If you need run tests :</p> 
 <h4>Create test database :</h4>
