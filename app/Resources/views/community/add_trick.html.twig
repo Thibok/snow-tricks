@@ -1,0 +1,66 @@
+{% extends 'base.html.twig' %}
+{% block title %} {{ parent() }} Add trick{% endblock %}
+
+{% block body %}
+    <div id="main">
+        <article class="col-lg-7" id="trick_block">
+            <div id="mainTrickImgContainer">
+                <img id="mainTrickImg" alt="Preview main trick image" class="border-black img-fluid w-100" src="{{ asset('img/preview_trick.jpg') }}" />
+                <div class="pb-1 d-flex justify-content-around" id="mainTrickImgControls">
+                    <a href="#" class='edit-main-trick-img'><img src="{{ asset('img/edit.png') }}" alt="Edit main image icon" /></a>
+                    <a href="#" class="delete-main-trick-img"><img src="{{ asset('img/delete.png') }}" alt="Delete main image icon" /></a>
+                </div>
+            </div> 
+            <div class="py-4" id="medias_container">
+                {% for trickImage in trick.images %}
+                    {% if trickImage.extension is null %}
+                        {% if loop.first %}
+                            <div id="img-container-{{ loop.index0 }}" class="mt-1 mb-5 media image fav d-inline-block">
+                        {% else %}
+                            <div id="img-container-{{ loop.index0 }}" class="mt-1 mb-5 media image d-inline-block">
+                        {% endif %}
+                    {% else %}
+                        {% if loop.first %}
+                            <div id="img-container-{{ loop.index0 }}" class="mt-1 mb-5 media image exist fav d-inline-block">
+                        {% else %}
+                            <div id="img-container-{{ loop.index0 }}" class="mt-1 mb-5 media image exist d-inline-block">
+                        {% endif %}
+                    {% endif %}
+                    {% if trickImage.extension is null %}
+                        <img class="border-black media-img" id="trick-img-thumb-{{ loop.index0 }}" src="{{ asset('img/preview_trick_thumb.jpg') }}" alt="Thumb image">
+                    {% else %}
+                        <img class="border-black media-img" id="trick-img-thumb-{{ loop.index0 }}" src="{{ asset(trickImage.uploadWebThumbPath) }}" alt="Thumb image">
+                    {% endif %}
+                    </div>
+                {% endfor %}
+            </div>
+            <div class="pb-2" id="pagination">
+                <a class="mr-2" id="previous" href="#"><img src="{{ asset('img/prev_disabled.png') }}" alt="Previous media page icon"/></a>
+                <a class="ml-2" id="next" href="#"><img src="{{ asset('img/next_disabled.png') }}" alt="Next media page icon"/></a>
+            </div>
+            <div id="media_error_container">
+                <span class="invalid-feedback d-block text-center mt-0 pt-1" id="media_error"></span>
+            </div>
+            <div class="py-4" id="see_media_container">
+                <button id="see_media" class="btn btn-primary">See medias</button>
+            </div>
+            <div id="addMediaContainer" class="pt-4">
+                <div id="addMedia">
+                    <a class="mr-1" id="addTrickImage" href="#"><img src="{{ asset('img/add_image.png') }}" alt="Add image icon"/></a> or
+                    <a class="ml-1" id="addTrickVideo" href="#"><img src="{{ asset('img/add_video.png') }}" alt="Add video icon"/></a>
+                </div>
+            </div>
+            {% include 'form/trick_form.html.twig' with {'trickPage': 'add'} %}
+        </article>
+    </div>
+{% endblock %}
+
+{% block javascripts %}
+    <script src="https://www.google.com/recaptcha/api.js" async defer></script>
+    {{ parent() }}
+    {% javascripts filter='?jsqueeze'
+        '@AppBundle/Resources/public/js/base.js'
+        '@AppBundle/Resources/public/js/manage_trick.js' %}
+        <script src="{{ asset_url }}"></script>
+    {% endjavascripts %}
+{% endblock %}

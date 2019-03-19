@@ -24,12 +24,51 @@ services:
 
     # controllers are imported separately to make sure they're public
     # and have a tag that allows actions to type-hint services
-    AppBundle\Controller\:
-        resource: '../../src/AppBundle/Controller'
-        public: true
-        tags: ['controller.service_arguments']
 
-    # add more services, or override services that need manual wiring
-    # AppBundle\Service\ExampleService:
-    #     arguments:
-    #         $someArgument: 'some_value'
+    AppBundle\Validator\CaptchaValidator:
+        arguments:
+            $captchaSecretKey: '%captcha_secret_key%'
+            $env: '%kernel.environment%'
+
+    AppBundle\EventListener\UserListener:
+        tags:
+            - { name: doctrine.event_listener, event: prePersist }
+            - { name: doctrine.event_listener, event: postPersist }
+            - { name: kernel.event_listener, event: st_user.post_forgot, method: postForgot }
+
+    AppBundle\EventListener\TokenListener:
+        tags:
+            - { name: doctrine.event_listener, event: prePersist }
+    
+    AppBundle\EventListener\UserImageListener:
+        tags:
+            - { name: doctrine.event_listener, event: prePersist }
+            - { name: doctrine.event_listener, event: postPersist }
+            - { name: doctrine.event_listener, event: preRemove }
+            - { name: doctrine.event_listener, event: postRemove }
+        arguments:
+            $env: '%kernel.environment%'
+
+    AppBundle\Mailer\Mailer:
+        arguments:
+            $sender: '%mailer_user%'
+
+    AppBundle\Uploader\ImageUploader:
+        arguments:
+            $env: '%kernel.environment%'
+    
+    AppBundle\EventListener\TrickListener:
+        tags:
+            - { name: doctrine.event_listener, event: prePersist }
+            - { name: doctrine.event_listener, event: preUpdate }
+    
+    AppBundle\EventListener\TrickImageListener:
+        tags:
+            - { name: doctrine.event_listener, event: prePersist }
+            - { name: doctrine.event_listener, event: postPersist }
+            - { name: doctrine.event_listener, event: preUpdate }
+            - { name: doctrine.event_listener, event: postUpdate }
+            - { name: doctrine.event_listener, event: preRemove }
+            - { name: doctrine.event_listener, event: postRemove }
+        arguments:
+            $env: '%kernel.environment%' 

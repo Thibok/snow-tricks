@@ -1,0 +1,61 @@
+{% extends 'base.html.twig' %}
+{% import "macros/form_elements.html.twig" as formElements %}
+
+{% block title %} {{ parent() }} Registration{% endblock %}
+{% block body %}
+    <div class="container" id="wrap">
+        <div class="row" id="main">
+            <div class="col-lg-5" id="security_block">
+                <h1 class="mb-4 text-center text-dark">Registration</h1>
+                {{ form_start(form, {'attr': {'class': 'form-horizontal px-5 py-5', 'id': 'security_form', 'novalidate': 'novalidate'}}) }}
+                    <div class="form-group">
+                        {{ form_label(form.username, "Username", {'label_attr' : {'class': 'control-label'}}) }}
+                        {{ form_widget(form.username) }}
+                        <span class="invalid-feedback d-block" id="username_error"></span>
+                    </div>
+                    <div class="form-group">
+                        {{ form_label(form.email, "Email", {'label_attr' : {'class': 'control-label'}}) }}
+                        {{ form_widget(form.email) }}
+                        <span class="invalid-feedback d-block" id="email_error"></span>
+                    </div>
+                    <div class="form-group">
+                        {{ form_label(form.password, "Password", {'label_attr' : {'class': 'control-label'}}) }}
+                        {{ form_widget(form.password) }}
+                        <span class="invalid-feedback d-block" id="password_error"></span>
+                    </div>
+                    <div class="form-group">
+                        {{ form_label(form.name, "Name", {'label_attr' : {'class': 'control-label'}}) }}
+                        {{ form_widget(form.name) }}
+                        <span class="invalid-feedback d-block" id="name_error"></span>
+                    </div>
+                    <div class="form-group">
+                        {{ form_label(form.firstName, "First name", {'label_attr' : {'class': 'control-label'}}) }}
+                        {{ form_widget(form.firstName) }}
+                        <span class="invalid-feedback d-block" id="firstName_error"></span>
+                    </div>
+                    <div class="form-group">
+                        {{ form_label(form.image.file, "Avatar", {'label_attr' : {'class': 'control-label'}}) }}
+                        <span class="invalid-feedback d-block" id="image_error"></span>
+                        {{ form_widget(form.image.file) }}
+                    </div>
+                    <a id="add_preview" href="#"><img id="preview" src="{{ asset('/img/plus.png') }}"/></a>
+                    <div class="d-flex">
+                        <button id="registrationBtn" class="btn btn-primary my-3 w-75 mx-auto">Create an account</button>
+                    </div>
+                    <a id="already_account" href="{{ path('st_login') }}">Already an account ?</a>
+                    {{ formElements.recaptcha("g-recaptcha d-flex justify-content-center mt-4") }}
+                {{ form_end(form)}}
+            </div>
+        </div>
+    </div>
+{% endblock %}
+
+{% block javascripts %}
+    <script src="https://www.google.com/recaptcha/api.js" async defer></script>
+    {{ parent() }}
+    {% javascripts filter='?jsqueeze'
+        '@AppBundle/Resources/public/js/base.js'
+        '@AppBundle/Resources/public/js/registration.js' %}
+        <script src="{{ asset_url }}"></script>
+    {% endjavascripts %}
+{% endblock %}

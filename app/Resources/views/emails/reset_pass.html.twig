@@ -1,0 +1,35 @@
+<!DOCTYPE html>
+<html lang="en">
+    <head>
+        <meta charset="UTF-8" />
+    </head>
+    <body>
+        <table align="center" cellspacing="0" cellpadding="10" border="0" width="15%">
+            <tr>
+                <td align="center">
+                    <a href="{{ url('st_index') }}"><img src="{{ absolute_url(asset('img/logo.png')) }}" alt="snowboarder logo"/></a>
+                    <h1 style="font-family: arial;">RESET YOUR PASSWORD</h1>
+                </td>
+            </tr>
+            <tr>
+                <td align="center">
+                    <p style="font-family: arial;">
+                        Hi, {{ firstName }} !
+                        To reset your password, click on the link below.
+                        This link is valid for <strong>2 days</strong>
+                    </p>
+                </td>
+            </tr>
+            <tr>
+                <td align="center" style="height:40px;background-color:rgb(72, 141, 222);">
+                    <a style="text-decoration:none;color:white;font-family: arial;" href="{{ url('st_reset_pass', { 'tokenCode': token }) }}">Reset password</a>
+                </td>
+            </tr>
+            <tr>
+                <td align="center">
+                    <small>This is an automatic message, thank you for not answering it.</small>
+                </td>
+            </tr>
+        </table>
+    </body>
+</html>

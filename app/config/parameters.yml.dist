@@ -1,0 +1,26 @@
+# This file is a "template" of what your parameters.yml file should look like
+# Set parameters here that may be different on each deployment target of the app, e.g. development, staging, production.
+# https://symfony.com/doc/current/best_practices/configuration.html#infrastructure-related-configuration
+parameters:
+    database_host: 127.0.0.1
+    database_port: ~
+    database_name: snowTricks
+    database_user: root
+    database_password: ~
+    # You should uncomment this if you want to use pdo_sqlite
+    #database_path: '%kernel.project_dir%/var/data/data.sqlite'
+
+    mailer_transport: smtp
+    mailer_host: host
+    mailer_encryption: ssl
+    mailer_port: 465
+    mailer_user: youemail@adress.com
+    mailer_password: passwordM
+
+    captcha_secret_key: secretKey
+
+    demo_user_username: yourDemoUser
+    demo_user_password: yourDemoPassword
+
+    # A secret key that's used to generate certain security-related tokens
+    secret: ThisTokenIsNotSoSecretChangeIt
