@@ -32,7 +32,7 @@ This project is for my training at Openclassroom on the DA PHP/Symfony path.This
 <h4>Clone project :</h4>
 <pre>git clone https://github.com/Thibok/snowTricks.git</pre>
 <h4>Install dependencies :</h4>
-<pre>compoer install</pre>
+<pre>composer install</pre>
 <h4>Create database :</h4>
 <pre>php bin/console doctrine:database:create</pre>
 <h4>Update schema :</h4>
