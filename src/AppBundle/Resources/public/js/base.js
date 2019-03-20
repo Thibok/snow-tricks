@@ -26,8 +26,8 @@ $(function () {
         $("#logo").hide();
         $("#mainNav").removeClass("fixed-top").attr("id", "phoneNav").addClass("fixed-bottom");
         $("#home").html("<img src='" + navLinksIcon[0] + "' alt='Home'/>");
-        $("#registration").html("<img src='" + navLinksIcon[1] + "' alt='Sign in'/>");
-        $("#login").html("<img src='" + navLinksIcon[2] + "' alt='Sign up'/>");
+        $("#login").html("<img src='" + navLinksIcon[1] + "' alt='Sign in'/>");
+        $("#registration").html("<img src='" + navLinksIcon[2] + "' alt='Sign up'/>");
         $("#addTrick").html("<img src='" + navLinksIcon[3] + "' alt='Add Trick'/>");
         $("#logout").html("<img src='" + navLinksIcon[4] + "' alt='Logout'/>");
     }
@@ -36,8 +36,8 @@ $(function () {
         $("#logo").show();
         $("#phoneNav").removeClass("fixed-bottom").attr("id", "mainNav").addClass("fixed-top");
         $("#home").text(navLinksText[0]);
-        $("#registration").text(navLinksText[1]);
-        $("#login").text(navLinksText[2]);
+        $("#login").text(navLinksText[1]);
+        $("#registration").text(navLinksText[2]);
         $("#addTrick").text(navLinksText[3]);
         $("#logout").text(navLinksText[4]);
     }

@@ -23,10 +23,10 @@
                 </li>
                 {% if not is_granted('IS_AUTHENTICATED_FULLY')%}
                     <li class="nav-item">
-                        <a id="registration" class="nav-link text-light" href="{{ path('st_registration') }}">Sign in</a>
+                        <a id="login" class="nav-link text-light" href="{{ path('st_login') }}">Sign in</a>
                     </li>
                     <li class="nav-item">
-                        <a id="login" class="nav-link text-light" href="{{ path('st_login') }}">Sign up</a>
+                        <a id="registration" class="nav-link text-light" href="{{ path('st_registration') }}">Sign up</a>
                     </li>
                 {% else %}
                     <li class="nav-item">
