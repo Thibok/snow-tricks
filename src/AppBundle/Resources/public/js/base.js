@@ -49,14 +49,14 @@ $(function () {
     });
 
     $(window).resize(function () {
-        var width = this.innerWidth;
-
-        if (width < windowWidthLimit) {
-            unsetCopyrightText();
+        let mediaMatchLimit = "(max-width: " + windowWidthLimit + "px)";
+        if (this.matchMedia(mediaMatchLimit).matches) {
             setMobileNavBar();
+            unsetCopyrightText();
         } else {
-            setCopyrightText();
             setNavBar();
+            setCopyrightText();
+            navBarScroll();
         }
     });
 
@@ -91,7 +91,9 @@ $(function () {
         $(this).remove();
     });
 
-    if (window.innerWidth < windowWidthLimit) {
+    let mediaMatchLimit = "(max-width: " + windowWidthLimit + "px)";
+
+    if (window.matchMedia(mediaMatchLimit).matches) {
         setMobileNavBar();
         unsetCopyrightText();
     } else {
