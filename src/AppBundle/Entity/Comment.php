@@ -55,7 +55,7 @@ class Comment
     /**
      * @var \DateTime
      * @access private
-     * @ORM\Column(name="addAt", type="datetime")
+     * @ORM\Column(name="add_at", type="datetime")
      */
     private $addAt;
 
