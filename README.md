@@ -14,6 +14,7 @@ This project is for my training at Openclassroom on the DA PHP/Symfony path.This
 <ul>
   <li>Bootstrap</li>
   <li>JQuery</li>
+  <li>Recaptcha</li>
 </ul>
 <h2>Framework</h2>
 <ul>
