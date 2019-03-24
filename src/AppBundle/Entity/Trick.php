@@ -76,14 +76,14 @@ class Trick
     /**
      * @var \DateTime
      * @access private
-     * @ORM\Column(name="addAt", type="datetime")
+     * @ORM\Column(name="add_at", type="datetime")
      */
     private $addAt;
 
     /**
      * @var \DateTime
      * @access private
-     * @ORM\Column(name="updateAt", type="datetime", nullable=true)
+     * @ORM\Column(name="update_at", type="datetime", nullable=true)
      */
     private $updateAt;
 

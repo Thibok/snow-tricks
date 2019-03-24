@@ -14,6 +14,7 @@ This project is for my training at Openclassroom on the DA PHP/Symfony path.This
 <ul>
   <li>Bootstrap</li>
   <li>JQuery</li>
+  <li>Recaptcha</li>
 </ul>
 <h2>Framework</h2>
 <ul>
@@ -37,13 +38,13 @@ This project is for my training at Openclassroom on the DA PHP/Symfony path.This
 <pre>php bin/console doctrine:database:create</pre>
 <h4>Update schema :</h4>
 <pre>php bin/console doctrine:schema:update --force</pre>
-<h4>Create css/js folders :</h4>
-<pre>mkdir web/css</pre>
-<pre>mkdir web/js</pre>
+<h4>Create uploads folders :</h4>
 <pre>mkdir -p web/uploads/img/trick</pre>
 <pre>mkdir web/uploads/img/user</pre>
 <h4>Update captcha public key :</h4>
 <p>Go in app/Ressources/views/macros/form_elements.html.twig and set your captcha public key in data-sitekey</p>
+<h4>Install assets</h4>
+<pre>php bin/console assets:install --symlink</pre>
 <h4>Load fixtures :</h4>
 <pre>php bin/console doctrine:fixture:load</pre>
 <h4>Run It !</h4>
@@ -53,9 +54,9 @@ This project is for my training at Openclassroom on the DA PHP/Symfony path.This
 <h2>Tests</h2>
 <p>If you need run tests :</p> 
 <h4>Create test database :</h4>
-<pre>php bin/console doctrine:database:create --env="test"</pre>
+<pre>php bin/console doctrine:database:create --env=test</pre>
 <h4>Update schema :</h4>
-<pre>php bin/console doctrine:schema:update --force --env="test"</pre>
+<pre>php bin/console doctrine:schema:update --force --env=test</pre>
 <h4>Create uploads test folders :</h4>
 <pre>mkdir -p web/uploads/img/tests/trick</pre>
 <pre>mkdir web/uploads/img/tests/user</pre>

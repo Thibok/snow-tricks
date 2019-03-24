@@ -92,7 +92,7 @@ class SecurityControllerTest extends WebTestCase
     {
         $crawler = $this->client->request('GET', '/');
 
-        $link = $crawler->selectLink('Sign in')->link();
+        $link = $crawler->selectLink('Sign up')->link();
         $crawler = $this->client->click($link);
 
         $this->assertSame('Registration', $crawler->filter('h1')->text());
@@ -253,7 +253,7 @@ class SecurityControllerTest extends WebTestCase
     {
         $crawler = $this->client->request('GET', '/');
 
-        $link = $crawler->selectLink('Sign up')->link();
+        $link = $crawler->selectLink('Sign in')->link();
         $crawler = $this->client->click($link);
 
         $this->assertSame('Login', $crawler->filter('h1')->text());
@@ -499,7 +499,7 @@ class SecurityControllerTest extends WebTestCase
     {
         $crawler = $this->client->request('GET', '/');
 
-        $loginLink = $crawler->selectLink('Sign up')->link();
+        $loginLink = $crawler->selectLink('Sign in')->link();
         $crawler = $this->client->click($loginLink);
 
         $forgotLink = $crawler->selectLink('Forgot password ?')->link();
